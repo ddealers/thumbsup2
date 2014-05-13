@@ -331,7 +331,7 @@
       if (this.scene < 2) {
         this.library['btnnext'].visible = true;
         this.library['btnnext'].alpha = 1;
-        this.library['btnnext'].y = 1120;
+        this.library['btnnext'].y = 1030;
         TweenLite.from(this.library['btnnext'], 1, {
           alpha: 0,
           y: this.library['btnnext'].y + 20

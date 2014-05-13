@@ -157,7 +157,7 @@ class U2A3 extends Oda
 					p2p8: {x: 208, y: 245, texta:'The doll is',textb:'the sofa.', label:'on', back: on}
 					p2p9: {x: 404, y: 248}
 					p2p10: {x: 76, y: 376}
-					p2p11: {x: 222, y: 377, texta:'The dog is',textb:'the table.', label:'under', back: on}
+					p2p11: {x: 222, y: 374, texta:'The dog is',textb:'the table.', label:'under', back: on}
 					p2p12: {x: 418, y: 385}
 				@answers = 8
 				@setPuzzle 2
@@ -167,10 +167,10 @@ class U2A3 extends Oda
 					p3p2: {x: 208, y: 24}
 					p3p3: {x: 348, y: 24, texta:'The boots are',textb:'the teddy bear.', label:'next to', back: on}
 					p3p4: {x: 536, y: 24}
-					p3p5: {x: 30, y: 180, texta:'The picture is',textb:'the bed.', label:'above', back: on}
-					p3p6: {x: 210, y: 180, texta:'The brown cat is',textb:'the bed.', label:'on', back: on}
-					p3p7: {x: 344, y: 180, texta:'The dress is',textb:'the closet.', label:'in', back: on}
-					p3p8: {x: 526, y: 180, texta:'The pencil case is',textb:'the dresser.', label:'on', back: on}
+					p3p5: {x: 30, y: 178, texta:'The picture is',textb:'the bed.', label:'above', back: on}
+					p3p6: {x: 210, y: 178, texta:'The brown cat is',textb:'the bed.', label:'on', back: on}
+					p3p7: {x: 346, y: 178, texta:'The dress is',textb:'the closet.', label:'in', back: on}
+					p3p8: {x: 526, y: 178, texta:'The pencil case is',textb:'the dresser.', label:'on', back: on}
 					p3p9: {x: 30, y: 340, texta:'The mouse is',textb:'the bed.', label:'behind', back: on}
 					p3p10: {x: 176, y: 340, texta:'The white cat is',textb:'the bed.', label:'under', back: on}
 					p3p11: {x: 384, y: 340}

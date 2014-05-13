@@ -70,7 +70,7 @@ class U4A5 extends Oda
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', 'Read and drag the sentences to complete the story.', 80, 200
-		ti = @createBitmap 'title', 'title1', 700, 240, 'tc'
+		ti = @createBitmap 'title', 'title1', 665, 245, 'tc'
 		ti.scaleX = ti.scaleY = 0.8
 		@addToMain ti
 		@insertBitmap 'btnnext', 'btn', 1520, 1040, 'br'
