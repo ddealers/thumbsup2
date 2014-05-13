@@ -198,6 +198,7 @@ class U6A1 extends Oda
 			@observer.notify 'stop_drag'
 			
 			@answer.putInPlace htt 
+			@answer.removeAllEventListeners()
 			@initListeners()
 		else
 			@answer.returnToPlace @answer.alpha, @answer.scaleX, @answer.scaleY

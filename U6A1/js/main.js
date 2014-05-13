@@ -508,6 +508,7 @@
         createjs.Sound.play('bell');
         this.observer.notify('stop_drag');
         this.answer.putInPlace(htt);
+        this.answer.removeAllEventListeners();
         return this.initListeners();
       } else {
         return this.answer.returnToPlace(this.answer.alpha, this.answer.scaleX, this.answer.scaleY);
