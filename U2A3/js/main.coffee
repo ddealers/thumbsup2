@@ -133,7 +133,7 @@ class U2A3 extends Oda
 				@pieces =
 					p1p1: {x: 20, y: 20, texta:'The picture is',textb:'the fridge.', label:'above', back: on}
 					p1p2: {x: 166, y: 20}
-					p1p3: {x: 360, y: 20, texta:'The cat is',textb:'the flowers.', label:'next to', back: on}
+					p1p3: {x: 357, y: 20, texta:'The cat is',textb:'the flowers.', label:'next to', back: on}
 					p1p4: {x: 20, y: 136}
 					p1p5: {x: 164, y: 160, texta:'The apples are',textb:'the sink.', label:'in', back: on}
 					p1p6: {x: 350, y: 160}
@@ -141,24 +141,24 @@ class U2A3 extends Oda
 					p1p8: {x: 154, y: 266, texta:'The fruit is',textb:'the table.', label:'on', back: on}
 					p1p9: {x: 350, y: 270, texta:'The cake is',textb:'the oven.', label:'in', back: on}
 					p1p10: {x: 20, y: 404, texta:'The mouse is',textb:'the chair.', label:'behind', back: on}
-					p1p11: {x: 166, y: 404, texta:'The puppy is',textb:'the table.', label:'under', back: on}
+					p1p11: {x: 166, y: 406, texta:'The puppy is',textb:'the table.', label:'under', back: on}
 					p1p12: {x: 360, y: 416}
 				@answers = 8
 				@setPuzzle 1
 			when 'p2'
 				@pieces =
-					p2p1: {x: 56, y: 20, texta:'The picture is',textb:'the wall.', label:'on', back: on}
-					p2p2: {x: 212, y: 20, texta:'The clock is',textb:'the window.', label:'above', back: on}
-					p2p3: {x: 412, y: 20, texta:'The plant is',textb:'the bookcase.', label:'on', back: on}
-					p2p4: {x: 56, y: 132, texta:'The lamp is',textb:'the sofa.', label:'next to', back: on}
-					p2p5: {x: 208, y: 160}
-					p2p6: {x: 404, y: 160, texta:'The books are',textb:'the bookcase.', label:'in', back: on}
-					p2p7: {x: 56, y: 294, texta:'The boy is',textb:'the armchair.', label:'behind', back: on}
-					p2p8: {x: 196, y: 266, texta:'The doll is',textb:'the sofa.', label:'on', back: on}
-					p2p9: {x: 404, y: 266}
-					p2p10: {x: 56, y: 402}
-					p2p11: {x: 210, y: 402, texta:'The dog is',textb:'the table.', label:'under', back: on}
-					p2p12: {x: 418, y: 414}
+					p2p1: {x: 77, y: 14, texta:'The picture is',textb:'the wall.', label:'on', back: on}
+					p2p2: {x: 218, y: 14, texta:'The clock is',textb:'the window.', label:'above', back: on}
+					p2p3: {x: 410, y: 14, texta:'The plant is',textb:'the bookcase.', label:'on', back: on}
+					p2p4: {x: 77, y: 122, texta:'The lamp is',textb:'the sofa.', label:'next to', back: on}
+					p2p5: {x: 218, y: 144}
+					p2p6: {x: 405, y: 144, texta:'The books are',textb:'the bookcase.', label:'in', back: on}
+					p2p7: {x: 77, y: 274, texta:'The boy is',textb:'the armchair.', label:'behind', back: on}
+					p2p8: {x: 208, y: 245, texta:'The doll is',textb:'the sofa.', label:'on', back: on}
+					p2p9: {x: 404, y: 248}
+					p2p10: {x: 76, y: 376}
+					p2p11: {x: 222, y: 377, texta:'The dog is',textb:'the table.', label:'under', back: on}
+					p2p12: {x: 418, y: 385}
 				@answers = 8
 				@setPuzzle 2
 			when 'p3'
