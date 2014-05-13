@@ -526,6 +526,7 @@
           if (this.library[answers[i - 1].tgt].children[1].name === answers[i - 1].id) {
             this.blink(this.library[answers[i - 1].tgt]);
             this.library.score.plusOne();
+            createjs.Sound.play('good');
           }
         }
       }

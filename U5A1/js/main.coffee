@@ -230,6 +230,8 @@ class U5A1 extends Oda
 				if @library[answers[i - 1].tgt].children[1].name is answers[i - 1].id
 					@blink @library[answers[i - 1].tgt]
 					@library.score.plusOne()
+					createjs.Sound.play 'good'
+
 		setTimeout @finishEvaluation, 4 * 1000
 	finishEvaluation: =>
 		TweenLite.to @library.calendar, 1, {alpha:0, y:@library.calendar.y - 40}
