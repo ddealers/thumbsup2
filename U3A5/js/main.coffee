@@ -86,7 +86,8 @@ class U3A5 extends Oda
 		ti = @createBitmap 'title', 'title1', 700, 230, 'tc'
 		ti.scaleX = ti.scaleY = 0.8
 		@addToMain ti
-		@insertBitmap 'btnnext', 'btn', 1520, 1040, 'tc'
+		console.log stageSize.w / 2
+		@insertBitmap 'btnnext', 'btn', 1520, 1040, 'tr'
 		@library['btnnext'].visible = off
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 12, 0
 		@intento = 0
