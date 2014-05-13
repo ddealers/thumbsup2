@@ -71,7 +71,7 @@ class U5A5 extends Oda
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', 'Read and drag the sentences to complete the story.', 80, 200
 		@insertBitmap 'title', 'title1', 700, 250, 'tc'
-		@insertBitmap 'btnnext', 'btn', 1520, 1040, 'tc'
+		@insertBitmap 'btnnext', 'btn', 1290, 500, 'tc'
 		@library['btnnext'].visible = off
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
 		@setCuento(1).introEvaluation()
@@ -162,7 +162,7 @@ class U5A5 extends Oda
 		if @scene < 2
 			@library['btnnext'].visible = on
 			@library['btnnext'].alpha = 1
-			@library['btnnext'].y = 1120
+			@library['btnnext'].y = 1030
 			TweenLite.from @library['btnnext'], 1, {alpha:0, y:@library['btnnext'].y + 20}
 			@library['btnnext'].addEventListener 'click', @nextEvaluation
 		else

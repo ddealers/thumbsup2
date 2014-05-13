@@ -155,7 +155,7 @@
             tipo: 'texto',
             imagen: 'toastMilkJuice',
             pregunta: "What's for breakfast?",
-            opcionUno: 'Cereal. milk and juice.',
+            opcionUno: 'Cereal, milk and juice.',
             opcionDos: 'Toast, milk and juice.',
             respuesta: "opcionDos"
           }, {

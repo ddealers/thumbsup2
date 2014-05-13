@@ -513,7 +513,7 @@
             },
             p2p11: {
               x: 222,
-              y: 377,
+              y: 374,
               texta: 'The dog is',
               textb: 'the table.',
               label: 'under',
@@ -551,7 +551,7 @@
             },
             p3p5: {
               x: 30,
-              y: 180,
+              y: 178,
               texta: 'The picture is',
               textb: 'the bed.',
               label: 'above',
@@ -559,15 +559,15 @@
             },
             p3p6: {
               x: 210,
-              y: 180,
+              y: 178,
               texta: 'The brown cat is',
               textb: 'the bed.',
               label: 'on',
               back: true
             },
             p3p7: {
-              x: 344,
-              y: 180,
+              x: 346,
+              y: 178,
               texta: 'The dress is',
               textb: 'the closet.',
               label: 'in',
@@ -575,7 +575,7 @@
             },
             p3p8: {
               x: 526,
-              y: 180,
+              y: 178,
               texta: 'The pencil case is',
               textb: 'the dresser.',
               label: 'on',

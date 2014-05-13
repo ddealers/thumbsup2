@@ -49,7 +49,7 @@ class U4A6 extends Oda
 		]
 		@game =
 			preguntas: [
-				{tipo:'texto', imagen:'toastMilkJuice', pregunta:"What's for breakfast?", opcionUno:'Cereal. milk and juice.', opcionDos:'Toast, milk and juice.', respuesta:"opcionDos"}
+				{tipo:'texto', imagen:'toastMilkJuice', pregunta:"What's for breakfast?", opcionUno:'Cereal, milk and juice.', opcionDos:'Toast, milk and juice.', respuesta:"opcionDos"}
 				{tipo:'texto', imagen:'zebras', pregunta:'Do zebras live in the grasslands?', opcionUno:'Yes, they do.', opcionDos:"No, they don't.", respuesta:"opcionUno"}
 				{tipo:'imagen', pregunta:'It has fins and scales. What is it?', opcionUno:'fish', opcionDos:'parrot', respuesta:"opcionUno"}
 				{tipo:'imagen', pregunta:'This animal is endangered', opcionUno:'rhino', opcionDos:'snake', respuesta:"opcionUno"}

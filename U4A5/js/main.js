@@ -185,7 +185,7 @@
       U4A5.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
       this.insertInstructions('instructions', 'Read and drag the sentences to complete the story.', 80, 200);
-      ti = this.createBitmap('title', 'title1', 700, 240, 'tc');
+      ti = this.createBitmap('title', 'title1', 665, 245, 'tc');
       ti.scaleX = ti.scaleY = 0.8;
       this.addToMain(ti);
       this.insertBitmap('btnnext', 'btn', 1520, 1040, 'tc');
