@@ -1,0 +1,22 @@
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	src: url('../fonts/Roboto_regular.ttf'),url('../fonts/roboto_regular-webfont.woff')
+}
+@font-face {
+	font-family: 'Dosis';
+	font-style: normal;
+	src: url('../fonts/Dosis_regular.ttf')
+}
+@font-face {
+	font-family: 'Quicksand';
+	font-style: normal;
+	font-weight: 700;
+	src: url('../fonts/Quicksand_700.ttf')
+}
+@font-face {
+	font-family: 'Roboto';
+	font-style: italic;
+	font-weight: 500;
+	src: url('../fonts/Roboto_500italic.ttf'),url('../fonts/roboto_500italic-webfont.woff')
+}
