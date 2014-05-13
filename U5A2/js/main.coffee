@@ -87,7 +87,7 @@ class U5A2 extends Oda
 		choose.scaleX = choose.scaleY = 0.6
 		choose.setDistance 1100, 0
 		choose.addEventListener 'selection', (e)=>
-			e.currentTarget.removeAllEventListeners 'selection'
+			
 			@tindex = 0
 			if e.success is false 
 				@warning() 

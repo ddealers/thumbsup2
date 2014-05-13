@@ -192,7 +192,6 @@
       choose.scaleX = choose.scaleY = 0.6;
       choose.setDistance(1100, 0);
       choose.addEventListener('selection', function(e) {
-        e.currentTarget.removeAllEventListeners('selection');
         _this.tindex = 0;
         if (e.success === false) {
           _this.warning();
