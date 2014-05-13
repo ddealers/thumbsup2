@@ -1158,6 +1158,7 @@
         }
         if (match) {
           this.answer.onStopEvaluation();
+          this.answer.removeAllEventListeners();
           this.evaluateValues();
           if (this.intento === 0) {
             this.library['score'].plusOne();

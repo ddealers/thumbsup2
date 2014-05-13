@@ -453,6 +453,7 @@ class U3A1 extends Oda
 					match = on
 			if match
 				@answer.onStopEvaluation()
+				@answer.removeAllEventListeners()
 				@evaluateValues()
 				if @intento is 0
 					@library['score'].plusOne()

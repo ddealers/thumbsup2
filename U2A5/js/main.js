@@ -232,7 +232,7 @@
       ti = this.createBitmap('title', 'title1', 700, 230, 'tc');
       ti.scaleX = ti.scaleY = 0.72;
       this.addToMain(ti);
-      this.insertBitmap('btnnext', 'btn', 1520, 1178, 'tc');
+      this.insertBitmap('btnnext', 'btn', 1520, 1178, 'tr');
       this.library['btnnext'].visible = false;
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 12, 0));
       this.intento = 0;
