@@ -188,7 +188,7 @@
       ti = this.createBitmap('title', 'title1', 700, 240, 'tc');
       ti.scaleX = ti.scaleY = 0.8;
       this.addToMain(ti);
-      this.insertBitmap('btnnext', 'btn', 1520, 1040, 'tc');
+      this.insertBitmap('btnnext', 'btn', 1520, 1040, 'br');
       this.library['btnnext'].visible = false;
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));
       return this.setCuento(1).introEvaluation();

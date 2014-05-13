@@ -73,7 +73,7 @@ class U4A5 extends Oda
 		ti = @createBitmap 'title', 'title1', 700, 240, 'tc'
 		ti.scaleX = ti.scaleY = 0.8
 		@addToMain ti
-		@insertBitmap 'btnnext', 'btn', 1520, 1040, 'tc'
+		@insertBitmap 'btnnext', 'btn', 1520, 1040, 'br'
 		@library['btnnext'].visible = off
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
 		@setCuento(1).introEvaluation()
