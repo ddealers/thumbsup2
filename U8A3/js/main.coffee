@@ -22,10 +22,10 @@ class U8A3 extends Oda
 		]
 		@game =
 			passports:[
-				{x: 260, y: 260, values: ['Eric Schmidt', 'Germany', 'blue', 'brown', '1m 10cm']}
-				{x: 860, y: 270, values: ['Melanie Murphy', 'Ireland', 'green', 'red', '1m 7cm']}
-				{x: 260, y: 608, values: ['Cassandra Wang', 'China', 'dark brown', 'black', '1m 15cm']}
-				{x: 868, y: 608, values: ['Saul Peterson', 'Canada', 'light brown', 'blonde', '1m 14cm']}
+				{x: 260, y: 260, values: ['Eric Schmidt', 'Germany', 'blue', 'brown', '1m 10cm'], cx: 6, cy: -3}
+				{x: 860, y: 270, values: ['Melanie Murphy', 'Ireland', 'green', 'red', '1m 7cm'], cx: 8, cy: 0}
+				{x: 260, y: 608, values: ['Cassandra Wang', 'China', 'dark brown', 'black', '1m 15cm'], cx: -4, cy: 0}
+				{x: 868, y: 608, values: ['Saul Peterson', 'Canada', 'light brown', 'blonde', '1m 14cm'], cx: 6, cy: -10}
 			]
 			steps:[
 				{pattern:["I have", "#wc", "eyes. I have straight", "#wc", "hair. I'm", "#wc", "tall.", "#br", "My name's", "#wc", "I'm from Germany."], targets:['blue','brown', '1m 10cm', 'Eric Schmidt']}
@@ -35,10 +35,10 @@ class U8A3 extends Oda
 			]
 			positions:[
 				{x:140, y:44}
-				{x:164, y:100}
-				{x:178, y:156}
-				{x:190, y:212}
-				{x:146, y:255}
+				{x:164, y:99}
+				{x:178, y:154}
+				{x:190, y:209}
+				{x:146, y:264}
 			]
 
 
@@ -62,7 +62,7 @@ class U8A3 extends Oda
 			p.addChild f
 			@addToMain p
 			for j in [0..passport.values.length - 1] by 1
-				n = new DroppableText "p#{i}v#{j}", passport.values[j], passport.values[j], @game.positions[j].x,  @game.positions[j].y, @stage
+				n = new DroppableText "p#{i}v#{j}", passport.values[j], passport.values[j], @game.positions[j].x + passport.cx,  @game.positions[j].y + passport.cy , @stage
 				@addToLibrary n
 				p.addChild n
 			i++
