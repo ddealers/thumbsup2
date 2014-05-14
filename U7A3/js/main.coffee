@@ -187,7 +187,7 @@ class U7A3 extends Oda
 	evaluateAnswer: (e) =>
 		@answer = e.target
 		@drop = e.drop
-		console.log 'evaluate', @vuelta
+		
 		
 		if "dropArea#{@answer.name}" is @drop.name
 			
