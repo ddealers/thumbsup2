@@ -146,9 +146,6 @@
         }, {
           texts: [
             {
-              idx: 8,
-              t: "He wants to interview Phil and his mom about Jack's amazing rescue."
-            }, {
               idx: 7,
               t: 'They take Jack to the hospital in an ambulance.'
             }, {
@@ -157,6 +154,9 @@
             }, {
               idx: 5,
               t: "Phil and his mom follow the sound of Bo barking."
+            }, {
+              idx: 8,
+              t: "He wants to interview Phil and his mom about Jack's amazing rescue."
             }
           ],
           positions: [

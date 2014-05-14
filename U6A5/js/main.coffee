@@ -51,10 +51,11 @@ class U6A5 extends Oda
 			}
 			{
 				texts:[
-					{idx:8, t:"He wants to interview Phil and his mom about Jack's amazing rescue."}
 					{idx:7, t:'They take Jack to the hospital in an ambulance.'}
 					{idx:6, t:'He is sitting in the snow next to Jack!'}
 					{idx:5, t:"Phil and his mom follow the sound of Bo barking."}
+					{idx:8, t:"He wants to interview Phil and his mom about Jack's amazing rescue."}
+
 				]
 				positions:[
 					{x:202, y:320}
