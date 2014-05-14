@@ -268,7 +268,7 @@
             p1p1: {
               x: 310,
               y: 163,
-              text: 'A firefighter put out fires.',
+              text: 'A firefighter puts out fires.',
               label: 'true',
               back: true
             },

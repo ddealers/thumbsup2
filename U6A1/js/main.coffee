@@ -99,7 +99,7 @@ class U6A1 extends Oda
 		switch e.target.name
 			when 'p1'
 				@pieces =
-					p1p1:  {x: 310, y: 163,  text:'A firefighter put out fires.', label:'true', back: on}
+					p1p1:  {x: 310, y: 163,  text:'A firefighter puts out fires.', label:'true', back: on}
 					p1p2:  {x: 495, y: 160} 
 					p1p3:  {x: 641, y: 163,  text:'A nurse helps sick people.', label:'true', back: on}
 					p1p4:  {x: 823, y: 163} 
