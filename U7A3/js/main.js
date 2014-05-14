@@ -273,6 +273,7 @@
         this.esc = 2;
       }
       fondo = this.createBitmap("" + es + "bg", "" + es + "bg", 48, 22);
+      this.vuelta = 0;
       this.texts = this.positions["" + es + "texts"];
       this.insertText('label', this.texts[this.index].t, '48px Quicksand', '#333', stageSize.w / 2, 280, 'center');
       this.escena.addChild(fondo);
@@ -301,6 +302,8 @@
         this.escena.addChild(hit, drop);
         letra = new Droppable(word.letra, this.preload.getResult(word.letra), i, word.x - 20, word.y - 20, this.stage, hits);
         letra.scaleX = letra.scaleY = 0.43;
+        this.observer.subscribe('init_drag', letra.onInitEvaluation);
+        this.observer.subscribe('stop_drag', letra.onStopEvaluation);
         letrafinal = this.createBitmap("f" + this.letras[i].letra, this.letras[i].letra, drop.x, drop.y - 14, 'bc');
         if (i === 6) {
           letrafinal.set({
@@ -405,16 +408,19 @@
     U7A3.prototype.evaluateAnswer = function(e) {
       this.answer = e.target;
       this.drop = e.drop;
-      console.log('evaluate');
+      console.log('evaluate', this.vuelta);
       if (("dropArea" + this.answer.name) === this.drop.name) {
         if (this.answer.name === this.texts[this.index].l) {
           this.library["f" + this.answer.name].visible = true;
           this.answer.visible = false;
           if (this.intento === 0) {
-            this.library['score'].plusOne();
+            if (this.vuelta === 0) {
+              this.library['score'].plusOne();
+            }
           }
           this.finishEvaluation();
           this.intento = 0;
+          this.vuelta++;
           return createjs.Sound.play('good');
         } else {
           this.answer.returnToPlace(1, 0.43, 0.43);
@@ -439,6 +445,7 @@
 
     U7A3.prototype.nextEvaluation = function() {
       this.index++;
+      this.vuelta = 0;
       if (this.index < this.texts.length) {
         this.library.label.text = this.texts[this.index].t;
         return TweenLite.to(this.library.label, 0.5, {
