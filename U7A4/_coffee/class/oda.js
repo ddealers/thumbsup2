@@ -282,8 +282,8 @@
       return this.stage.update();
     };
 
-    Oda.prototype.insertInstructions = function(name, text, x, y) {
-      var inst, triangle;
+    Oda.prototype.insertInstructions = function(name, text, x, y, ital) {
+      var frase, inst, it, label, npos, triangle, _i, _len;
       inst = new createjs.Container();
       inst.name = name;
       inst.x = x;
@@ -291,8 +291,23 @@
       triangle = new createjs.Shape();
       triangle.graphics.beginFill('#bcd748').moveTo(0, 0).lineTo(16, 10).lineTo(0, 20);
       triangle.y = 10;
-      text = this.createText('insttext', text, '32px Roboto', '#000', 28, 0);
-      inst.addChild(triangle, text);
+      console.log(text);
+      it = 0;
+      npos = 14;
+      for (_i = 0, _len = text.length; _i < _len; _i++) {
+        frase = text[_i];
+        if (frase === '#ital') {
+          label = new createjs.Text(ital[it], 'italic 32px Roboto', '#000');
+          it++;
+        } else {
+          label = new createjs.Text(frase, '32px Roboto', '#000');
+        }
+        label.x = npos;
+        inst.addChild(label);
+        console.log(label);
+        npos = npos + label.getMeasuredWidth() + 5;
+      }
+      inst.addChild(triangle);
       return this.addToMain(inst);
     };
 

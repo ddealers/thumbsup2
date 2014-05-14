@@ -306,8 +306,8 @@
       this.count = count;
       this.text = new createjs.Text(this.count, '48px Arial', '#ffffff');
       this.text.textAlign = 'center';
-      this.text.x = 60;
-      this.text.y = 10;
+      this.text.x = 30;
+      this.text.y = 5;
       shape = new createjs.Shape();
       shape.graphics.beginFill(back).drawRoundRect(0, 0, 120, 72, 10);
       this.addChild(shape, this.text);
@@ -376,19 +376,19 @@
     };
 
     Draggable.prototype.onInitEvaluation = function() {
-      return this.addEventListener('mousedown', this.handleMouseDown);
+      return this.on('mousedown', this.handleMouseDown);
     };
 
     Draggable.prototype.onStopEvaluation = function() {
-      return this.removeEventListener('mousedown', this.handleMouseDown);
+      return this.off('mousedown', this.handleMouseDown);
     };
 
     Draggable.prototype.initDragListener = function() {
-      return this.addEventListener('mousedown', this.handleMouseDown);
+      return this.on('mousedown', this.handleMouseDown);
     };
 
     Draggable.prototype.endDragListener = function() {
-      return this.removeEventListener('mousedown', this.handleMouseDown);
+      return this.off('mousedown', this.handleMouseDown);
     };
 
     Draggable.prototype.handleMouseDown = function(e) {
@@ -405,14 +405,16 @@
       };
       this.x = posX - offset.x;
       this.y = posY - offset.y;
-      this.addEventListener('pressmove', function(ev) {
+      this.on('pressmove', function(ev) {
         posX = ev.stageX / stageSize.r;
         posY = ev.stageY / stageSize.r;
         _this.x = posX - offset.x;
         _this.y = posY - offset.y;
         return false;
       });
-      this.addEventListener('pressup', function(ev) {
+      this.on('pressup', function(ev) {
+        _this.removeAllEventListeners('pressmove');
+        _this.removeAllEventListeners('pressup');
         _this.dispatchEvent('drop');
         return false;
       });
@@ -541,7 +543,11 @@
       };
       this.text = new createjs.Text(text, '32px Quicksand', '#333333');
       this.hit = new createjs.Shape();
-      this.hit.graphics.beginFill('#000').drawRect(-10, -10, this.text.getMeasuredWidth() + 20, this.text.getMeasuredHeight() + 20);
+      if (this.text.getMeasuredWidth() < 20) {
+        this.hit.graphics.beginFill('#000').drawRect(-10, -10, 40, this.text.getMeasuredHeight() + 20);
+      } else {
+        this.hit.graphics.beginFill('#000').drawRect(-10, -10, this.text.getMeasuredWidth() + 20, this.text.getMeasuredHeight() + 20);
+      }
       this.text.hitArea = this.hit;
       this.inPlace = false;
       this.addChild(this.text);
@@ -610,6 +616,8 @@
         return false;
       });
       this.addEventListener('pressup', function(ev) {
+        _this.removeAllEventListeners('pressmove');
+        _this.removeAllEventListeners('pressup');
         _this.dispatchEvent('drop');
         return false;
       });
@@ -795,14 +803,14 @@
       };
       this.x = posX - offset.x;
       this.y = posY - offset.y;
-      this.addEventListener('pressmove', function(ev) {
+      this.addEventListener('mousemove', function(ev) {
         posX = ev.stageX / stageSize.r;
         posY = ev.stageY / stageSize.r;
         _this.x = posX - offset.x;
         _this.y = posY - offset.y;
         return false;
       });
-      this.addEventListener('pressup', function(ev) {
+      this.addEventListener('mouseup', function(ev) {
         if (_this.drops.length > 0) {
           _this.evaluateDrop(e);
         } else {
@@ -1049,14 +1057,14 @@
       };
       this.x = posX - offset.x;
       this.y = posY - offset.y;
-      this.addEventListener('pressmove', function(ev) {
+      this.addEventListener('mousemove', function(ev) {
         posX = ev.stageX / stageSize.r;
         posY = ev.stageY / stageSize.r;
         _this.x = posX - offset.x;
         _this.y = posY - offset.y;
         return false;
       });
-      this.addEventListener('pressup', function(ev) {
+      this.addEventListener('mouseup', function(ev) {
         if (_this.drops.length > 0) {
           _this.evaluateDrop(e);
         } else {
@@ -1537,8 +1545,8 @@
       return this.stage.update();
     };
 
-    Oda.prototype.insertInstructions = function(name, text, x, y) {
-      var inst, triangle;
+    Oda.prototype.insertInstructions = function(name, text, x, y, ital) {
+      var frase, inst, it, label, npos, triangle, _i, _len;
       inst = new createjs.Container();
       inst.name = name;
       inst.x = x;
@@ -1546,8 +1554,23 @@
       triangle = new createjs.Shape();
       triangle.graphics.beginFill('#bcd748').moveTo(0, 0).lineTo(16, 10).lineTo(0, 20);
       triangle.y = 10;
-      text = this.createText('insttext', text, '32px Roboto', '#000', 28, 0);
-      inst.addChild(triangle, text);
+      console.log(text);
+      it = 0;
+      npos = 14;
+      for (_i = 0, _len = text.length; _i < _len; _i++) {
+        frase = text[_i];
+        if (frase === '#ital') {
+          label = new createjs.Text(ital[it], 'italic 32px Roboto', '#000');
+          it++;
+        } else {
+          label = new createjs.Text(frase, '32px Roboto', '#000');
+        }
+        label.x = npos;
+        inst.addChild(label);
+        console.log(label);
+        npos = npos + label.getMeasuredWidth() + 5;
+      }
+      inst.addChild(triangle);
       return this.addToMain(inst);
     };
 
