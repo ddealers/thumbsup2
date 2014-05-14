@@ -182,9 +182,10 @@ class U7A3 extends Oda
 	evaluateAnswer: (e) =>
 		@answer = e.target
 		@drop = e.drop
-
+		console.log 'evaluate'
 		if "dropArea#{@answer.name}" is @drop.name
 			if @answer.name is @texts[@index].l
+				
 				@library["f#{@answer.name}"].visible = on
 				@answer.visible = off
 				if @intento is 0

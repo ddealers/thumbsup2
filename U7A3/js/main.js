@@ -405,6 +405,7 @@
     U7A3.prototype.evaluateAnswer = function(e) {
       this.answer = e.target;
       this.drop = e.drop;
+      console.log('evaluate');
       if (("dropArea" + this.answer.name) === this.drop.name) {
         if (this.answer.name === this.texts[this.index].l) {
           this.library["f" + this.answer.name].visible = true;
