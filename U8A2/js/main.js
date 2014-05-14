@@ -71,12 +71,14 @@
             steps: [
               {
                 frase: 'In Brazil.',
-                pattern: ['#wc', 'do they ', '#wc', ' Reveillon?'],
-                targets: ['Where', 'celebrate']
+                pattern: ['#wc', 'do they ', '#wc', '#ital'],
+                targets: ['Where', 'celebrate'],
+                italics: [' Reveillon?']
               }, {
                 frase: 'On January 1st.',
-                pattern: ['#wc', 'do they', '#wc', 'Reveillon?'],
-                targets: ['When', 'celebrate']
+                pattern: ['#wc', 'do they', '#wc', '#ital'],
+                targets: ['When', 'celebrate'],
+                italics: [' Reveillon?']
               }, {
                 frase: 'White clothes.',
                 pattern: ['#wc', 'do they', '#wc', '?'],
@@ -131,7 +133,7 @@
                 targets: ['What', 'eat']
               }, {
                 frase: 'In September.',
-                pattern: ['#wc', 'do they', '#wc', '?'],
+                pattern: ['#wc', 'do they', '#wc', 'the Moon Festival', '?'],
                 targets: ['When', 'celebrate']
               }, {
                 frase: 'Family and friends.',
@@ -139,7 +141,7 @@
                 targets: ['Who', 'visit']
               }, {
                 frase: 'Lanterns.',
-                pattern: ['#wc', 'do they', '#wc', '?'],
+                pattern: ['#wc', 'do the children', '#wc', '?'],
                 targets: ['What', 'carry']
               }
             ],
@@ -197,12 +199,14 @@
                 targets: ['What', 'wear']
               }, {
                 frase: 'In India.',
-                pattern: ['#wc', 'do they', '#wc', ' Diwali?'],
-                targets: ['Where', 'celebrate']
+                pattern: ['#wc', 'do they', '#wc', '#ital'],
+                targets: ['Where', 'celebrate'],
+                italics: [' Diwali?']
               }, {
                 frase: 'In October or November.',
-                pattern: ['#wc', 'do they', '#wc', ' Diwali?'],
-                targets: ['When', 'celebrate']
+                pattern: ['#wc', 'do they', '#wc', '#ital'],
+                targets: ['When', 'celebrate'],
+                italics: [' Diwali?']
               }, {
                 frase: 'They watch fireworks and light candles for good luck.',
                 pattern: ['#wc', 'do they', '#wc', '?'],
@@ -274,7 +278,7 @@
     };
 
     U8A2.prototype.setDropper = function(step) {
-      var a, dropper, h, i, npos, q, t, txt, _i, _len, _ref;
+      var a, dropper, h, i, j, npos, q, t, txt, _i, _len, _ref;
       this.step = step;
       if (this.library.dropper) {
         dropper = this.library.dropper;
@@ -291,6 +295,7 @@
       q = this.createText('q', 'Q:', '48px Quicksand', '#333', 240, 0);
       dropper.addChild(q);
       i = 0;
+      j = 0;
       npos = q.x + q.getMeasuredWidth() + 20;
       _ref = this.scene.steps[step - 1].pattern;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -303,6 +308,12 @@
           this.addToLibrary(h);
           npos += h.width + 20;
           i++;
+        } else if (t === '#ital') {
+          txt = this.scene.steps[step - 1].italics[j];
+          h = this.createText('', txt, 'italic 48px Quicksand', '#333', npos, 0);
+          dropper.addChild(h);
+          npos += h.getMeasuredWidth() + 20;
+          j++;
         } else {
           h = this.createText('', t, '48px Quicksand', '#333', npos, 0);
           dropper.addChild(h);
