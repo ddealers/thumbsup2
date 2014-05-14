@@ -310,6 +310,7 @@
           if (this.library["cont" + i].children[1].name === answers[i]) {
             this.blink(this.library["cont" + i]);
             this.library.score.plusOne();
+            createjs.Sound.play('good');
           }
         }
       }
