@@ -152,7 +152,7 @@ class Oda
 	# ====================
 	# Helpers
 	# ====================
-	insertInstructions: (name, text, x, y) ->
+	insertInstructions: (name, text, x, y, ital) ->
 		inst = new createjs.Container()
 		inst.name = name
 		inst.x = x
@@ -160,8 +160,24 @@ class Oda
 		triangle = new createjs.Shape()
 		triangle.graphics.beginFill('#bcd748').moveTo(0,0).lineTo(16,10).lineTo(0,20)
 		triangle.y = 10
-		text = @createText 'insttext', text, '32px Roboto', '#000', 28, 0
-		inst.addChild triangle, text
+
+		console.log text
+
+		it = 0			
+		npos = 14
+
+		for frase in text
+			if frase is '#ital'
+				label = new createjs.Text ital[it], 'italic 32px Roboto', '#000'
+				it++
+			else 
+				label = new createjs.Text frase, '32px Roboto', '#000'
+			label.x = npos
+			inst.addChild label
+			console.log label
+			npos = npos + label.getMeasuredWidth() + 5
+
+		inst.addChild triangle
 		@addToMain inst
 	createBitmap: (name, id, x, y, position = 'tl') ->
 		img = @preload.getResult(id)

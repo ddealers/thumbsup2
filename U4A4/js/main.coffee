@@ -90,7 +90,7 @@ class U4A4 extends Oda
 		super
 		@answers = @shuffleNoRepeat @game.answers, 16
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Look at the pictures, read the sentences and click on True or False.', 80, 200
+		@insertInstructions 'instructions', ['Look at the pictures, read the sentences and click on ', '#ital',  ' or ', '#ital'], 80, 200, ['true','false']
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 16, 0
 		@setAnimals().setClick().introEvaluation()
 	setAnimals: ->
