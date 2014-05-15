@@ -71,7 +71,7 @@ class U8A5 extends Oda
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', 'Read and drag the sentences to complete the story.', 80, 200
 		@insertBitmap 'title', 'title1', 700, 250, 'tc'
-		@insertBitmap 'btnnext', 'btn', 1520, 1040, 'br'
+		@insertBitmap 'btnnext', 'btn', 1400, 1040, 'br'
 		@library['btnnext'].visible = off
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
 		@setCuento(1).introEvaluation()
