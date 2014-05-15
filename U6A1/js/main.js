@@ -266,73 +266,73 @@
         case 'p1':
           this.pieces = {
             p1p1: {
-              x: 310,
-              y: 163,
+              x: 304,
+              y: 162,
               text: 'A firefighter puts out fires.',
               label: 'true',
               back: true
             },
             p1p2: {
-              x: 495,
-              y: 160
+              x: 493,
+              y: 162
             },
             p1p3: {
-              x: 641,
-              y: 163,
+              x: 634,
+              y: 162,
               text: 'A nurse helps sick people.',
               label: 'true',
               back: true
             },
             p1p4: {
-              x: 823,
+              x: 828,
               y: 163
             },
             p1p5: {
-              x: 307,
-              y: 330,
+              x: 304,
+              y: 334,
               text: 'A mail carrier works at he post office.',
               label: 'true',
               back: true
             },
             p1p6: {
               x: 493,
-              y: 330,
+              y: 334,
               text: 'A bus driver works in an office.',
               label: 'false',
               back: true
             },
             p1p7: {
               x: 637,
-              y: 330,
+              y: 334,
               text: 'A waitress works at a grocery store.',
               label: 'false',
               back: true
             },
             p1p8: {
-              x: 814,
+              x: 815,
               y: 333,
               text: 'A salesclerk works at a bank.',
               label: 'false',
               back: true
             },
             p1p9: {
-              x: 305,
+              x: 303,
               y: 515
             },
             p1p10: {
               x: 458,
-              y: 513,
+              y: 516,
               text: 'A librarian sells books.',
               label: 'false',
               back: true
             },
             p1p11: {
-              x: 678,
-              y: 513
+              x: 676,
+              y: 515
             },
             p1p12: {
-              x: 810,
-              y: 511,
+              x: 815,
+              y: 516,
               text: 'A chef serves food.',
               label: 'false',
               back: true
@@ -344,73 +344,73 @@
         case 'p2':
           this.pieces = {
             p2p1: {
-              x: 300,
-              y: 160,
+              x: 308,
+              y: 166,
               text: 'A doctor works at a bank.',
               label: 'false',
               back: true
             },
             p2p2: {
-              x: 490,
-              y: 160
+              x: 497,
+              y: 166
             },
             p2p3: {
-              x: 636,
-              y: 160,
+              x: 641,
+              y: 166,
               text: 'A teacher works at a library.',
               label: 'false',
               back: true
             },
             p2p4: {
-              x: 828,
-              y: 160
+              x: 834,
+              y: 166
             },
             p2p5: {
-              x: 300,
-              y: 330,
+              x: 306,
+              y: 338,
               text: 'A mechanic fixes cars.',
               label: 'true',
               back: true
             },
             p2p6: {
-              x: 490,
-              y: 330,
+              x: 496,
+              y: 336,
               text: 'A police officer puts out fires.',
               label: 'false',
               back: true
             },
             p2p7: {
-              x: 632,
-              y: 330,
+              x: 638,
+              y: 337,
               text: 'A farmer fixes cars.',
               label: 'false',
               back: true
             },
             p2p8: {
-              x: 816,
-              y: 330,
+              x: 820,
+              y: 336,
               text: 'A waitress works at a restaurant.',
               label: 'true',
               back: true
             },
             p2p9: {
-              x: 300,
+              x: 309,
               y: 520
             },
             p2p10: {
-              x: 456,
+              x: 462,
               y: 520,
               text: 'A vet helps sick animals.',
               label: 'true',
               back: true
             },
             p2p11: {
-              x: 672,
-              y: 515
+              x: 678,
+              y: 519
             },
             p2p12: {
-              x: 816,
-              y: 520,
+              x: 820,
+              y: 519,
               text: 'A salesclerk works at a museum.',
               label: 'false',
               back: true

@@ -185,7 +185,7 @@
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
       this.insertInstructions('instructions', 'Read and drag the sentences to complete the story.', 80, 200);
       this.insertBitmap('title', 'title1', 700, 250, 'tc');
-      this.insertBitmap('btnnext', 'btn', 1520, 1040, 'br');
+      this.insertBitmap('btnnext', 'btn', 1480, 1040, 'br');
       this.library['btnnext'].visible = false;
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));
       return this.setCuento(1).introEvaluation();
