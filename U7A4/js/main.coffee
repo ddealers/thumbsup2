@@ -48,7 +48,8 @@ class U7A4 extends Oda
 		super
 		@escena = 1
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Read, look at the chart and click on True or False.', 80, 200
+		
+		@insertInstructions 'instructions',['Read, look at the chart and click on ', '#ital', ' or ', '#ital'], 80, 200, ['true','false.']
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 14, 0
 		@setScene(1).setClick().introEvaluation()
 	setScene: (scene) ->

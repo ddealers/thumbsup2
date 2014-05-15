@@ -24,8 +24,8 @@ class U8A2 extends Oda
 			scenes : [
 				{	
 					steps: [
-						{frase:'In Brazil.', pattern:['#wc','do they ','#wc',' Reveillon?'], targets: ['Where','celebrate']}
-						{frase:'On January 1st.', pattern:['#wc','do they','#wc','Reveillon?'], targets: ['When','celebrate']}
+						{frase:'In Brazil.', pattern:['#wc','do they ','#wc','#ital'], targets: ['Where','celebrate'], italics:[' Reveillon?']}
+						{frase:'On January 1st.', pattern:['#wc','do they','#wc','#ital'], targets: ['When','celebrate'], italics:[' Reveillon?']}
 						{frase:'White clothes.', pattern:['#wc','do they','#wc','?'], targets: ['What','wear']}
 						{frase:'They float boats with flowers and candles in the sea.', pattern:['#wc','do they','#wc','?'], targets: ['What','do']}
 					]	
@@ -43,9 +43,9 @@ class U8A2 extends Oda
 				{
 					steps: [
 						{frase:'Moon cakes and pomelos.', pattern:['#wc','do they','#wc','?'], targets: ['What','eat']}
-						{frase:'In September.', pattern:['#wc','do they','#wc','?'], targets: ['When','celebrate']}
+						{frase:'In September.', pattern:['#wc','do they','#wc','the Moon Festival','?'], targets: ['When','celebrate']}
 						{frase:'Family and friends.', pattern:['#wc','do they','#wc','?'], targets: ['Who','visit']}
-						{frase:'Lanterns.', pattern:['#wc','do they','#wc','?'], targets: ['What','carry']}	
+						{frase:'Lanterns.', pattern:['#wc','do the children','#wc','?'], targets: ['What','carry']}	
 					]
 					opt1:[
 						{i:1, t:'When', x:50, y:70}
@@ -63,8 +63,8 @@ class U8A2 extends Oda
 				{
 					steps: [
 						{frase:'Beautiful jewelry.', pattern:['#wc','do the women','#wc','?'], targets: ['What','wear']}
-						{frase:'In India.',  pattern:['#wc','do they','#wc',' Diwali?'], targets: ['Where','celebrate']}
-						{frase:'In October or November.', pattern:['#wc','do they','#wc',' Diwali?'], targets: ['When','celebrate']}
+						{frase:'In India.',  pattern:['#wc','do they','#wc','#ital'], targets: ['Where','celebrate'], italics:[' Diwali?']}
+						{frase:'In October or November.', pattern:['#wc','do they','#wc', '#ital'], targets: ['When','celebrate'], italics:[' Diwali?']}
 						{frase:'They watch fireworks and light candles for good luck.',  pattern:['#wc','do they','#wc','?'],targets: ['What','do']}	
 					]
 					opt1:[
@@ -110,6 +110,7 @@ class U8A2 extends Oda
 		dropper.addChild q
 
 		i = 0
+		j = 0
 		npos = q.x + q.getMeasuredWidth() + 20
 		for t in @scene.steps[step - 1].pattern
 			if t is '#wc'
@@ -120,6 +121,12 @@ class U8A2 extends Oda
 				@addToLibrary h
 				npos += h.width + 20
 				i++
+			else if t is '#ital'
+				txt = @scene.steps[step - 1].italics[j]
+				h = @createText '', txt,'italic 48px Quicksand','#333', npos, 0
+				dropper.addChild h
+				npos += h.getMeasuredWidth() + 20
+				j++
 			else
 				h = @createText '', t,'48px Quicksand','#333', npos, 0
 				dropper.addChild h

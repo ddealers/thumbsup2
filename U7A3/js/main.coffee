@@ -108,6 +108,7 @@ class U7A3 extends Oda
 
 		fondo = @createBitmap "#{es}bg", "#{es}bg", 48, 22
 		
+		@vuelta = 0
 		@texts = @positions["#{es}texts"]
 
 		@insertText 'label', @texts[@index].t,'48px Quicksand','#333', stageSize.w / 2, 280, 'center'
@@ -136,6 +137,10 @@ class U7A3 extends Oda
 
 			letra = new Droppable word.letra, (@preload.getResult word.letra), i, word.x - 20, word.y - 20, @stage, hits
 			letra.scaleX = letra.scaleY = 0.43
+			@observer.subscribe 'init_drag', letra.onInitEvaluation
+
+			@observer.subscribe 'stop_drag', letra.onStopEvaluation
+
 			letrafinal = @createBitmap "f#{@letras[i].letra}", @letras[i].letra, drop.x, drop.y - 14, 'bc'
 			if i is 6
 				letrafinal.set {x: 1075, y: 850}
@@ -182,17 +187,20 @@ class U7A3 extends Oda
 	evaluateAnswer: (e) =>
 		@answer = e.target
 		@drop = e.drop
-		console.log 'evaluate'
+		
+		
 		if "dropArea#{@answer.name}" is @drop.name
+			
 			if @answer.name is @texts[@index].l
-				
+
 				@library["f#{@answer.name}"].visible = on
 				@answer.visible = off
-				if @intento is 0
-					@library['score'].plusOne()
+				if @intento is 0 
+					if @vuelta is 0
+						@library['score'].plusOne()
 				@finishEvaluation()
 				@intento = 0
-
+				@vuelta++
 				createjs.Sound.play 'good'
 			else
 				@answer.returnToPlace 1, 0.43, 0.43
@@ -202,10 +210,12 @@ class U7A3 extends Oda
 			@answer.returnToPlace 1, 0.43, 0.43
 			@intento = 1
 			@warning()
+
 	finishEvaluation: =>
 		TweenLite.to @library.label, 0.5, {alpha: 0, y: @library.label.y + 20, ease: Quart.easeOut, onComplete:@nextEvaluation}
 	nextEvaluation: =>
 		@index++
+		@vuelta = 0
 		if @index < @texts.length
 			@library.label.text = @texts[@index].t
 			TweenLite.to @library.label, 0.5, {alpha: 1, y: @library.label.y - 20, ease: Quart.easeOut}

@@ -67,19 +67,27 @@
           {
             x: 260,
             y: 260,
-            values: ['Eric Schmidt', 'Germany', 'blue', 'brown', '1m 10cm']
+            values: ['Eric Schmidt', 'Germany', 'blue', 'brown', '1m 10cm'],
+            cx: 6,
+            cy: -3
           }, {
             x: 860,
             y: 270,
-            values: ['Melanie Murphy', 'Ireland', 'green', 'red', '1m 7cm']
+            values: ['Melanie Murphy', 'Ireland', 'green', 'red', '1m 7cm'],
+            cx: 8,
+            cy: 0
           }, {
             x: 260,
             y: 608,
-            values: ['Cassandra Wang', 'China', 'dark brown', 'black', '1m 15cm']
+            values: ['Cassandra Wang', 'China', 'dark brown', 'black', '1m 15cm'],
+            cx: -4,
+            cy: 0
           }, {
             x: 868,
             y: 608,
-            values: ['Saul Peterson', 'Canada', 'light brown', 'blonde', '1m 14cm']
+            values: ['Saul Peterson', 'Canada', 'light brown', 'blonde', '1m 14cm'],
+            cx: 6,
+            cy: -10
           }
         ],
         steps: [
@@ -103,16 +111,16 @@
             y: 44
           }, {
             x: 164,
-            y: 100
+            y: 99
           }, {
             x: 178,
-            y: 156
+            y: 154
           }, {
             x: 190,
-            y: 212
+            y: 209
           }, {
             x: 146,
-            y: 255
+            y: 264
           }
         ]
       };
@@ -143,7 +151,7 @@
         p.addChild(f);
         this.addToMain(p);
         for (j = _j = 0, _ref1 = passport.values.length - 1; _j <= _ref1; j = _j += 1) {
-          n = new DroppableText("p" + i + "v" + j, passport.values[j], passport.values[j], this.game.positions[j].x, this.game.positions[j].y, this.stage);
+          n = new DroppableText("p" + i + "v" + j, passport.values[j], passport.values[j], this.game.positions[j].x + passport.cx, this.game.positions[j].y + passport.cy, this.stage);
           this.addToLibrary(n);
           p.addChild(n);
         }
