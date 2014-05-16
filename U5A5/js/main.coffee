@@ -79,13 +79,20 @@ class U5A5 extends Oda
 		cuento = new createjs.Container()
 		cuento.name = 'cuento'
 		@scene = scene
-		for i in [1..@game[scene - 1].positions.length] by 1
-			m = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, @game[scene - 1].positions[i - 1].x, @game[scene - 1].positions[i - 1].y
-			m.index = (scene - 1) * 4 + i
-			m.scaleX = m.scaleY = 1.2
-			cuento.addChild m
-			@addToLibrary m
-		for i in [1..@game[scene - 1].texts.length] by 1
+		scn = @game[scene - 1]
+		for i in [1..scn.positions.length] by 1
+			sp = @createSprite "sp#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, 0, 0
+			sp.mouseEnabled = false
+			sp.scaleX = sp.scaleY = 1.2
+			s = new createjs.Shape()
+			s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width + 40, sp.getBounds().height + 40)
+			sc = new createjs.Container()
+			sc.set {name: "sc#{i}", index: (scene - 1) * 4 + i, x: scn.positions[i - 1].x, y: scn.positions[i - 1].y, sprite: sp, shape: s}
+			sc.addChild sp, s
+			cuento.addChild sc
+			@addToLibrary sc
+
+		for i in [1..scn.texts.length] by 1
 			t = new DraggableText "t#{i}", @game[scene - 1].texts[i-1].t, @game[scene - 1].texts[i-1].idx, 1400, i * 120 + 400
 			t.text.lineHeight = 40
 			t.text.lineWidth = 450
@@ -93,6 +100,7 @@ class U5A5 extends Oda
 			t.setHitArea()
 			@addToLibrary t
 			cuento.addChild t
+		
 		@addToMain cuento
 		@
 	setCuentoFinal: (scene) ->
@@ -102,7 +110,7 @@ class U5A5 extends Oda
 		scn = @game[scene - 1]
 		for i in [1..scn.positions.length] by 1
 			m = @createBitmap "#{(scene - 1) * 4 + i}b", "#{(scene - 1) * 4 + i}b", scn.positions[i - 1].x, scn.positions[i - 1].y
-			m.scaleX = m.scaleY = 1.2
+			#m.scaleX = m.scaleY = 0.73
 			cuento.addChild m
 			@addToLibrary m
 
@@ -118,24 +126,28 @@ class U5A5 extends Oda
 	initEvaluation: (e) =>
 		super
 		for i in [1..@game[@scene - 1].texts.length] by 1
-			@library["t#{i}"].addEventListener 'click', @evaluateAnswer
+			@library["t#{i}"].addEventListener 'drop', @evaluateAnswer
 	evaluateAnswer: (e) =>
 		@answer = e.currentTarget
 		dropped = off
 		for i in [1..@game[@scene - 1].positions.length] by 1
-			pt = @library["sc#{i}"].globalToLocal @stage.mouseX, @stage.mouseY
-			if @library["sc#{i}"].hitTest pt.x, pt.y
+			pt = @library["sc#{i}"].shape.globalToLocal @stage.mouseX, @stage.mouseY
+			if @library["sc#{i}"].shape.hitTest pt.x, pt.y
 				if not @isArray @answer.index 
 					if @answer.index is @library["sc#{i}"].index
-						@library["sc#{i}"].gotoAndStop 1
-						@answer.visible = off
+						@library["sc#{i}"].sprite.gotoAndStop 1
+						@answer.returnToOrigin()
+						#@answer.visible = off
 						createjs.Sound.play 'good'
 						if not @library["sc#{i}"].failed
+							#if @intento is 0
 							@library['score'].plusOne()
+							#@intento = 0
 						@finishEvaluation()
 					else
 						@library["sc#{i}"].failed = on
 						@warning()
+						#@intento = 1
 						@answer.returnToPlace()
 				else
 					hit = false
@@ -143,26 +155,31 @@ class U5A5 extends Oda
 						if ans is @library["sc#{i}"].index
 							hit = true	
 					if hit
-						@library["sc#{i}"].gotoAndStop 1
-						@answer.visible = off
+						@library["sc#{i}"].sprite.gotoAndStop 1
+						@answer.returnToOrigin()
+						#@answer.visible = off
 						createjs.Sound.play 'good'
 						if not @library["sc#{i}"].failed
+							#if @intento is 0
 							@library['score'].plusOne()
+							#@intento = 0
+
 						@finishEvaluation()
 					else
 						@library["sc#{i}"].failed = on
 						@warning()
+						@intento = 1
 						@answer.returnToPlace()
 			else
 				@answer.returnToPlace()
 	finishEvaluation: =>
 		for i in [1..@game[@scene - 1].positions.length] by 1
-			if @library["sc#{i}"].currentFrame is 0
+			if @library["sc#{i}"].sprite.currentFrame is 0
 				return
 		if @scene < 2
 			@library['btnnext'].visible = on
 			@library['btnnext'].alpha = 1
-			@library['btnnext'].y = 1030
+			@library['btnnext'].y = 1120
 			TweenLite.from @library['btnnext'], 1, {alpha:0, y:@library['btnnext'].y + 20}
 			@library['btnnext'].addEventListener 'click', @nextEvaluation
 		else
