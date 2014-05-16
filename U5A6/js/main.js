@@ -384,7 +384,7 @@
     };
 
     U5A6.prototype.setCards = function(e) {
-      var b, c, game, h, i, j, juego, _i, _j;
+      var b, c, carta, game, h, i, j, juego, shape, _i, _j;
       this.time = 100;
       this.timer = setInterval(this.updateCounter, 1000);
       j = 0;
@@ -398,13 +398,17 @@
       this.cards = this.shuffle(this.game[game - 1]);
       for (h = _i = 0; _i <= 3; h = ++_i) {
         for (i = _j = 0; _j <= 3; i = ++_j) {
-          c = this.createBitmap("carta" + game, "carta" + game, i * 260, h * 220, 'mc');
           b = this.createBitmap("cartab" + game, this.cards[j].id, i * 260, h * 220, 'mc');
           b.scaleX = b.scaleY = 0.8;
-          c.index = this.cards[j].i;
-          c.addEventListener('click', this.evaluateAnswer);
-          juego.addChild(b, c);
-          this.addToLibrary(b, c);
+          carta = new createjs.Container();
+          c = this.createBitmap("carta" + game, "carta" + game, i * 260, h * 220, 'mc');
+          shape = new createjs.Shape();
+          shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(c.x - (c.getBounds().width) / 2, c.y - (c.getBounds().height) / 2, c.getBounds().width, c.getBounds().height);
+          carta.index = this.cards[j].i;
+          shape.addEventListener('click', this.evaluateAnswer);
+          carta.addChild(c, shape);
+          juego.addChild(b, carta);
+          this.addToLibrary(b, c, shape);
           j++;
         }
       }
@@ -466,8 +470,8 @@
     U5A6.prototype.evaluateAnswer = function(e) {
       this.clicked = 1;
       if (this.selected.length < 2) {
-        this.selected.push(e.target);
-        TweenLite.to(e.target, 0.5, {
+        this.selected.push(e.target.parent);
+        TweenLite.to(e.target.parent, 0.5, {
           alpha: 0
         });
       }

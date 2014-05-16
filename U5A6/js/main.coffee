@@ -154,13 +154,20 @@ class U5A6 extends Oda
 		@cards = @shuffle @game[game - 1]
 		for h in [0..3]
 			for i in [0..3]
-				c = @createBitmap "carta#{game}", "carta#{game}", i * 260, h * 220, 'mc'
 				b = @createBitmap "cartab#{game}", @cards[j].id, i * 260, h * 220, 'mc'
 				b.scaleX = b.scaleY = 0.8
-				c.index = @cards[j].i
-				c.addEventListener 'click', @evaluateAnswer
-				juego.addChild b, c
-				@addToLibrary b, c
+
+				carta = new createjs.Container()
+				c = @createBitmap "carta#{game}", "carta#{game}", i * 260, h * 220, 'mc'
+
+				shape = new createjs.Shape()
+				shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(c.x - (c.getBounds().width) / 2, c.y - (c.getBounds().height) / 2, c.getBounds().width, c.getBounds().height)
+				carta.index = @cards[j].i
+				shape.addEventListener 'click', @evaluateAnswer
+				carta.addChild c, shape
+
+				juego.addChild b, carta
+				@addToLibrary b, c, shape
 				j++
 		@addToMain juego
 		TweenLite.from juego, 0.5, {alpha:0, y:juego.y - 40}
@@ -193,8 +200,8 @@ class U5A6 extends Oda
 	evaluateAnswer: (e) =>
 		@clicked = 1
 		if @selected.length < 2
-			@selected.push e.target
-			TweenLite.to e.target, 0.5, {alpha:0}
+			@selected.push e.target.parent
+			TweenLite.to e.target.parent, 0.5, {alpha:0}
 		if @selected.length is 2
 			setTimeout @finishEvaluation, 1 * 1000
 	finishEvaluation: =>
