@@ -222,15 +222,15 @@
     }
 
     U3A5.prototype.setStage = function() {
-      var ti;
+      var btnnext, ti;
       U3A5.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
       this.insertInstructions('instructions', ['Read and drag the words to complete the story.'], 80, 200);
       ti = this.createBitmap('title', 'title1', 700, 230, 'tc');
       ti.scaleX = ti.scaleY = 0.8;
       this.addToMain(ti);
-      console.log(stageSize.w / 2);
-      this.insertBitmap('btnnext', 'btn', 1520, 1040, 'tr');
+      btnnext = new Button('btnnext', this.preload.getResult('btn'), 0, 1220, 1040);
+      this.addToMain(btnnext);
       this.library['btnnext'].visible = false;
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 12, 0));
       this.intento = 0;
@@ -238,29 +238,81 @@
     };
 
     U3A5.prototype.setCuento = function(scene) {
-      var cuento, i, m, t, _i, _j, _ref, _ref1;
+      var cuento, i, s, sc, sp, t, _i, _j, _ref, _ref1;
       cuento = new createjs.Container();
       cuento.name = 'cuento';
       this.scene = scene;
       for (i = _i = 1, _ref = this.game[scene - 1].positions.length; _i <= _ref; i = _i += 1) {
         if (scene === 1) {
           if (i === 1 || i === 4) {
-            m = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "p1", "" + ((scene - 1) * 4 + i) + "p2", "" + ((scene - 1) * 4 + i) + "b"], null, this.game[scene - 1].positions[i - 1].x, this.game[scene - 1].positions[i - 1].y);
+            sp = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "p1", "" + ((scene - 1) * 4 + i) + "p2", "" + ((scene - 1) * 4 + i) + "b"], null, 0, 0);
+            sp.mouseEnabled = false;
+            s = new createjs.Shape();
+            s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height);
+            sc = new createjs.Container();
+            sc.set({
+              name: "sc" + i,
+              index: (scene - 1) * 4 + i,
+              x: this.game[scene - 1].positions[i - 1].x,
+              y: this.game[scene - 1].positions[i - 1].y,
+              sprite: sp,
+              shape: s
+            });
+            sc.addChild(sp, s);
           } else {
-            m = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, this.game[scene - 1].positions[i - 1].x, this.game[scene - 1].positions[i - 1].y);
+            sp = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, 0, 0);
+            sp.mouseEnabled = false;
+            s = new createjs.Shape();
+            s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height);
+            sc = new createjs.Container();
+            sc.set({
+              name: "sc" + i,
+              index: (scene - 1) * 4 + i,
+              x: this.game[scene - 1].positions[i - 1].x,
+              y: this.game[scene - 1].positions[i - 1].y,
+              sprite: sp,
+              shape: s
+            });
+            sc.addChild(sp, s);
           }
         }
         if (scene === 2) {
           if (i === 1 || i === 2) {
-            m = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "p1", "" + ((scene - 1) * 4 + i) + "p2", "" + ((scene - 1) * 4 + i) + "b"], null, this.game[scene - 1].positions[i - 1].x, this.game[scene - 1].positions[i - 1].y);
+            sp = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "p1", "" + ((scene - 1) * 4 + i) + "p2", "" + ((scene - 1) * 4 + i) + "b"], null, 0, 0);
+            sp.mouseEnabled = false;
+            s = new createjs.Shape();
+            s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height);
+            sc = new createjs.Container();
+            sc.set({
+              name: "sc" + i,
+              index: (scene - 1) * 4 + i,
+              x: this.game[scene - 1].positions[i - 1].x,
+              y: this.game[scene - 1].positions[i - 1].y,
+              sprite: sp,
+              shape: s
+            });
+            sc.addChild(sp, s);
           } else {
-            m = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, this.game[scene - 1].positions[i - 1].x, this.game[scene - 1].positions[i - 1].y);
+            sp = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, 0, 0);
+            sp.mouseEnabled = false;
+            s = new createjs.Shape();
+            s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height);
+            sc = new createjs.Container();
+            sc.set({
+              name: "sc" + i,
+              index: (scene - 1) * 4 + i,
+              x: this.game[scene - 1].positions[i - 1].x,
+              y: this.game[scene - 1].positions[i - 1].y,
+              sprite: sp,
+              shape: s
+            });
+            sc.addChild(sp, s);
           }
         }
-        m.scaleX = m.scaleY = 1.1;
-        m.index = (scene - 1) * 4 + i;
-        cuento.addChild(m);
-        this.addToLibrary(m);
+        sc.scaleX = sc.scaleY = 1.1;
+        sc.index = (scene - 1) * 4 + i;
+        cuento.addChild(sc);
+        this.addToLibrary(sc);
       }
       for (i = _j = 1, _ref1 = this.game[scene - 1].texts.length; _j <= _ref1; i = _j += 1) {
         t = new DraggableText("t" + i, this.game[scene - 1].texts[i - 1].t, this.game[scene - 1].texts[i - 1].idx, 1400, i * 120 + 320);
@@ -337,19 +389,19 @@
       dropped = false;
       _results = [];
       for (i = _i = 1, _ref = this.game[this.scene - 1].positions.length; _i <= _ref; i = _i += 1) {
-        pt = this.library["sc" + i].globalToLocal(this.stage.mouseX, this.stage.mouseY);
-        if (this.library["sc" + i].hitTest(pt.x, pt.y)) {
+        pt = this.library["sc" + i].shape.globalToLocal(this.stage.mouseX, this.stage.mouseY);
+        if (this.library["sc" + i].shape.hitTest(pt.x, pt.y)) {
           if (this.answer.index === this.library["sc" + i].index) {
             if (this.answer.p) {
-              if ((_ref1 = this.library["sc" + i].currentFrame) === 1 || _ref1 === 2) {
-                this.library["sc" + i].gotoAndStop(3);
+              if ((_ref1 = this.library["sc" + i].sprite.currentFrame) === 1 || _ref1 === 2) {
+                this.library["sc" + i].sprite.gotoAndStop(3);
               } else if (this.answer.p === 'p1') {
-                this.library["sc" + i].gotoAndStop(1);
+                this.library["sc" + i].sprite.gotoAndStop(1);
               } else {
-                this.library["sc" + i].gotoAndStop(2);
+                this.library["sc" + i].sprite.gotoAndStop(2);
               }
             } else {
-              this.library["sc" + i].gotoAndStop(1);
+              this.library["sc" + i].sprite.gotoAndStop(1);
             }
             if (this.intento === 0) {
               this.library['score'].plusOne();
@@ -373,7 +425,7 @@
     U3A5.prototype.finishEvaluation = function() {
       var i, _i, _ref;
       for (i = _i = 1, _ref = this.game[this.scene - 1].positions.length; _i <= _ref; i = _i += 1) {
-        if (this.library["sc" + i].currentFrame !== this.library["sc" + i].spriteSheet._frames.length - 1) {
+        if (this.library["sc" + i].sprite.currentFrame !== this.library["sc" + i].sprite.spriteSheet._frames.length - 1) {
           return;
         }
       }
