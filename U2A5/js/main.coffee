@@ -85,9 +85,10 @@ class U2A5 extends Oda
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', ['Read and drag the words to complete the story.'], 80, 200
 		ti = @createBitmap 'title', 'title1', 700, 230, 'tc'
-		ti.scaleX = ti.scaleY = 0.72
+		ti.set {scaleX: 0.72, scaleY: 0.72}
 		@addToMain ti
-		@insertBitmap 'btnnext', 'btn', 1520, 1178, 'tr'
+		btnnext = new Button 'btnnext', (@preload.getResult 'btn'), 0, 1220, 1178
+		@addToMain btnnext
 		@library['btnnext'].visible = off
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 12, 0
 		@intento = 0
@@ -100,18 +101,42 @@ class U2A5 extends Oda
 		for i in [1..@game[scene - 1].positions.length] by 1
 			if scene is 1
 				if i in [2, 4]
-					m = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}p1", "#{(scene - 1) * 4 + i}p2", "#{(scene - 1) * 4 + i}b"],null, @game[scene - 1].positions[i - 1].x, @game[scene - 1].positions[i - 1].y
+					sp = @createSprite "sp#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}p1", "#{(scene - 1) * 4 + i}p2", "#{(scene - 1) * 4 + i}b"],null, 0, 0
+					sp.mouseEnabled = false
+					s = new createjs.Shape()
+					s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height)
+					sc = new createjs.Container()
+					sc.set {name: "sc#{i}", index: (scene - 1) * 4 + i, x: @game[scene - 1].positions[i - 1].x, y: @game[scene - 1].positions[i - 1].y, sprite: sp, shape: s}
+					sc.addChild sp, s
 				else
-					m = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, @game[scene - 1].positions[i - 1].x, @game[scene - 1].positions[i - 1].y
+					sp = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, 0, 0
+					sp.mouseEnabled = false
+					s = new createjs.Shape()
+					s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height)
+					sc = new createjs.Container()
+					sc.set {name: "sc#{i}", index: (scene - 1) * 4 + i, x: @game[scene - 1].positions[i - 1].x, y: @game[scene - 1].positions[i - 1].y, sprite: sp, shape: s}
+					sc.addChild sp, s
 			if scene is 2
 				if i in [1, 4]
-					m = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}p1", "#{(scene - 1) * 4 + i}p2", "#{(scene - 1) * 4 + i}b"],null, @game[scene - 1].positions[i - 1].x, @game[scene - 1].positions[i - 1].y
+					sp = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}p1", "#{(scene - 1) * 4 + i}p2", "#{(scene - 1) * 4 + i}b"],null, 0, 0
+					sp.mouseEnabled = false
+					s = new createjs.Shape()
+					s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height)
+					sc = new createjs.Container()
+					sc.set {name: "sc#{i}", index: (scene - 1) * 4 + i, x: @game[scene - 1].positions[i - 1].x, y: @game[scene - 1].positions[i - 1].y, sprite: sp, shape: s}
+					sc.addChild sp, s
 				else
-					m = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, @game[scene - 1].positions[i - 1].x, @game[scene - 1].positions[i - 1].y
-			m.scaleX = m.scaleY = 1.1
-			m.index = (scene - 1) * 4 + i
-			cuento.addChild m
-			@addToLibrary m
+					sp = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, 0, 0
+					sp.mouseEnabled = false
+					s = new createjs.Shape()
+					s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height)
+					sc = new createjs.Container()
+					sc.set {name: "sc#{i}", index: (scene - 1) * 4 + i, x: @game[scene - 1].positions[i - 1].x, y: @game[scene - 1].positions[i - 1].y, sprite: sp, shape: s}
+					sc.addChild sp, s
+			sc.scaleX = sc.scaleY = 1.1
+			sc.index = (scene - 1) * 4 + i
+			cuento.addChild sc
+			@addToLibrary sc
 		for i in [1..@game[scene - 1].texts.length] by 1
 			t = new DraggableText "t#{i}", @game[scene - 1].texts[i-1].t, @game[scene - 1].texts[i-1].idx, 1400, i * 120 + 320
 			t.text.lineHeight = 40
@@ -152,18 +177,18 @@ class U2A5 extends Oda
 		@answer = e.currentTarget
 		dropped = off
 		for i in [1..@game[@scene - 1].positions.length] by 1
-			pt = @library["sc#{i}"].globalToLocal @stage.mouseX, @stage.mouseY
-			if @library["sc#{i}"].hitTest pt.x, pt.y
+			pt = @library["sc#{i}"].shape.globalToLocal @stage.mouseX, @stage.mouseY
+			if @library["sc#{i}"].shape.hitTest pt.x, pt.y
 				if @answer.index is @library["sc#{i}"].index
 					if @answer.p
-						if @library["sc#{i}"].currentFrame in [1,2]
-							@library["sc#{i}"].gotoAndStop 3
+						if @library["sc#{i}"].sprite.currentFrame in [1,2]
+							@library["sc#{i}"].sprite.gotoAndStop 3
 						else if @answer.p is 'p1'
-							@library["sc#{i}"].gotoAndStop 1
+							@library["sc#{i}"].sprite.gotoAndStop 1
 						else
-							@library["sc#{i}"].gotoAndStop 2
+							@library["sc#{i}"].sprite.gotoAndStop 2
 					else
-						@library["sc#{i}"].gotoAndStop 1
+						@library["sc#{i}"].sprite.gotoAndStop 1
 					@answer.visible = off
 					if @intento is 0
 						@library['score'].plusOne()
@@ -178,7 +203,7 @@ class U2A5 extends Oda
 				@answer.returnToPlace()
 	finishEvaluation: =>
 		for i in [1..@game[@scene - 1].positions.length] by 1
-			if @library["sc#{i}"].currentFrame isnt @library["sc#{i}"].spriteSheet._frames.length - 1
+			if @library["sc#{i}"].sprite.currentFrame isnt @library["sc#{i}"].sprite.spriteSheet._frames.length - 1
 				return
 		if @scene < 2
 			@library['btnnext'].visible = on
