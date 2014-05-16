@@ -237,6 +237,7 @@
       scn = this.game[scene - 1];
       for (i = _i = 1, _ref = scn.positions.length; _i <= _ref; i = _i += 1) {
         m = this.createBitmap("" + ((scene - 1) * 4 + i) + "b", "" + ((scene - 1) * 4 + i) + "b", scn.positions[i - 1].x, scn.positions[i - 1].y);
+        m.scaleX = m.scaleY = 1.2;
         cuento.addChild(m);
         this.addToLibrary(m);
       }
