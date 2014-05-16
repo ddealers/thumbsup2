@@ -211,29 +211,42 @@
     }
 
     U1A5.prototype.setStage = function() {
-      var ti;
+      var btnnext, ti;
       U1A5.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Read and drag the names to complete the story.', 80, 200);
+      this.insertInstructions('instructions', ['Read and drag the names to complete the story.'], 80, 200);
       ti = this.createBitmap('title', 'title1', 700, 270, 'tc');
       this.addToMain(ti);
-      this.insertBitmap('btnnext', 'btn', 1520, 1178, 'tr');
+      btnnext = new Button('btnnext', this.preload.getResult('btn'), 0, 1520, 1178);
+      this.addToMain(btnnext);
       this.library['btnnext'].visible = false;
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));
       return this.setCuento(1).introEvaluation();
     };
 
     U1A5.prototype.setCuento = function(scene) {
-      var cuento, f, i, m, scn, t, y, _i, _j, _ref, _ref1;
+      var cuento, f, i, s, sc, scn, sp, t, y, _i, _j, _ref, _ref1;
       cuento = new createjs.Container();
       cuento.name = 'cuento';
       this.scene = scene;
       scn = this.game[scene - 1];
       for (i = _i = 1, _ref = scn.positions.length; _i <= _ref; i = _i += 1) {
-        m = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, scn.positions[i - 1].x, scn.positions[i - 1].y);
-        m.index = (scene - 1) * 4 + i;
-        cuento.addChild(m);
-        this.addToLibrary(m);
+        sp = this.createSprite("sp" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, 0, 0);
+        sp.mouseEnabled = false;
+        s = new createjs.Shape();
+        s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height);
+        sc = new createjs.Container();
+        sc.set({
+          name: "sc" + i,
+          index: (scene - 1) * 4 + i,
+          x: scn.positions[i - 1].x,
+          y: scn.positions[i - 1].y,
+          sprite: sp,
+          shape: s
+        });
+        sc.addChild(sp, s);
+        cuento.addChild(sc);
+        this.addToLibrary(sc);
       }
       for (i = _j = 1, _ref1 = scn.texts.length; _j <= _ref1; i = _j += 1) {
         y = scene === 1 ? 200 : 300;
@@ -299,7 +312,7 @@
       U1A5.__super__.initEvaluation.apply(this, arguments);
       _results = [];
       for (i = _i = 1, _ref = this.game[this.scene - 1].texts.length; _i <= _ref; i = _i += 1) {
-        _results.push(this.library["t" + i].addEventListener('click', this.evaluateAnswer));
+        _results.push(this.library["t" + i].addEventListener('drop', this.evaluateAnswer));
       }
       return _results;
     };
@@ -310,11 +323,11 @@
       dropped = false;
       _results = [];
       for (i = _i = 1, _ref = this.game[this.scene - 1].positions.length; _i <= _ref; i = _i += 1) {
-        pt = this.library["sc" + i].globalToLocal(this.stage.mouseX, this.stage.mouseY);
-        if (this.library["sc" + i].hitTest(pt.x, pt.y)) {
+        pt = this.library["sc" + i].shape.globalToLocal(this.stage.mouseX, this.stage.mouseY);
+        if (this.library["sc" + i].shape.hitTest(pt.x, pt.y)) {
           if (!this.isArray(this.answer.index)) {
             if (this.answer.index === this.library["sc" + i].index) {
-              this.library["sc" + i].gotoAndStop(1);
+              this.library["sc" + i].sprite.gotoAndStop(1);
               this.answer.returnToOrigin();
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
@@ -336,7 +349,7 @@
               }
             }
             if (hit) {
-              this.library["sc" + i].gotoAndStop(1);
+              this.library["sc" + i].sprite.gotoAndStop(1);
               this.answer.returnToOrigin();
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
@@ -360,7 +373,7 @@
     U1A5.prototype.finishEvaluation = function() {
       var i, _i, _ref;
       for (i = _i = 1, _ref = this.game[this.scene - 1].positions.length; _i <= _ref; i = _i += 1) {
-        if (this.library["sc" + i].currentFrame === 0) {
+        if (this.library["sc" + i].sprite.currentFrame === 0) {
           return;
         }
       }

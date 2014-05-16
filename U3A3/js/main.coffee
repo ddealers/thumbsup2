@@ -106,11 +106,11 @@ class U3A3 extends Oda
 				{id:'saladStart5Final2'}
 			]
 			texts:[
-				{t:'Wash the fruit.', x: 330, y: 974}
-				{t:'Wash your hands.', x: 588, y: 912}
-				{t:'  Mix the fruit.  ', x: 860, y: 974}
-				{t:'  Serve and eat!  ', x: 1106, y: 912}
-				{t:'  Cut the fruit.  ', x: 1392, y: 974}
+				{t:'   Wash the fruit.   ', x: 330, y: 974}
+				{t:'   Wash your hands.   ', x: 588, y: 912}
+				{t:'   Mix the fruit.   ', x: 860, y: 974}
+				{t:'   Serve and eat!   ', x: 1106, y: 912}
+				{t:'   Cut the fruit.   ', x: 1392, y: 974}
 			]
 		@sandwich =
 			drags:[
@@ -175,14 +175,17 @@ class U3A3 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Drag the pictures and instructions in the correct order and click on the Ready to Eat! button.', 80, 200		
+		@insertInstructions 'instructions', ['Drag the pictures and instructions in the correct order and click on the Ready to Eat! button.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 10, 0
 		@setStart()
 	setStart:  ->
 		@insertBitmap 'propsalad', 'propsalad', 824, 722, 'tc'
-		@insertBitmap 'btnsalad', 'btnsalad', 824, 900, 'tc'
+		btnsalad = new Button 'btnsalad', (@preload.getResult 'btnsalad'), 0, 824, 900, 'tc'
+		@setReg btnsalad, btnsalad.width / 2, 0
 		@insertBitmap 'propsandwich', 'propsandwich', 824, 298, 'tc'
-		@insertBitmap 'btnsandwich', 'btnsandwich', 824, 488, 'tc'
+		btnsandwich = new Button 'btnsandwich', (@preload.getResult 'btnsandwich'), 0, 824, 488, 'tc'
+		@setReg btnsandwich, btnsandwich.width / 2, 0
+		@addToMain btnsalad, btnsandwich
 		@library['btnsalad'].addEventListener 'click', @setSalad
 		@library['btnsandwich'].addEventListener 'click', @setSandwich
 		@
@@ -201,12 +204,23 @@ class U3A3 extends Oda
 		@current = sandwich.name = 'sandwich'
 
 		for i in [1..5] by 1
-			s = @createBitmap 'sandwichstep'+i, 'sandwichstep', @positions.steps[i-1].x, @positions.steps[i-1].y
-			n = @createBitmap 'sandwichnumber'+i, 'sandwichnumber'+i, s.x + 112, s.y + 86, 'mc'
-			l = @createBitmap 'sandwichline'+i, 'sandwichline', s.x - 20, s.y + 180
-			s.scaleX = s.scaleY = 0.46
-			@addToLibrary s, l
-			sandwich.addChild s, n, l
+			sac = new createjs.Container()
+			sas = new createjs.Shape()
+			sast = @createBitmap "sandwichstep#{i}", 'sandwichstep', 0, 0 
+			sasn = @createBitmap "sandwichnumber#{i}", "sandwichnumber#{i}", 66, 13
+			sast.set {scaleX: 0.46, scaleY: 0.46}
+			sas.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sast.getBounds().width * 0.46, sast.getBounds().height * 0.46)
+			sac.set {name: "sandwichstep#{i}", x: @positions.steps[i-1].x, y: @positions.steps[i-1].y, shape: sas}
+			sac.addChild sast, sasn, sas
+			
+			sacl = new createjs.Container()
+			sasl = new createjs.Shape()
+			sasll = @createBitmap "sandwichline#{i}", 'sandwichline', 0, 0
+			sasl.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sasll.getBounds().width, sasll.getBounds().height)
+			sacl.set {name: "sandwichline#{i}", x: sac.x - 20, y: sac.y + 180, shape: sasl}
+			sacl.addChild sasll, sasl
+			@addToLibrary sac, sacl
+			sandwich.addChild sac, sacl
 
 		label = @createBitmap 'label', 'sandwichlabel', @positions.titulo.x, @positions.titulo.y, 'tc'
 		ready = new Button 'btnready', (@preload.getResult 'sandwichbtnready'), 'ready', @positions.ready.x, @positions.ready.y
@@ -247,12 +261,23 @@ class U3A3 extends Oda
 		@current = salad.name = 'salad'
 
 		for i in [1..5] by 1
-			s = @createBitmap 'saladstep'+i, 'saladstep', @positions.steps[i-1].x, @positions.steps[i-1].y
-			n = @createBitmap 'saladnumber'+i, 'saladnumber'+i, s.x + 112, s.y + 86, 'mc'
-			l = @createBitmap 'saladline'+i, 'saladline', s.x - 20, s.y + 180
-			s.scaleX = s.scaleY = 0.46
-			@addToLibrary s, l
-			salad.addChild s, n, l
+			sac = new createjs.Container()
+			sas = new createjs.Shape()
+			sast = @createBitmap "saladhstep#{i}", 'saladstep', 0, 0 
+			sasn = @createBitmap "saladnumber#{i}", "saladnumber#{i}", 66, 13
+			sast.set {scaleX: 0.46, scaleY: 0.46}
+			sas.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sast.getBounds().width * 0.46, sast.getBounds().height * 0.46)
+			sac.set {name: "saladstep#{i}", x: @positions.steps[i-1].x, y: @positions.steps[i-1].y, shape: sas}
+			sac.addChild sast, sasn, sas
+			
+			sacl = new createjs.Container()
+			sasl = new createjs.Shape()
+			sasll = @createBitmap "saladline#{i}", 'saladline', 0, 0
+			sasl.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sasll.getBounds().width, sasll.getBounds().height)
+			sacl.set {name: "saladline#{i}", x: sac.x - 20, y: sac.y + 180, width: sasll.getBounds().width,height: sasll.getBounds().height, shape: sasl}
+			sacl.addChild sasll, sasl
+			@addToLibrary sac, sacl
+			salad.addChild sac, sacl
 
 		label = @createBitmap 'label', 'saladlabel', @positions.titulo.x, @positions.titulo.y, 'tc'
 		ready = new Button 'btnready', (@preload.getResult 'saladbtnready'), 'ready', @positions.ready.x, @positions.ready.y
@@ -310,8 +335,8 @@ class U3A3 extends Oda
 		i = 1
 		until dropped is on or i > 5
 			hit = @library["#{@current}step#{i}"]
-			pt = hit.globalToLocal @stage.mouseX, @stage.mouseY
-			if hit.hitTest pt.x, pt.y
+			pt = hit.shape.globalToLocal @stage.mouseX, @stage.mouseY
+			if hit.shape.hitTest pt.x, pt.y
 				@answer.putInPlace {x: hit.x, y: hit.y}, 1, @answer.scaleX, @answer.scaleY
 				dropped = on
 			else
@@ -324,8 +349,8 @@ class U3A3 extends Oda
 		i = 1
 		until dropped is on or i > 5
 			hit = @library["#{@current}line#{i}"]
-			pt = hit.globalToLocal @stage.mouseX, @stage.mouseY
-			if hit.hitTest pt.x, pt.y
+			pt = hit.shape.globalToLocal @stage.mouseX, @stage.mouseY
+			if hit.shape.hitTest pt.x, pt.y
 				if @current is 'sandwich'
 					@answer.putInPlace {x: hit.x + hit.width / 2, y: hit.y + 20}, 1, @answer.scaleX, @answer.scaleY
 				if @current is 'salad'

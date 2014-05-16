@@ -228,7 +228,7 @@
       var ti;
       U2A5.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Read and drag the words to complete the story.', 80, 200);
+      this.insertInstructions('instructions', ['Read and drag the words to complete the story.'], 80, 200);
       ti = this.createBitmap('title', 'title1', 700, 230, 'tc');
       ti.scaleX = ti.scaleY = 0.72;
       this.addToMain(ti);

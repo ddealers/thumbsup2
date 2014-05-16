@@ -5,13 +5,13 @@ class Button
 	Button::Container_initialize = Button::initialize
 	Button::initialize = (name, image, index, x, y)->
 		@Container_initialize()
-		@name = name
+		@set {name: name, index: index, x: x, y: y, pos: {x: x, y: y}, mouseChildren: false}
 		@bitmap = new createjs.Bitmap image
-		@index = index
-		@x = x
-		@y = y
-		@pos = x:x, y:y
-		@addChild @bitmap
+		@bitmap.mouseEnabled = false
+		@shape = new createjs.Shape()
+		@shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @bitmap.getBounds().width, @bitmap.getBounds().height)
+		@set {width: @bitmap.getBounds().width, height: @bitmap.getBounds().height}
+		@addChild @bitmap, @shape
 		false
 	blink: (state=on) ->
 		TweenMax.killTweensOf @

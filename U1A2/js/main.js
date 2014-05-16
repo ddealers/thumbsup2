@@ -131,7 +131,7 @@
     U1A2.prototype.setStage = function() {
       U1A2.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Listen and look at the chart. Then drag the names to answer the questions.', 80, 200);
+      this.insertInstructions('instructions', ['Listen and look at the chart. Then drag the names to answer the questions.'], 80, 200);
       this.insertSprite('characters', ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'], null, 200, stageSize.h - 340);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 6, 0));
       this.intento = false;

@@ -302,12 +302,14 @@
     }
 
     U2A3.prototype.setStage = function() {
+      var p1, p2, p3;
       U2A3.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Drag the puzzle pieces, read and click on the correct answers.', 80, 200);
-      this.insertBitmap('p1', 'p1', 1462, 872);
-      this.insertBitmap('p2', 'p2', 1462, 966);
-      this.insertBitmap('p3', 'p3', 1462, 1060);
+      this.insertInstructions('instructions', ['Drag the puzzle pieces, read and click on the correct answers.'], 80, 200);
+      p1 = new Button('p1', this.preload.getResult('p1'), 0, 1462, 872);
+      p2 = new Button('p2', this.preload.getResult('p2'), 0, 1462, 966);
+      p3 = new Button('p3', this.preload.getResult('p3'), 0, 1462, 1060);
+      this.addToMain(p1, p2, p3);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));
       return this.introEvaluation();
     };
@@ -343,17 +345,18 @@
     };
 
     U2A3.prototype.selectPuzzle = function(e) {
-      var i, _i;
+      var above, behind, i, inbtn, next, onbtn, under, _i;
       for (i = _i = 1; _i <= 3; i = _i += 1) {
         this.blink(this.library["p" + i], false);
         this.library['p' + i].removeEventListener('click', this.selectPuzzle);
       }
-      this.insertBitmap('behind', 'behind', 236, 580);
-      this.insertBitmap('in', 'in', 236, 694);
-      this.insertBitmap('under', 'under', 236, 808);
-      this.insertBitmap('next', 'next', 1256, 586);
-      this.insertBitmap('on', 'on', 1256, 700);
-      this.insertBitmap('above', 'above', 1256, 814);
+      behind = new Button('behind', this.preload.getResult('behind'), 0, 236, 580);
+      inbtn = new Button('in', this.preload.getResult('in'), 0, 236, 694);
+      under = new Button('under', this.preload.getResult('under'), 0, 236, 808);
+      next = new Button('next', this.preload.getResult('next'), 0, 1256, 586);
+      onbtn = new Button('on', this.preload.getResult('on'), 0, 1256, 700);
+      above = new Button('above', this.preload.getResult('above'), 0, 1256, 814);
+      this.addToMain(behind, inbtn, under, next, onbtn, above);
       switch (e.target.name) {
         case 'p1':
           this.pieces = {
@@ -644,7 +647,7 @@
     };
 
     U2A3.prototype.setPuzzle = function(num) {
-      var dpp, dragpieces, i, index, m, pp, puzzle, _i, _j;
+      var bmp, dpp, dragpieces, i, index, m, pp, puzzle, shape, _i, _j;
       this.num = num;
       puzzle = new createjs.Container();
       puzzle.x = (function() {
@@ -663,7 +666,17 @@
       puzzle.addChild(m);
       for (i = _i = 1; _i <= 12; i = _i += 1) {
         if (this.pieces["p" + num + "p" + i].back) {
-          pp = this.createBitmap("p" + num + "p" + i + "b", "p" + num + "p" + i + "back", this.pieces["p" + num + "p" + i].x, this.pieces["p" + num + "p" + i].y);
+          pp = new createjs.Container();
+          pp.set({
+            name: "p" + num + "p" + i + "b",
+            x: this.pieces["p" + num + "p" + i].x,
+            y: this.pieces["p" + num + "p" + i].y
+          });
+          bmp = this.createBitmap("p" + num + "p" + i + "b", "p" + num + "p" + i + "back", 0, 0);
+          shape = new createjs.Shape();
+          shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+          pp.addChild(bmp, shape);
+          pp.mouseChildren = false;
         } else {
           pp = this.createBitmap("p" + num + "p" + i, "p" + num + "p" + i, this.pieces["p" + num + "p" + i].x, this.pieces["p" + num + "p" + i].y);
         }

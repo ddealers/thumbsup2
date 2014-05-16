@@ -100,10 +100,11 @@ class U2A3 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Drag the puzzle pieces, read and click on the correct answers.', 80, 200
-		@insertBitmap 'p1', 'p1', 1462, 872
-		@insertBitmap 'p2', 'p2', 1462, 966
-		@insertBitmap 'p3', 'p3', 1462, 1060
+		@insertInstructions 'instructions', ['Drag the puzzle pieces, read and click on the correct answers.'], 80, 200
+		p1 = new Button 'p1', (@preload.getResult 'p1'), 0, 1462, 872
+		p2 = new Button 'p2', (@preload.getResult 'p2'), 0, 1462, 966
+		p3 = new Button 'p3', (@preload.getResult 'p3'), 0, 1462, 1060
+		@addToMain p1, p2, p3
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
 		@introEvaluation()
 	introEvaluation: ->
@@ -121,13 +122,13 @@ class U2A3 extends Oda
 			@blink @library["p#{i}"], off
 			@library['p'+i].removeEventListener 'click', @selectPuzzle
 
-		@insertBitmap 'behind','behind', 236, 580
-		@insertBitmap 'in','in', 236, 694
-		@insertBitmap 'under','under', 236, 808
-		@insertBitmap 'next','next', 1256, 586
-		@insertBitmap 'on','on', 1256, 700
-		@insertBitmap 'above','above', 1256, 814
-
+		behind = new Button 'behind', (@preload.getResult 'behind'), 0, 236, 580
+		inbtn = new Button 'in', (@preload.getResult 'in'), 0, 236, 694
+		under = new Button 'under', (@preload.getResult 'under'), 0, 236, 808
+		next = new Button 'next', (@preload.getResult 'next'), 0, 1256, 586
+		onbtn = new Button 'on', (@preload.getResult 'on'), 0, 1256, 700
+		above = new Button 'above', (@preload.getResult 'above'), 0, 1256, 814
+		@addToMain behind, inbtn, under, next, onbtn, above
 		switch e.target.name
 			when 'p1'
 				@pieces =
@@ -199,7 +200,13 @@ class U2A3 extends Oda
 		
 		for i in [1..12] by 1
 			if @pieces["p#{num}p#{i}"].back
-				pp = @createBitmap "p#{num}p#{i}b", "p#{num}p#{i}back", @pieces["p#{num}p#{i}"].x, @pieces["p#{num}p#{i}"].y
+				pp = new createjs.Container()
+				pp.set {name: "p#{num}p#{i}b", x: @pieces["p#{num}p#{i}"].x, y: @pieces["p#{num}p#{i}"].y}
+				bmp = @createBitmap "p#{num}p#{i}b", "p#{num}p#{i}back", 0, 0
+				shape = new createjs.Shape()
+				shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
+				pp.addChild bmp, shape
+				pp.mouseChildren = false
 			else
 				pp = @createBitmap "p#{num}p#{i}", "p#{num}p#{i}", @pieces["p#{num}p#{i}"].x, @pieces["p#{num}p#{i}"].y
 			

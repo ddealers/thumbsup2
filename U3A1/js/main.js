@@ -1067,23 +1067,32 @@
       U3A1.__super__.setStage.apply(this, arguments);
       this.answers = this.clone(this.game.answers);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Listen and drag the foods and drinks to the menu.', 80, 200);
+      this.insertInstructions('instructions', ['Listen and drag the foods and drinks to the menu.'], 80, 200);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 36, 0));
       this.setDropper().setMenu(1).introEvaluation();
       return this.intento = 0;
     };
 
     U3A1.prototype.setDropper = function() {
-      var common, i, repeat, v, _i, _ref;
+      var b, c, common, i, repeat, s, _i, _ref;
       common = new createjs.Container();
       common.name = 'common';
       repeat = new Button('repeat', this.preload.getResult('repeatbtn'), 0, 808, 826);
       for (i = _i = 1, _ref = this.game.common.length; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
-        v = this.createBitmap(this.game.common[i - 1].id, this.game.common[i - 1].id, this.game.common[i - 1].x, this.game.common[i - 1].y);
-        common.addChild(v);
-        this.addToLibrary(v);
-        this.addToMain(common, repeat);
+        c = new createjs.Container();
+        s = new createjs.Shape();
+        b = this.createBitmap(this.game.common[i - 1].id, this.game.common[i - 1].id, 0, 0);
+        s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, b.getBounds().width, b.getBounds().height);
+        c.set({
+          name: this.game.common[i - 1].id,
+          x: this.game.common[i - 1].x,
+          y: this.game.common[i - 1].y
+        });
+        c.addChild(b, s);
+        common.addChild(c);
+        this.addToLibrary(c);
       }
+      this.addToMain(common, repeat);
       return this;
     };
 

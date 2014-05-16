@@ -127,7 +127,7 @@ class U3A2 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Read, follow the lines and click on the correct answer.', 80, 200
+		@insertInstructions 'instructions', ['Read, follow the lines and click on the correct answer.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 18, 0
 		@setCommon().setMenu(1).introEvaluation()
 	setCommon: ->
@@ -139,7 +139,7 @@ class U3A2 extends Oda
 			@addToLibrary v
 		for i in [1..@game.buttons.length] by 1
 			value = @game.buttons[i - 1]
-			v = @createBitmap "b#{i}", value.id, value.x, value.y
+			v = new Button "b#{i}", (@preload.getResult value.id), 0, value.x, value.y
 			common.addChild v
 			@addToLibrary v
 		@phrase = new createjs.Text '', '40px Arial', '#333333'

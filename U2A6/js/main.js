@@ -102,7 +102,7 @@
     }
 
     U2A6.prototype.setStage = function() {
-      var b, box, c, count, i, n, rand, t, _i;
+      var b, box, c, count, i, l1, l2, l3, n, rand, s, t, _i;
       U2A6.__super__.setStage.apply(this, arguments);
       this.buckets = [
         {
@@ -134,9 +134,11 @@
       this.random = [];
       count = 0;
       box = new createjs.Container();
-      box.x = 0;
-      box.y = 0;
-      box.name = 'box';
+      box.set({
+        x: 0,
+        y: 0,
+        name: 'box'
+      });
       while (count < 6) {
         rand = Math.round(Math.random() * 100);
         this.random.push(rand);
@@ -144,26 +146,34 @@
       }
       this.insertBitmap('background', 'background', 0, 50);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Race the clock! Drag the numerals to the number words.', 80, 200);
-      this.insertBitmap('l1', 'level1Btn', 1462, 872);
-      this.insertBitmap('l2', 'level2Btn', 1462, 966);
-      this.insertBitmap('l3', 'level3Btn', 1462, 1060);
+      this.insertInstructions('instructions', ['Race the clock! Drag the numerals to the number words.'], 80, 200);
+      l1 = new Button('l1', this.preload.getResult('level1Btn'), 0, 1462, 872);
+      l2 = new Button('l2', this.preload.getResult('level2Btn'), 0, 1462, 966);
+      l3 = new Button('l3', this.preload.getResult('level3Btn'), 0, 1462, 1060);
+      this.addToMain(l1, l2, l3);
       for (i = _i = 0; _i <= 5; i = _i += 1) {
         c = new createjs.Container();
         n = this.bucketName(this.random[i]);
         t = new createjs.Text("" + n, '32px Quicksand', '#FF0000');
-        b = this.createBitmap("b" + i, 'bucket', 0, 0);
-        c.name = "b" + i;
-        c.index = this.random[i];
-        t.textAlign = 'center';
-        t.x = b.width / 2;
-        t.y = b.height / 2;
-        c.x = this.buckets[i].x;
-        c.y = this.buckets[i].y;
-        c.width = b.width;
-        c.height = b.height;
+        b = this.createBitmap("bmp" + i, 'bucket', 0, 0);
+        s = new createjs.Shape();
+        s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, b.getBounds().width, b.getBounds().height);
+        t.set({
+          textAlign: 'center',
+          x: b.width / 2,
+          y: b.height / 2
+        });
+        c.set({
+          name: "b" + i,
+          index: this.random[i],
+          x: this.buckets[i].x,
+          y: this.buckets[i].y,
+          width: b.getBounds().width,
+          height: b.getBounds().height,
+          shape: s
+        });
+        c.addChild(b, t, s);
         this.addToLibrary(c);
-        c.addChild(b, t);
         box.addChild(c);
       }
       this.addToMain(box);
@@ -330,8 +340,8 @@
       dropped = false;
       for (i = _i = 0; _i <= 5; i = _i += 1) {
         hit = this.library["b" + i];
-        pt = hit.globalToLocal(this.stage.mouseX, this.stage.mouseY);
-        if (hit.hitTest(pt.x, pt.y)) {
+        pt = hit.shape.globalToLocal(this.stage.mouseX, this.stage.mouseY);
+        if (hit.shape.hitTest(pt.x, pt.y)) {
           if (hit.index === this.answer.index) {
             hpp = hit.parent.localToGlobal(hit.x + hit.width / 2 - 60, hit.y + hit.height / 2 - 60);
             app = this.answer.parent.globalToLocal(hpp.x, hpp.y);
@@ -363,7 +373,6 @@
           complete = false;
         }
       }
-      console.log(this.buckets);
       if (complete) {
         return this.finish();
       }

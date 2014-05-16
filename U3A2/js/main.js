@@ -343,7 +343,7 @@
     U3A2.prototype.setStage = function() {
       U3A2.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Read, follow the lines and click on the correct answer.', 80, 200);
+      this.insertInstructions('instructions', ['Read, follow the lines and click on the correct answer.'], 80, 200);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 18, 0));
       return this.setCommon().setMenu(1).introEvaluation();
     };
@@ -361,7 +361,7 @@
       }
       for (i = _j = 1, _ref1 = this.game.buttons.length; _j <= _ref1; i = _j += 1) {
         value = this.game.buttons[i - 1];
-        v = this.createBitmap("b" + i, value.id, value.x, value.y);
+        v = new Button("b" + i, this.preload.getResult(value.id), 0, value.x, value.y);
         common.addChild(v);
         this.addToLibrary(v);
       }

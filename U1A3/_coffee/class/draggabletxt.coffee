@@ -12,7 +12,10 @@ class DraggableText
 		@pos = x:x, y:y
 		@text = new createjs.Text text, '32px Quicksand', '#333333'
 		@hit = new createjs.Shape()
-		@hit.graphics.beginFill('#000').drawRect(-10, -10, @text.getMeasuredWidth() + 20, @text.getMeasuredHeight() + 20)
+		if @text.getMeasuredWidth() < 20
+			@hit.graphics.beginFill('#000').drawRect(-10, -10, 40, @text.getMeasuredHeight() + 20)
+		else
+			@hit.graphics.beginFill('#000').drawRect(-10, -10, @text.getMeasuredWidth() + 20, @text.getMeasuredHeight() + 20)
 		@text.hitArea = @hit
 		@inPlace = off
 		@addChild @text
@@ -50,6 +53,8 @@ class DraggableText
 			@y = posY - offset.y
 			false
 		@addEventListener 'pressup', (ev)=>
+			@removeAllEventListeners 'pressmove'
+			@removeAllEventListeners 'pressup'
 			@dispatchEvent 'drop'
 			false
 		false
@@ -63,6 +68,9 @@ class DraggableText
 	putInPlace: (position, alpha=1, scaleX=1, scaleY=1) ->
 		@inPlace = on
 		TweenLite.to @, 1, { ease: Back.easeOut, delay: 0.1, x: position.x, y: position.y, alpha: alpha, scaleX: scaleX, scaleY: scaleY }
+	returnToOrigin: (alpha=1, scaleX=1, scaleY=1) ->
+		@x = @pos.x
+		@y = @pos.y
 	returnToPlace: (alpha=1, scaleX=1, scaleY=1) ->
 		TweenLite.to @, 0.5, { ease: Back.easeOut, delay: 0.1, x: @pos.x, y: @pos.y, alpha: alpha, scaleX: scaleX, scaleY: scaleY }
 	window.DraggableText = DraggableText

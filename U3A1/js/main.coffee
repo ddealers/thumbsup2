@@ -401,7 +401,7 @@ class U3A1 extends Oda
 		super
 		@answers = @clone @game.answers
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Listen and drag the foods and drinks to the menu.', 80, 200
+		@insertInstructions 'instructions', ['Listen and drag the foods and drinks to the menu.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 36, 0
 		@setDropper().setMenu(1).introEvaluation()
 		@intento = 0
@@ -410,10 +410,15 @@ class U3A1 extends Oda
 		common.name = 'common'
 		repeat = new Button 'repeat', (@preload.getResult 'repeatbtn'), 0, 808, 826
 		for i in [1..@game.common.length]
-			v = @createBitmap @game.common[i - 1].id, @game.common[i - 1].id, @game.common[i - 1].x, @game.common[i - 1].y
-			common.addChild v
-			@addToLibrary v
-			@addToMain common, repeat
+			c = new createjs.Container()
+			s = new createjs.Shape()
+			b = @createBitmap @game.common[i - 1].id, @game.common[i - 1].id, 0, 0
+			s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, b.getBounds().width, b.getBounds().height)
+			c.set {name: @game.common[i - 1].id, x: @game.common[i - 1].x, y: @game.common[i - 1].y}
+			c.addChild b, s
+			common.addChild c
+			@addToLibrary c
+		@addToMain common, repeat
 		@
 	setMenu: (num) ->
 		menu = new createjs.Container()

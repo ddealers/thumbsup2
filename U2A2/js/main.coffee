@@ -67,11 +67,26 @@ class U2A2 extends Oda
 		for answer in @answers
 			answer.a = false
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Listen and click on the correct picture.', 80, 200
+		@insertInstructions 'instructions', ['Listen and click on the correct picture.'], 80, 200
 		@insertBitmap 'teacher', 'lady', 500, 268
-		@insertBitmap 'repeat', 'repeat', 882, 420
-		@insertSprite 'choose1', ['kitchen','cat','dog','fish','bed','doll','toys','soup','swipe','broom','garbage','walkdog','dishes','plants'], {'kitchen':0,'cat':1,'dog':2,'fish':3,'bed':4,'doll':5,'toys':6,'soup':7,'swipe':8,'broom':9,'garbage':10,'walkdog':11,'dishes':12,'plants':13}, 540, 904, 'mc'
-		@insertSprite 'choose2', ['kitchen','cat','dog','fish','bed','doll','toys','soup','swipe','broom','garbage','walkdog','dishes','plants'], {'kitchen':0,'cat':1,'dog':2,'fish':3,'bed':4,'doll':5,'toys':6,'soup':7,'swipe':8,'broom':9,'garbage':10,'walkdog':11,'dishes':12,'plants':13}, 1182, 904, 'mc'
+		repeat = new Button 'repeat', (@preload.getResult 'repeat'), 0, 882, 420
+		sprite1 = @createSprite 'choose1', ['kitchen','cat','dog','fish','bed','doll','toys','soup','swipe','broom','garbage','walkdog','dishes','plants'], {'kitchen':0,'cat':1,'dog':2,'fish':3,'bed':4,'doll':5,'toys':6,'soup':7,'swipe':8,'broom':9,'garbage':10,'walkdog':11,'dishes':12,'plants':13}, 0, 0
+		sprite1.mouseEnabled = false
+		shape1 = new createjs.Shape()
+		shape1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sprite1.getBounds().width, sprite1.getBounds().height)
+		choose1 = new createjs.Container()
+		choose1.set {name: 'choose1', x: 540, y: 904, sprite: sprite1}
+		@setReg choose1, sprite1.getBounds().width / 2, sprite1.getBounds().height / 2
+		choose1.addChild sprite1, shape1
+		sprite2 = @createSprite 'choose2', ['kitchen','cat','dog','fish','bed','doll','toys','soup','swipe','broom','garbage','walkdog','dishes','plants'], {'kitchen':0,'cat':1,'dog':2,'fish':3,'bed':4,'doll':5,'toys':6,'soup':7,'swipe':8,'broom':9,'garbage':10,'walkdog':11,'dishes':12,'plants':13}, 0, 0
+		sprite2.mouseEnabled = false
+		shape2 = new createjs.Shape()
+		shape2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sprite2.getBounds().width, sprite2.getBounds().height)
+		choose2 = new createjs.Container()
+		choose2.set {name: 'choose2', x: 1182, y: 904, sprite: sprite2}
+		@setReg choose2, sprite2.getBounds().width / 2, sprite2.getBounds().height / 2
+		choose2.addChild sprite2, shape2
+		@addToMain repeat, choose1, choose2
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 14, 0
 		@introEvaluation()
 	introEvaluation: ->
@@ -87,19 +102,20 @@ class U2A2 extends Oda
 	initEvaluation: (e) =>
 		super
 		@showPhrase()
-		@library['choose1'].addEventListener 'click', @evaluateAnswer
-		@library['choose2'].addEventListener 'click', @evaluateAnswer
 		@library['repeat'].addEventListener 'click', @repeat
 	evaluateAnswer: (e) =>
-		@answer = e.target
+		@answer = e.target.parent.sprite
 		selection = @answers.where id: @phrase.id
 		selection[0].a = on
 		if @phrase.id is @answer.currentAnimation
 			createjs.Sound.play 'good'
 			@library['score'].plusOne()
+			@library['choose1'].removeEventListener 'click', @evaluateAnswer
+			@library['choose2'].removeEventListener 'click', @evaluateAnswer
+			setTimeout @finishEvaluation, 1 * 1000
 		else
+			TweenMax.to [@library['choose1'], @library['choose2']], 1, {alpha: 0, scaleX: 0.6, scaleY: 0.6, ease:Elastic.easeOut, onComplete: @finishEvaluation}
 			@warning()
-		setTimeout @finishEvaluation, 1 * 1000
 	finishEvaluation: =>
 		TweenMax.to [@library['choose1'], @library['choose2']], 1, {alpha: 0, scaleX: 0.3, scaleY: 0.3, ease:Elastic.easeOut, onComplete: @nextEvaluation}
 	nextEvaluation: =>
@@ -116,8 +132,10 @@ class U2A2 extends Oda
 		others = @answers.filter (answer) =>
 			answer.id isnt @phrase.id
 		fake = Math.floor Math.random() * others.length
-		@library['choose' + rand].gotoAndStop @phrase.id
-		@library['choose' + other].gotoAndStop others[fake].id
+		@library["choose#{rand}"].sprite.gotoAndStop @phrase.id
+		@library["choose#{other}"].sprite.gotoAndStop others[fake].id
+		@library['choose1'].addEventListener 'click', @evaluateAnswer
+		@library['choose2'].addEventListener 'click', @evaluateAnswer
 		createjs.Sound.play "s#{@phrase.id}"
 		TweenMax.to [@library['choose1'], @library['choose2']], 1, {alpha: 1, scaleX: 1, scaleY: 1, ease:Elastic.easeOut}
 	getPhrase: ->

@@ -58,15 +58,13 @@ class DroppableText
 		offset = x: posX - @x, y: posY - @y
 		@x = posX - offset.x
 		@y = posY - offset.y
-		@addEventListener 'pressmove', (ev)=>
+		@addEventListener 'mousemove', (ev)=>
 			posX = ev.stageX / stageSize.r
 			posY = ev.stageY / stageSize.r
 			@x = posX - offset.x
 			@y = posY - offset.y
 			false
-		@addEventListener 'pressup', (ev)=>
-			@removeAllEventListeners 'pressmove'
-			@removeAllEventListeners 'pressup'
+		@addEventListener 'mouseup', (ev)=>
 			if @drops.length > 0
 				@evaluateDrop e
 			else

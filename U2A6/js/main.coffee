@@ -62,9 +62,7 @@ class U2A6 extends Oda
 		@random = []
 		count = 0
 		box = new createjs.Container()
-		box.x = 0
-		box.y = 0
-		box.name = 'box'
+		box.set {x: 0, y: 0, name: 'box'}
 
 		while count < 6
 			rand = Math.round Math.random() * 100
@@ -73,30 +71,26 @@ class U2A6 extends Oda
 		
 		@insertBitmap 'background', 'background', 0, 50
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Race the clock! Drag the numerals to the number words.', 80, 200
-		@insertBitmap 'l1', 'level1Btn', 1462, 872
-		@insertBitmap 'l2', 'level2Btn', 1462, 966
-		@insertBitmap 'l3', 'level3Btn', 1462, 1060
+		@insertInstructions 'instructions', ['Race the clock! Drag the numerals to the number words.'], 80, 200
+		l1 = new Button 'l1', (@preload.getResult 'level1Btn'), 0, 1462, 872
+		l2 = new Button 'l2', (@preload.getResult 'level2Btn'), 0, 1462, 966
+		l3 = new Button 'l3', (@preload.getResult 'level3Btn'), 0, 1462, 1060
+		@addToMain l1, l2, l3
 		
 		for i in [0..5] by 1
 			c = new createjs.Container()
 			n = @bucketName @random[i]
 			t = new createjs.Text "#{n}", '32px Quicksand', '#FF0000'
-			b = @createBitmap "b#{i}", 'bucket', 0, 0
-			c.name = "b#{i}"
-			c.index = @random[i]
-			t.textAlign = 'center'
+			b = @createBitmap "bmp#{i}", 'bucket', 0, 0
+			s = new createjs.Shape()
+			s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, b.getBounds().width, b.getBounds().height)
+			t.set {textAlign: 'center', x: b.width / 2, y: b.height / 2}
+			c.set {name: "b#{i}", index: @random[i], x: @buckets[i].x, y: @buckets[i].y, width: b.getBounds().width, height: b.getBounds().height, shape: s}
 			#t.x = b.width / 2 - t.getMeasuredWidth() / 2 + 20
-			t.x = b.width / 2
-			t.y = b.height / 2
-			c.x = @buckets[i].x
-			c.y = @buckets[i].y
-			c.width = b.width
-			c.height = b.height
+			c.addChild b, t, s
 			@addToLibrary c
-			c.addChild b, t
 			box.addChild c
-
+			
 		@addToMain box
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 90, 0
 		@introEvaluation()
@@ -189,8 +183,8 @@ class U2A6 extends Oda
 		dropped = off
 		for i in [0..5] by 1
 			hit = @library["b#{i}"]
-			pt = hit.globalToLocal @stage.mouseX, @stage.mouseY
-			if (hit.hitTest pt.x, pt.y) 
+			pt = hit.shape.globalToLocal @stage.mouseX, @stage.mouseY
+			if (hit.shape.hitTest pt.x, pt.y) 
 				if hit.index is @answer.index
 					hpp = hit.parent.localToGlobal hit.x + hit.width / 2 - 60, hit.y + hit.height / 2 - 60
 					app = @answer.parent.globalToLocal hpp.x, hpp.y
@@ -210,7 +204,6 @@ class U2A6 extends Oda
 		for i in [0..5] by 1
 			if @buckets[i].a is on
 				complete = off
-		console.log @buckets
 		@finish() if complete
 	blink: (obj, state = on) ->
 		TweenMax.killTweensOf obj

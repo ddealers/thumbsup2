@@ -87,9 +87,10 @@ class U2A4 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Listen and drag the clocks to the correct picture.', 80, 200
-		@insertBitmap 'repeat', 'repeat', 1090, 1080
-		@insertBitmap 'finish', 'finish', 1326, 1080
+		@insertInstructions 'instructions', ['Listen and drag the clocks to the correct picture.'], 80, 200
+		repeat = new Button 'repeat', (@preload.getResult 'repeat'), 0, 1090, 1080
+		finish = new Button 'finish', (@preload.getResult 'finish'), 0, 1326, 1080
+		@addToMain repeat, finish
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 12, 0
 		@setMeg()
 		@introEvaluation()
@@ -115,8 +116,6 @@ class U2A4 extends Oda
 			sh.name = 'sh'+i
 			@addToLibrary sh
 			meg.addChild sh
-
-			
 
 		for i in [1..6] by 1
 			mc = new Draggable 'mc'+i, @preload.getResult('mc'+i), i, @clocks[i - 1].x, @clocks[i - 1].y

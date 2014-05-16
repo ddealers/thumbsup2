@@ -189,7 +189,7 @@
     }
 
     U2A2.prototype.setStage = function() {
-      var answer, _i, _len, _ref;
+      var answer, choose1, choose2, repeat, shape1, shape2, sprite1, sprite2, _i, _len, _ref;
       U2A2.__super__.setStage.apply(this, arguments);
       this.answers = this.game.answers.slice(0);
       _ref = this.answers;
@@ -198,10 +198,10 @@
         answer.a = false;
       }
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Listen and click on the correct picture.', 80, 200);
+      this.insertInstructions('instructions', ['Listen and click on the correct picture.'], 80, 200);
       this.insertBitmap('teacher', 'lady', 500, 268);
-      this.insertBitmap('repeat', 'repeat', 882, 420);
-      this.insertSprite('choose1', ['kitchen', 'cat', 'dog', 'fish', 'bed', 'doll', 'toys', 'soup', 'swipe', 'broom', 'garbage', 'walkdog', 'dishes', 'plants'], {
+      repeat = new Button('repeat', this.preload.getResult('repeat'), 0, 882, 420);
+      sprite1 = this.createSprite('choose1', ['kitchen', 'cat', 'dog', 'fish', 'bed', 'doll', 'toys', 'soup', 'swipe', 'broom', 'garbage', 'walkdog', 'dishes', 'plants'], {
         'kitchen': 0,
         'cat': 1,
         'dog': 2,
@@ -216,8 +216,20 @@
         'walkdog': 11,
         'dishes': 12,
         'plants': 13
-      }, 540, 904, 'mc');
-      this.insertSprite('choose2', ['kitchen', 'cat', 'dog', 'fish', 'bed', 'doll', 'toys', 'soup', 'swipe', 'broom', 'garbage', 'walkdog', 'dishes', 'plants'], {
+      }, 0, 0);
+      sprite1.mouseEnabled = false;
+      shape1 = new createjs.Shape();
+      shape1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sprite1.getBounds().width, sprite1.getBounds().height);
+      choose1 = new createjs.Container();
+      choose1.set({
+        name: 'choose1',
+        x: 540,
+        y: 904,
+        sprite: sprite1
+      });
+      this.setReg(choose1, sprite1.getBounds().width / 2, sprite1.getBounds().height / 2);
+      choose1.addChild(sprite1, shape1);
+      sprite2 = this.createSprite('choose2', ['kitchen', 'cat', 'dog', 'fish', 'bed', 'doll', 'toys', 'soup', 'swipe', 'broom', 'garbage', 'walkdog', 'dishes', 'plants'], {
         'kitchen': 0,
         'cat': 1,
         'dog': 2,
@@ -232,7 +244,20 @@
         'walkdog': 11,
         'dishes': 12,
         'plants': 13
-      }, 1182, 904, 'mc');
+      }, 0, 0);
+      sprite2.mouseEnabled = false;
+      shape2 = new createjs.Shape();
+      shape2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sprite2.getBounds().width, sprite2.getBounds().height);
+      choose2 = new createjs.Container();
+      choose2.set({
+        name: 'choose2',
+        x: 1182,
+        y: 904,
+        sprite: sprite2
+      });
+      this.setReg(choose2, sprite2.getBounds().width / 2, sprite2.getBounds().height / 2);
+      choose2.addChild(sprite2, shape2);
+      this.addToMain(repeat, choose1, choose2);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 14, 0));
       return this.introEvaluation();
     };
@@ -268,14 +293,12 @@
     U2A2.prototype.initEvaluation = function(e) {
       U2A2.__super__.initEvaluation.apply(this, arguments);
       this.showPhrase();
-      this.library['choose1'].addEventListener('click', this.evaluateAnswer);
-      this.library['choose2'].addEventListener('click', this.evaluateAnswer);
       return this.library['repeat'].addEventListener('click', this.repeat);
     };
 
     U2A2.prototype.evaluateAnswer = function(e) {
       var selection;
-      this.answer = e.target;
+      this.answer = e.target.parent.sprite;
       selection = this.answers.where({
         id: this.phrase.id
       });
@@ -283,10 +306,19 @@
       if (this.phrase.id === this.answer.currentAnimation) {
         createjs.Sound.play('good');
         this.library['score'].plusOne();
+        this.library['choose1'].removeEventListener('click', this.evaluateAnswer);
+        this.library['choose2'].removeEventListener('click', this.evaluateAnswer);
+        return setTimeout(this.finishEvaluation, 1 * 1000);
       } else {
-        this.warning();
+        TweenMax.to([this.library['choose1'], this.library['choose2']], 1, {
+          alpha: 0,
+          scaleX: 0.6,
+          scaleY: 0.6,
+          ease: Elastic.easeOut,
+          onComplete: this.finishEvaluation
+        });
+        return this.warning();
       }
-      return setTimeout(this.finishEvaluation, 1 * 1000);
     };
 
     U2A2.prototype.finishEvaluation = function() {
@@ -319,8 +351,10 @@
         return answer.id !== _this.phrase.id;
       });
       fake = Math.floor(Math.random() * others.length);
-      this.library['choose' + rand].gotoAndStop(this.phrase.id);
-      this.library['choose' + other].gotoAndStop(others[fake].id);
+      this.library["choose" + rand].sprite.gotoAndStop(this.phrase.id);
+      this.library["choose" + other].sprite.gotoAndStop(others[fake].id);
+      this.library['choose1'].addEventListener('click', this.evaluateAnswer);
+      this.library['choose2'].addEventListener('click', this.evaluateAnswer);
       createjs.Sound.play("s" + this.phrase.id);
       return TweenMax.to([this.library['choose1'], this.library['choose2']], 1, {
         alpha: 1,

@@ -100,7 +100,15 @@ class Oda
 			@library.score.reset() if @library['score']
 	playInstructions: (oda) ->
 		if dealersjs.mobile.isIOS() or dealersjs.mobile.isAndroid()
-			oda.insertBitmap 'start', 'sg', stageSize.w / 2, stageSize.h / 2, 'mc'
+			@start = new createjs.Container()
+			@start.set {name: 'start', x: stageSize.w / 2, y: stageSize.h / 2}
+			bmp = oda.createBitmap 'start', 'sg', 0, 0
+			bmp.mouseEnabled = false
+			shape = new createjs.Shape()
+			shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
+			@setReg @start, bmp.width / 2, bmp.height / 2
+			@start.addChild bmp, shape
+			oda.addToMain @start
 			oda.library['start'].addEventListener 'click', oda.initMobileInstructions
 			TweenLite.from oda.library['start'], 0.3, { alpha: 0, y: oda.library['start'].y + 20 }
 		else
@@ -117,7 +125,15 @@ class Oda
 	initEvaluation: (e) =>
 		@observer.notify 'init_evaluation'
 	finish: ->
-		@insertBitmap 'play_again', 'pa', stageSize.w / 2, stageSize.h / 2, 'mc'
+		@play_again = new createjs.Container()
+		@play_again.set {name: 'play_again', x: stageSize.w / 2, y: stageSize.h / 2}
+		bmp = @createBitmap 'play_again', 'pa', 0, 0
+		bmp.mouseEnabled = false
+		shape = new createjs.Shape()
+		shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
+		@setReg @play_again, bmp.width / 2, bmp.height / 2
+		@play_again.addChild bmp, shape
+		@addToMain @play_again
 		@library['play_again'].addEventListener 'click', @handlePlayAgain
 		TweenLite.from @library['play_again'], 0.5, { alpha: 0, y: @library['play_again'].y - 20 }
 	handlePlayAgain: (e) =>

@@ -189,9 +189,21 @@
     };
 
     Oda.prototype.playInstructions = function(oda) {
-      var inst;
+      var bmp, inst, shape;
       if (dealersjs.mobile.isIOS() || dealersjs.mobile.isAndroid()) {
-        oda.insertBitmap('start', 'sg', stageSize.w / 2, stageSize.h / 2, 'mc');
+        this.start = new createjs.Container();
+        this.start.set({
+          name: 'start',
+          x: stageSize.w / 2,
+          y: stageSize.h / 2
+        });
+        bmp = oda.createBitmap('start', 'sg', 0, 0);
+        bmp.mouseEnabled = false;
+        shape = new createjs.Shape();
+        shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+        this.setReg(this.start, bmp.width / 2, bmp.height / 2);
+        this.start.addChild(bmp, shape);
+        oda.addToMain(this.start);
         oda.library['start'].addEventListener('click', oda.initMobileInstructions);
         return TweenLite.from(oda.library['start'], 0.3, {
           alpha: 0,
@@ -226,7 +238,20 @@
     };
 
     Oda.prototype.finish = function() {
-      this.insertBitmap('play_again', 'pa', stageSize.w / 2, stageSize.h / 2, 'mc');
+      var bmp, shape;
+      this.play_again = new createjs.Container();
+      this.play_again.set({
+        name: 'play_again',
+        x: stageSize.w / 2,
+        y: stageSize.h / 2
+      });
+      bmp = this.createBitmap('play_again', 'pa', 0, 0);
+      bmp.mouseEnabled = false;
+      shape = new createjs.Shape();
+      shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+      this.setReg(this.play_again, bmp.width / 2, bmp.height / 2);
+      this.play_again.addChild(bmp, shape);
+      this.addToMain(this.play_again);
       this.library['play_again'].addEventListener('click', this.handlePlayAgain);
       return TweenLite.from(this.library['play_again'], 0.5, {
         alpha: 0,
@@ -282,8 +307,8 @@
       return this.stage.update();
     };
 
-    Oda.prototype.insertInstructions = function(name, text, x, y) {
-      var inst, triangle;
+    Oda.prototype.insertInstructions = function(name, text, x, y, ital) {
+      var frase, inst, it, label, npos, triangle, _i, _len;
       inst = new createjs.Container();
       inst.name = name;
       inst.x = x;
@@ -291,8 +316,23 @@
       triangle = new createjs.Shape();
       triangle.graphics.beginFill('#bcd748').moveTo(0, 0).lineTo(16, 10).lineTo(0, 20);
       triangle.y = 10;
-      text = this.createText('insttext', text, '32px Roboto', '#000', 28, 0);
-      inst.addChild(triangle, text);
+      console.log(text);
+      it = 0;
+      npos = 14;
+      for (_i = 0, _len = text.length; _i < _len; _i++) {
+        frase = text[_i];
+        if (frase === '#ital') {
+          label = new createjs.Text(ital[it], 'italic 32px Roboto', '#000');
+          it++;
+        } else {
+          label = new createjs.Text(frase, '32px Roboto', '#000');
+        }
+        label.x = npos;
+        inst.addChild(label);
+        console.log(label);
+        npos = npos + label.getMeasuredWidth() + 5;
+      }
+      inst.addChild(triangle);
       return this.addToMain(inst);
     };
 

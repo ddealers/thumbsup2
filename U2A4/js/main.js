@@ -233,11 +233,13 @@
     }
 
     U2A4.prototype.setStage = function() {
+      var finish, repeat;
       U2A4.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Listen and drag the clocks to the correct picture.', 80, 200);
-      this.insertBitmap('repeat', 'repeat', 1090, 1080);
-      this.insertBitmap('finish', 'finish', 1326, 1080);
+      this.insertInstructions('instructions', ['Listen and drag the clocks to the correct picture.'], 80, 200);
+      repeat = new Button('repeat', this.preload.getResult('repeat'), 0, 1090, 1080);
+      finish = new Button('finish', this.preload.getResult('finish'), 0, 1326, 1080);
+      this.addToMain(repeat, finish);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 12, 0));
       this.setMeg();
       return this.introEvaluation();

@@ -83,7 +83,7 @@ class U2A5 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Read and drag the words to complete the story.', 80, 200
+		@insertInstructions 'instructions', ['Read and drag the words to complete the story.'], 80, 200
 		ti = @createBitmap 'title', 'title1', 700, 230, 'tc'
 		ti.scaleX = ti.scaleY = 0.72
 		@addToMain ti

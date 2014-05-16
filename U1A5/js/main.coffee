@@ -72,11 +72,12 @@ class U1A5 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Read and drag the names to complete the story.', 80, 200
+		@insertInstructions 'instructions', ['Read and drag the names to complete the story.'], 80, 200
 		ti = @createBitmap 'title', 'title1', 700, 270, 'tc'
 		#ti.scaleX = ti.scaleY = 0.72
 		@addToMain ti
-		@insertBitmap 'btnnext', 'btn', 1520, 1178, 'tr'
+		btnnext = new Button 'btnnext', (@preload.getResult 'btn'), 0, 1520, 1178
+		@addToMain btnnext
 		@library['btnnext'].visible = off
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
 		#@intento = 0
@@ -87,11 +88,16 @@ class U1A5 extends Oda
 		@scene = scene
 		scn = @game[scene - 1]
 		for i in [1..scn.positions.length] by 1
-			m = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, scn.positions[i - 1].x, scn.positions[i - 1].y
-			m.index = (scene - 1) * 4 + i
+			sp = @createSprite "sp#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, 0, 0
+			sp.mouseEnabled = false
 			#m.scaleX = m.scaleY = 0.73
-			cuento.addChild m
-			@addToLibrary m
+			s = new createjs.Shape()
+			s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height)
+			sc = new createjs.Container()
+			sc.set {name: "sc#{i}", index: (scene - 1) * 4 + i, x: scn.positions[i - 1].x, y: scn.positions[i - 1].y, sprite: sp, shape: s}
+			sc.addChild sp, s
+			cuento.addChild sc
+			@addToLibrary sc
 
 		for i in [1..scn.texts.length] by 1
 			y = if scene is 1 then 200 else 300
@@ -132,16 +138,16 @@ class U1A5 extends Oda
 	initEvaluation: (e) =>
 		super
 		for i in [1..@game[@scene - 1].texts.length] by 1
-			@library["t#{i}"].addEventListener 'click', @evaluateAnswer
+			@library["t#{i}"].addEventListener 'drop', @evaluateAnswer
 	evaluateAnswer: (e) =>
 		@answer = e.currentTarget
 		dropped = off
 		for i in [1..@game[@scene - 1].positions.length] by 1
-			pt = @library["sc#{i}"].globalToLocal @stage.mouseX, @stage.mouseY
-			if @library["sc#{i}"].hitTest pt.x, pt.y
+			pt = @library["sc#{i}"].shape.globalToLocal @stage.mouseX, @stage.mouseY
+			if @library["sc#{i}"].shape.hitTest pt.x, pt.y
 				if not @isArray @answer.index 
 					if @answer.index is @library["sc#{i}"].index
-						@library["sc#{i}"].gotoAndStop 1
+						@library["sc#{i}"].sprite.gotoAndStop 1
 						@answer.returnToOrigin()
 						#@answer.visible = off
 						createjs.Sound.play 'good'
@@ -161,7 +167,7 @@ class U1A5 extends Oda
 						if ans is @library["sc#{i}"].index
 							hit = true	
 					if hit
-						@library["sc#{i}"].gotoAndStop 1
+						@library["sc#{i}"].sprite.gotoAndStop 1
 						@answer.returnToOrigin()
 						#@answer.visible = off
 						createjs.Sound.play 'good'
@@ -180,7 +186,7 @@ class U1A5 extends Oda
 				@answer.returnToPlace()
 	finishEvaluation: =>
 		for i in [1..@game[@scene - 1].positions.length] by 1
-			if @library["sc#{i}"].currentFrame is 0
+			if @library["sc#{i}"].sprite.currentFrame is 0
 				return
 		if @scene < 2
 			@library['btnnext'].visible = on

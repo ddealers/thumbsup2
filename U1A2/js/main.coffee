@@ -44,7 +44,7 @@ class U1A2 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Listen and look at the chart. Then drag the names to answer the questions.', 80, 200
+		@insertInstructions 'instructions', ['Listen and look at the chart. Then drag the names to answer the questions.'], 80, 200
 		@insertSprite 'characters', ['p1','p2','p3','p4','p5','p6'], null, 200, stageSize.h - 340
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 6, 0
 		@intento = false
