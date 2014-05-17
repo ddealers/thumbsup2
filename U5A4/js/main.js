@@ -462,7 +462,7 @@
     };
 
     U5A4.prototype.setKids = function(station) {
-      var asset, boton, current, hit, i, j, kids, _i, _j, _k, _ref;
+      var asset, boton, bt, current, hit, i, j, kids, shape, _i, _j, _k, _ref;
       kids = new createjs.Container();
       kids.name = 'kids';
       kids.x = 320;
@@ -470,9 +470,16 @@
       this.station = station;
       current = this.game[this.station].kids;
       for (i = _i = 0; _i <= 3; i = _i += 1) {
-        boton = this.createBitmap("repeat" + current[i][0], 'repeatbtn', i * 290, 400);
+        boton = new createjs.Container();
+        boton.x = i * 290;
+        boton.y = 400;
         boton.visible = false;
-        this.addToLibrary(boton);
+        boton.name = "repeat" + current[i][0];
+        bt = this.createBitmap("repeat", 'repeatbtn', 0, 0);
+        shape = new createjs.Shape();
+        shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bt.getBounds().width, bt.getBounds().height);
+        boton.addChild(bt, shape);
+        this.addToLibrary(boton, bt, shape);
         kids.addChild(boton);
       }
       for (i = _j = 0; _j <= 3; i = _j += 1) {
@@ -576,8 +583,9 @@
       }
       this.intento = 0;
       createjs.Sound.play("s" + this.selected.name);
+      console.log(this.library["repeat" + this.selected.name]);
       this.library["repeat" + this.selected.name].visible = true;
-      this.library["repeat" + this.selected.name].addEventListener('click', this.repeatSound);
+      this.library["repeat" + this.selected.name].children[1].addEventListener('click', this.repeatSound);
       return this.observer.notify('init_kid_evaluation');
     };
 
