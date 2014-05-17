@@ -7,8 +7,8 @@ class U6A1 extends Oda
 			{id: 'c2', src: 'circle2.png'}
 			
 
-		    {id: 'p1', src: 'p1-btn.png'}
-		    {id: 'p2', src: 'p2-btn.png'}
+		    {id: 'b1', src: 'p1-btn.png'}
+		    {id: 'b2', src: 'p2-btn.png'}
 		    {id: 'm1', src: 'marco-1.png'}
 		    {id: 'm2', src: 'marco-2.png'}
 		    {id: 'p1p1', src: 'puzzle1-1.png'}
@@ -74,8 +74,30 @@ class U6A1 extends Oda
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', 'Drag the puzzle pieces, read and click on the correct answers.', 80, 200
-		@insertBitmap 'p1', 'p1', 1462, 966
-		@insertBitmap 'p2', 'p2', 1462, 1060
+
+		@p1 = new createjs.Container()
+		@p1.name = 'p1'
+		@p1.x = 1462
+		@p1.y = 966
+		@b1 = @createBitmap 'b1', 'b1', 0, 0
+		@b1.mouseEnabled = false
+		@shape1 = new createjs.Shape()
+		@shape1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @b1.getBounds().width, @b1.getBounds().height)
+		@p1.addChild @b1, @shape1
+
+		@p2 = new createjs.Container()
+		@p2.name = 'p2'
+		@p2.x = 1462
+		@p2.y = 1060
+		@b2 = @createBitmap 'b2', 'b2', 0, 0
+		@b2.mouseEnabled = false
+		@shape2 = new createjs.Shape()
+		@shape2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @b2.getBounds().width, @b2.getBounds().height)
+		@p2.addChild @b2, @shape2
+		
+		@addToMain @p1, @p2
+		@addToLibrary @p1, @p2
+
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
 		@introEvaluation()
 	introEvaluation: ->
@@ -86,17 +108,40 @@ class U6A1 extends Oda
 	initEvaluation: (e) =>
 		super
 		for i in [1..2] by 1
-			@blink @library['p'+i]
-			@library['p'+i].addEventListener 'click', @selectPuzzle
+			@blink @['p'+i]
+			@['p'+i].addEventListener 'click', @selectPuzzle
 	selectPuzzle: (e) =>
 		for i in [1..2] by 1
-			@blink @library["p#{i}"], off
-			@library['p'+i].removeEventListener 'click', @selectPuzzle
+			@blink @["p#{i}"], off
+			@['p'+i].removeEventListener 'click', @selectPuzzle
 
-		@insertBitmap 'btntrue','btntrue', 600, 1080
-		@insertBitmap 'btnfalse','btnfalse', 840, 1080
 
-		switch e.target.name
+		@trueb = new createjs.Container()
+		@trueb.x = 600
+		@trueb.y = 1080
+		@trueb.name = 'btntrue'
+		@true = @createBitmap 'btrue', 'btntrue', 0, 0
+		@true.mouseEnabled = false
+		@shapetrue = new createjs.Shape()
+		@shapetrue.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(0, 0, @true.getBounds().width, @true.getBounds().height)
+		@trueb.addChild @true, @shapetrue
+
+		@falseb = new createjs.Container()
+		@falseb.x = 840
+		@falseb.y = 1080
+		@falseb.name = 'btnfalse'
+
+		@false = @createBitmap 'bfalse', 'btnfalse', 0, 0
+		@false.mouseEnabled = false
+		@shapefalse = new createjs.Shape()
+		@shapefalse.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(0, 0, @false.getBounds().width, @false.getBounds().height)
+		@falseb.addChild @false, @shapefalse
+		
+		@addToMain @trueb, @falseb
+		@addToLibrary @trueb, @falseb
+ 
+		console.log e.target
+		switch e.target.parent.name
 			when 'p1'
 				@pieces =
 					p1p1:  {x: 304, y: 162,  text:'A firefighter puts out fires.', label:'true', back: on}
@@ -203,7 +248,8 @@ class U6A1 extends Oda
 		else
 			@answer.returnToPlace @answer.alpha, @answer.scaleX, @answer.scaleY
 	evaluateLocation: (e) =>
-		name = e.target.name
+		name = e.target.parent.name
+		console.log name, "btn#{@pieces[@answer.index].label}"
 		if name is "btn#{@pieces[@answer.index].label}"
 			@stopListeners()
 			createjs.Sound.play 'good'
