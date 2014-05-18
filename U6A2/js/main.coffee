@@ -60,7 +60,22 @@ class U6A2 extends Oda
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', 'Listen and drag the buildings to the correct place on the map.', 80, 200
-		@insertBitmap 'btnRepeat', 'repeatbtn',  stageSize.w / 2, 1140, 'mc'
+
+		boton = new createjs.Container()
+		boton.x = stageSize.w / 2
+		boton.y = 1140
+		boton.name = "btnRepeat"
+
+		bt = @createBitmap "repeat", 'repeatbtn', 0, 0, 'mc'
+		bt.mouseEnabled = false
+
+		shape = new createjs.Shape()
+		shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-bt.getBounds().width / 2, -bt.getBounds().height / 2 , bt.getBounds().width, bt.getBounds().height)
+		boton.addChild bt, shape
+
+		@addToLibrary boton, bt, shape
+		@addToMain boton
+
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 9, 0
 		@intento = 0
 		@setMap( 1 ).introEvaluation()

@@ -190,9 +190,18 @@ class U5A4 extends Oda
 		@station = station
 		current = @game[@station].kids
 		for i in [0..3]	by 1
-			boton = @createBitmap "repeat#{current[i][0]}", 'repeatbtn', i * 290, 400
+			boton = new createjs.Container()
+			boton.x = i * 290
+			boton.y = 400
 			boton.visible = off
-			@addToLibrary boton
+			boton.name = "repeat#{current[i][0]}"
+
+			bt = @createBitmap "repeat", 'repeatbtn', 0, 0
+			shape = new createjs.Shape()
+			shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bt.getBounds().width, bt.getBounds().height)
+			boton.addChild bt, shape
+
+			@addToLibrary boton, bt, shape
 			kids.addChild boton
 		for i in [0..3] by 1
 			for j in [0..current[i].length-1] by 1
@@ -250,8 +259,9 @@ class U5A4 extends Oda
 		@intento = 0
 
 		createjs.Sound.play "s#{@selected.name}"
+		console.log @library["repeat#{@selected.name}"]
 		@library["repeat#{@selected.name}"].visible = on
-		@library["repeat#{@selected.name}"].addEventListener 'click', @repeatSound
+		@library["repeat#{@selected.name}"].children[1].addEventListener 'click', @repeatSound
 		@observer.notify 'init_kid_evaluation'
 	evaluateAnswer: (e) =>
 		@answer = e.target

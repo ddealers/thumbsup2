@@ -186,10 +186,21 @@
     }
 
     U6A2.prototype.setStage = function() {
+      var boton, bt, shape;
       U6A2.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
       this.insertInstructions('instructions', 'Listen and drag the buildings to the correct place on the map.', 80, 200);
-      this.insertBitmap('btnRepeat', 'repeatbtn', stageSize.w / 2, 1140, 'mc');
+      boton = new createjs.Container();
+      boton.x = stageSize.w / 2;
+      boton.y = 1140;
+      boton.name = "btnRepeat";
+      bt = this.createBitmap("repeat", 'repeatbtn', 0, 0, 'mc');
+      bt.mouseEnabled = false;
+      shape = new createjs.Shape();
+      shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-bt.getBounds().width / 2, -bt.getBounds().height / 2, bt.getBounds().width, bt.getBounds().height);
+      boton.addChild(bt, shape);
+      this.addToLibrary(boton, bt, shape);
+      this.addToMain(boton);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 9, 0));
       this.intento = 0;
       return this.setMap(1).introEvaluation();

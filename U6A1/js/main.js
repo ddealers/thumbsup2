@@ -30,10 +30,10 @@
           id: 'c2',
           src: 'circle2.png'
         }, {
-          id: 'p1',
+          id: 'b1',
           src: 'p1-btn.png'
         }, {
-          id: 'p2',
+          id: 'b2',
           src: 'p2-btn.png'
         }, {
           id: 'm1',
@@ -218,8 +218,26 @@
       U6A1.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
       this.insertInstructions('instructions', 'Drag the puzzle pieces, read and click on the correct answers.', 80, 200);
-      this.insertBitmap('p1', 'p1', 1462, 966);
-      this.insertBitmap('p2', 'p2', 1462, 1060);
+      this.p1 = new createjs.Container();
+      this.p1.name = 'p1';
+      this.p1.x = 1462;
+      this.p1.y = 966;
+      this.b1 = this.createBitmap('b1', 'b1', 0, 0);
+      this.b1.mouseEnabled = false;
+      this.shape1 = new createjs.Shape();
+      this.shape1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.b1.getBounds().width, this.b1.getBounds().height);
+      this.p1.addChild(this.b1, this.shape1);
+      this.p2 = new createjs.Container();
+      this.p2.name = 'p2';
+      this.p2.x = 1462;
+      this.p2.y = 1060;
+      this.b2 = this.createBitmap('b2', 'b2', 0, 0);
+      this.b2.mouseEnabled = false;
+      this.shape2 = new createjs.Shape();
+      this.shape2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.b2.getBounds().width, this.b2.getBounds().height);
+      this.p2.addChild(this.b2, this.shape2);
+      this.addToMain(this.p1, this.p2);
+      this.addToLibrary(this.p1, this.p2);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));
       return this.introEvaluation();
     };
@@ -248,8 +266,8 @@
       U6A1.__super__.initEvaluation.apply(this, arguments);
       _results = [];
       for (i = _i = 1; _i <= 2; i = _i += 1) {
-        this.blink(this.library['p' + i]);
-        _results.push(this.library['p' + i].addEventListener('click', this.selectPuzzle));
+        this.blink(this['p' + i]);
+        _results.push(this['p' + i].addEventListener('click', this.selectPuzzle));
       }
       return _results;
     };
@@ -257,12 +275,31 @@
     U6A1.prototype.selectPuzzle = function(e) {
       var i, _i;
       for (i = _i = 1; _i <= 2; i = _i += 1) {
-        this.blink(this.library["p" + i], false);
-        this.library['p' + i].removeEventListener('click', this.selectPuzzle);
+        this.blink(this["p" + i], false);
+        this['p' + i].removeEventListener('click', this.selectPuzzle);
       }
-      this.insertBitmap('btntrue', 'btntrue', 600, 1080);
-      this.insertBitmap('btnfalse', 'btnfalse', 840, 1080);
-      switch (e.target.name) {
+      this.trueb = new createjs.Container();
+      this.trueb.x = 600;
+      this.trueb.y = 1080;
+      this.trueb.name = 'btntrue';
+      this["true"] = this.createBitmap('btrue', 'btntrue', 0, 0);
+      this["true"].mouseEnabled = false;
+      this.shapetrue = new createjs.Shape();
+      this.shapetrue.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(0, 0, this["true"].getBounds().width, this["true"].getBounds().height);
+      this.trueb.addChild(this["true"], this.shapetrue);
+      this.falseb = new createjs.Container();
+      this.falseb.x = 840;
+      this.falseb.y = 1080;
+      this.falseb.name = 'btnfalse';
+      this["false"] = this.createBitmap('bfalse', 'btnfalse', 0, 0);
+      this["false"].mouseEnabled = false;
+      this.shapefalse = new createjs.Shape();
+      this.shapefalse.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(0, 0, this["false"].getBounds().width, this["false"].getBounds().height);
+      this.falseb.addChild(this["false"], this.shapefalse);
+      this.addToMain(this.trueb, this.falseb);
+      this.addToLibrary(this.trueb, this.falseb);
+      console.log(e.target);
+      switch (e.target.parent.name) {
         case 'p1':
           this.pieces = {
             p1p1: {
@@ -517,7 +554,8 @@
 
     U6A1.prototype.evaluateLocation = function(e) {
       var name;
-      name = e.target.name;
+      name = e.target.parent.name;
+      console.log(name, "btn" + this.pieces[this.answer.index].label);
       if (name === ("btn" + this.pieces[this.answer.index].label)) {
         this.stopListeners();
         createjs.Sound.play('good');
