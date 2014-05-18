@@ -98,8 +98,6 @@ class U4A4 extends Oda
 		@insertBitmap 'framegrasslands', 'framegrasslands', 894, 262
 		@insertBitmap 'framejungle', 'framejungle', 348, 618
 		@insertBitmap 'frameocean', 'frameocean', 336, 262
-
-	
 		@insertBitmap 'incamel', 'incamel', 892, 730 
 		@insertBitmap 'incrocodile', 'incrocodile', 564, 838
 		@insertBitmap 'indolphin', 'indolphin', 336, 434
@@ -137,12 +135,13 @@ class U4A4 extends Oda
 		@library['inwhale'].visible = false
 		@library['inzebra'].visible = false
 	setClick: -> 
-		@insertBitmap 'btnfalse', 'btnfalse', 1072, 1070
-		@insertBitmap 'btntrue', 'btntrue', 818, 1072
+		btnfalse = new Button 'btnfalse', (@preload.getResult 'btnfalse'), 0, 1072, 1070
+		btntrue = new Button 'btntrue', (@preload.getResult 'btntrue'), 0, 818, 1070
+		@addToMain btntrue, btnfalse
 		@library.btnfalse.index = 'off'
 		@library.btntrue.index = 'on'
-		@library['btntrue'].addEventListener 'click', @evaluateAnswer
-		@library['btnfalse'].addEventListener 'click', @evaluateAnswer
+		@library.btntrue.addEventListener 'click', @evaluateAnswer
+		@library.btnfalse.addEventListener 'click', @evaluateAnswer
 		@
 	introEvaluation: ->
 		super

@@ -15,16 +15,26 @@
 
     Button.prototype.initialize = function(name, image, index, x, y) {
       this.Container_initialize();
-      this.name = name;
-      this.bitmap = new createjs.Bitmap(image);
-      this.index = index;
-      this.x = x;
-      this.y = y;
-      this.pos = {
+      this.set({
+        name: name,
+        index: index,
         x: x,
-        y: y
-      };
-      this.addChild(this.bitmap);
+        y: y,
+        pos: {
+          x: x,
+          y: y
+        },
+        mouseChildren: false
+      });
+      this.bitmap = new createjs.Bitmap(image);
+      this.bitmap.mouseEnabled = false;
+      this.shape = new createjs.Shape();
+      this.shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.bitmap.getBounds().width, this.bitmap.getBounds().height);
+      this.set({
+        width: this.bitmap.getBounds().width,
+        height: this.bitmap.getBounds().height
+      });
+      this.addChild(this.bitmap, this.shape);
       return false;
     };
 
@@ -81,13 +91,19 @@
       } else {
         this.firstOption.x = this.firstOption.width + 20;
       }
-      this.addChild(this.firstOption, this.secondOption);
+      this.shape1 = new createjs.Shape();
+      this.shape1.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(this.firstOption.x, 0, this.firstOption.getBounds().width, this.firstOption.getBounds().height);
+      this.shape1.index = 1;
+      this.shape2 = new createjs.Shape();
+      this.shape2.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(this.secondOption.x, 0, this.secondOption.getBounds().width, this.secondOption.getBounds().height);
+      this.shape2.index = 2;
+      this.addChild(this.firstOption, this.secondOption, this.shape1, this.shape2);
       return false;
     };
 
     ChooseBitmap.prototype.initListeners = function() {
-      this.firstOption.addEventListener('click', this._dispatchSelection);
-      return this.secondOption.addEventListener('click', this._dispatchSelection);
+      this.shape1.addEventListener('click', this._dispatchSelection);
+      return this.shape2.addEventListener('click', this._dispatchSelection);
     };
 
     ChooseBitmap.prototype.setImages = function(img1, img2, success) {
@@ -99,7 +115,13 @@
       this.secondOption.width = img2.width;
       this.secondOption.x = this.firstOption.width + 20;
       this.secondOption.index = 2;
-      return this.addChild(this.firstOption, this.secondOption);
+      this.shape1 = new createjs.Shape();
+      this.shape1.graphics.beginFill('rgba(0,0,0,0.4)').drawRect(this.firstOption.x, 0, this.firstOption.getBounds().width, this.firstOption.getBounds().height);
+      this.shape1.index = 1;
+      this.shape2 = new createjs.Shape();
+      this.shape2.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(this.secondOption.x, 0, this.secondOption.getBounds().width, this.secondOption.getBounds().height);
+      this.shape2.index = 2;
+      return this.addChild(this.firstOption, this.secondOption, this.shape1, this.shape2);
     };
 
     ChooseBitmap.prototype.setDistance = function(dist, w) {
@@ -117,18 +139,30 @@
 
     ChooseBitmap.prototype._dispatchSelection = function(e) {
       if (e.target.index === this.success) {
-        if (e.target === this.firstOption) {
+        if (e.target.index === 1) {
           TweenLite.to(this.firstOption, 1, {
             x: this.regX - this.firstOption.width / 2
           });
+          TweenLite.to(this.shape1, 1, {
+            x: this.regX - this.firstOption.width / 2
+          });
           TweenLite.to(this.secondOption, 1, {
+            alpha: 0
+          });
+          TweenLite.to(this.shape2, 1, {
             alpha: 0
           });
         } else {
           TweenLite.to(this.firstOption, 1, {
             alpha: 0
           });
+          TweenLite.to(this.shape1, 1, {
+            alpha: 0
+          });
           TweenLite.to(this.secondOption, 1, {
+            x: this.regX + this.secondOption.width / 2
+          });
+          TweenLite.to(this.shape2, 1, {
             x: this.regX + this.secondOption.width / 2
           });
         }
@@ -147,7 +181,7 @@
 
   ChooseText = (function() {
     function ChooseText(name, prev, text1, text2, comp, success, x, y) {
-      this._dispatchSelection = __bind(this._dispatchSelection, this);
+      this._dispatchEvent = __bind(this._dispatchEvent, this);
       this.initialize(name, prev, text1, text2, comp, success, x, y);
     }
 
@@ -175,16 +209,16 @@
       this.complement = new createjs.Text(complement, '32px Quicksand', '#333333');
       this.complement.x = this.secondOption.x + this.secondOption.width;
       this.width = this.complement.x + this.complement.getMeasuredWidth() + 20;
-      this.firstOption.addEventListener('click', this._dispatchSelection);
-      this.secondOption.addEventListener('click', this._dispatchSelection);
+      this.firstOption.addEventListener('click', this._dispatchEvent);
+      this.secondOption.addEventListener('click', this._dispatchEvent);
       this.addChild(this.prev, this.firstOption, this.slash, this.secondOption, this.complement);
       return false;
     };
 
-    ChooseText.prototype._dispatchSelection = function(e) {
+    ChooseText.prototype._dispatchEvent = function(e) {
       return this.dispatchEvent({
         type: 'selection',
-        success: e.currentTarget.index === this.success
+        success: e.target.index === this.success
       });
     };
 
@@ -306,8 +340,8 @@
       this.count = count;
       this.text = new createjs.Text(this.count, '48px Arial', '#ffffff');
       this.text.textAlign = 'center';
-      this.text.x = 60;
-      this.text.y = 10;
+      this.text.x = 30;
+      this.text.y = 5;
       shape = new createjs.Shape();
       shape.graphics.beginFill(back).drawRoundRect(0, 0, 120, 72, 10);
       this.addChild(shape, this.text);
@@ -376,19 +410,19 @@
     };
 
     Draggable.prototype.onInitEvaluation = function() {
-      return this.addEventListener('mousedown', this.handleMouseDown);
+      return this.on('mousedown', this.handleMouseDown);
     };
 
     Draggable.prototype.onStopEvaluation = function() {
-      return this.removeEventListener('mousedown', this.handleMouseDown);
+      return this.off('mousedown', this.handleMouseDown);
     };
 
     Draggable.prototype.initDragListener = function() {
-      return this.addEventListener('mousedown', this.handleMouseDown);
+      return this.on('mousedown', this.handleMouseDown);
     };
 
     Draggable.prototype.endDragListener = function() {
-      return this.removeEventListener('mousedown', this.handleMouseDown);
+      return this.off('mousedown', this.handleMouseDown);
     };
 
     Draggable.prototype.handleMouseDown = function(e) {
@@ -405,14 +439,16 @@
       };
       this.x = posX - offset.x;
       this.y = posY - offset.y;
-      this.addEventListener('pressmove', function(ev) {
+      this.on('pressmove', function(ev) {
         posX = ev.stageX / stageSize.r;
         posY = ev.stageY / stageSize.r;
         _this.x = posX - offset.x;
         _this.y = posY - offset.y;
         return false;
       });
-      this.addEventListener('pressup', function(ev) {
+      this.on('pressup', function(ev) {
+        _this.removeAllEventListeners('pressmove');
+        _this.removeAllEventListeners('pressup');
         _this.dispatchEvent('drop');
         return false;
       });
@@ -541,7 +577,11 @@
       };
       this.text = new createjs.Text(text, '32px Quicksand', '#333333');
       this.hit = new createjs.Shape();
-      this.hit.graphics.beginFill('#000').drawRect(-10, -10, this.text.getMeasuredWidth() + 20, this.text.getMeasuredHeight() + 20);
+      if (this.text.getMeasuredWidth() < 20) {
+        this.hit.graphics.beginFill('#000').drawRect(-10, -10, 40, this.text.getMeasuredHeight() + 20);
+      } else {
+        this.hit.graphics.beginFill('#000').drawRect(-10, -10, this.text.getMeasuredWidth() + 20, this.text.getMeasuredHeight() + 20);
+      }
       this.text.hitArea = this.hit;
       this.inPlace = false;
       this.addChild(this.text);
@@ -610,6 +650,8 @@
         return false;
       });
       this.addEventListener('pressup', function(ev) {
+        _this.removeAllEventListeners('pressmove');
+        _this.removeAllEventListeners('pressup');
         _this.dispatchEvent('drop');
         return false;
       });
@@ -1444,9 +1486,21 @@
     };
 
     Oda.prototype.playInstructions = function(oda) {
-      var inst;
+      var bmp, inst, shape;
       if (dealersjs.mobile.isIOS() || dealersjs.mobile.isAndroid()) {
-        oda.insertBitmap('start', 'sg', stageSize.w / 2, stageSize.h / 2, 'mc');
+        this.start = new createjs.Container();
+        this.start.set({
+          name: 'start',
+          x: stageSize.w / 2,
+          y: stageSize.h / 2
+        });
+        bmp = oda.createBitmap('start', 'sg', 0, 0);
+        bmp.mouseEnabled = false;
+        shape = new createjs.Shape();
+        shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+        this.setReg(this.start, bmp.width / 2, bmp.height / 2);
+        this.start.addChild(bmp, shape);
+        oda.addToMain(this.start);
         oda.library['start'].addEventListener('click', oda.initMobileInstructions);
         return TweenLite.from(oda.library['start'], 0.3, {
           alpha: 0,
@@ -1481,7 +1535,20 @@
     };
 
     Oda.prototype.finish = function() {
-      this.insertBitmap('play_again', 'pa', stageSize.w / 2, stageSize.h / 2, 'mc');
+      var bmp, shape;
+      this.play_again = new createjs.Container();
+      this.play_again.set({
+        name: 'play_again',
+        x: stageSize.w / 2,
+        y: stageSize.h / 2
+      });
+      bmp = this.createBitmap('play_again', 'pa', 0, 0);
+      bmp.mouseEnabled = false;
+      shape = new createjs.Shape();
+      shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+      this.setReg(this.play_again, bmp.width / 2, bmp.height / 2);
+      this.play_again.addChild(bmp, shape);
+      this.addToMain(this.play_again);
       this.library['play_again'].addEventListener('click', this.handlePlayAgain);
       return TweenLite.from(this.library['play_again'], 0.5, {
         alpha: 0,
@@ -1537,8 +1604,8 @@
       return this.stage.update();
     };
 
-    Oda.prototype.insertInstructions = function(name, text, x, y) {
-      var inst, triangle;
+    Oda.prototype.insertInstructions = function(name, text, x, y, ital) {
+      var frase, inst, it, label, npos, triangle, _i, _len;
       inst = new createjs.Container();
       inst.name = name;
       inst.x = x;
@@ -1546,8 +1613,23 @@
       triangle = new createjs.Shape();
       triangle.graphics.beginFill('#bcd748').moveTo(0, 0).lineTo(16, 10).lineTo(0, 20);
       triangle.y = 10;
-      text = this.createText('insttext', text, '32px Roboto', '#000', 28, 0);
-      inst.addChild(triangle, text);
+      console.log(text);
+      it = 0;
+      npos = 14;
+      for (_i = 0, _len = text.length; _i < _len; _i++) {
+        frase = text[_i];
+        if (frase === '#ital') {
+          label = new createjs.Text(ital[it], 'italic 32px Roboto', '#000');
+          it++;
+        } else {
+          label = new createjs.Text(frase, '32px Roboto', '#000');
+        }
+        label.x = npos;
+        inst.addChild(label);
+        console.log(label);
+        npos = npos + label.getMeasuredWidth() + 5;
+      }
+      inst.addChild(triangle);
       return this.addToMain(inst);
     };
 

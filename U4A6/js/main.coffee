@@ -82,7 +82,7 @@ class U4A6 extends Oda
 		super
 		@preguntas = @shuffleNoRepeat @game.preguntas, 16
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Take the review quiz! Click on the correct option.', 80, 200
+		@insertInstructions 'instructions', ['Take the review quiz! Click on the correct option.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 16, 0
 		@setQuestion(0).introEvaluation()
 	setQuestion: (i) ->
@@ -131,15 +131,28 @@ class U4A6 extends Oda
 			question.addChild text
 			@addToLibrary text
 
-			v = @createBitmap @preguntas[i].opcionUno, @preguntas[i].opcionUno, stageSize.w / 4, stageSize.h / 2 + 60, 'mc'
-			v.scaleX = v.scaleY = 0.6
-			question.addChild v
-			@addToLibrary v
-			v = @createBitmap @preguntas[i].opcionDos, @preguntas[i].opcionDos, (stageSize.w / 4)*3, stageSize.h / 2 + 60, 'mc'
-			v.scaleX = v.scaleY = 0.6
-			question.addChild v
-			@addToLibrary v
-
+			v = @createBitmap @preguntas[i].opcionUno, @preguntas[i].opcionUno, 0, 0
+			v.mouseEnabled = false
+			s = new createjs.Shape()
+			s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, v.getBounds().width, v.getBounds().height)
+			sc = new createjs.Container()
+			sc.set {name: @preguntas[i].opcionUno, x: stageSize.w / 4, y: stageSize.h / 2 + 60}
+			sc.addChild v, s
+			sc.scaleX = sc.scaleY = 0.6
+			@setReg sc, sc.getBounds().width/2, sc.getBounds().height/2
+			question.addChild sc
+			@addToLibrary sc
+			v = @createBitmap @preguntas[i].opcionDos, @preguntas[i].opcionDos, 0, 0
+			v.mouseEnabled = false
+			s = new createjs.Shape()
+			s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, v.getBounds().width, v.getBounds().height)
+			sc = new createjs.Container()
+			sc.set {name: @preguntas[i].opcionDos, x: (stageSize.w / 4)*3, y: stageSize.h / 2 + 60}
+			sc.addChild v, s
+			sc.scaleX = sc.scaleY = 0.6
+			@setReg sc, sc.getBounds().width/2, sc.getBounds().height/2
+			question.addChild sc
+			@addToLibrary sc
 		@addToMain question
 		@
 	introEvaluation: ->

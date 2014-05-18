@@ -347,13 +347,13 @@
       U4A6.__super__.setStage.apply(this, arguments);
       this.preguntas = this.shuffleNoRepeat(this.game.preguntas, 16);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Take the review quiz! Click on the correct option.', 80, 200);
+      this.insertInstructions('instructions', ['Take the review quiz! Click on the correct option.'], 80, 200);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 16, 0));
       return this.setQuestion(0).introEvaluation();
     };
 
     U4A6.prototype.setQuestion = function(i) {
-      var diagonal, dos, opciones, question, text, total, uno, v;
+      var diagonal, dos, opciones, question, s, sc, text, total, uno, v;
       question = new createjs.Container();
       question.x = 0;
       question.y = 0;
@@ -390,14 +390,36 @@
         text = this.createText('titulo', this.preguntas[i].pregunta, '48px Quicksand', '#333', 800, 280, 'center');
         question.addChild(text);
         this.addToLibrary(text);
-        v = this.createBitmap(this.preguntas[i].opcionUno, this.preguntas[i].opcionUno, stageSize.w / 4, stageSize.h / 2 + 60, 'mc');
-        v.scaleX = v.scaleY = 0.6;
-        question.addChild(v);
-        this.addToLibrary(v);
-        v = this.createBitmap(this.preguntas[i].opcionDos, this.preguntas[i].opcionDos, (stageSize.w / 4) * 3, stageSize.h / 2 + 60, 'mc');
-        v.scaleX = v.scaleY = 0.6;
-        question.addChild(v);
-        this.addToLibrary(v);
+        v = this.createBitmap(this.preguntas[i].opcionUno, this.preguntas[i].opcionUno, 0, 0);
+        v.mouseEnabled = false;
+        s = new createjs.Shape();
+        s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, v.getBounds().width, v.getBounds().height);
+        sc = new createjs.Container();
+        sc.set({
+          name: this.preguntas[i].opcionUno,
+          x: stageSize.w / 4,
+          y: stageSize.h / 2 + 60
+        });
+        sc.addChild(v, s);
+        sc.scaleX = sc.scaleY = 0.6;
+        this.setReg(sc, sc.getBounds().width / 2, sc.getBounds().height / 2);
+        question.addChild(sc);
+        this.addToLibrary(sc);
+        v = this.createBitmap(this.preguntas[i].opcionDos, this.preguntas[i].opcionDos, 0, 0);
+        v.mouseEnabled = false;
+        s = new createjs.Shape();
+        s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, v.getBounds().width, v.getBounds().height);
+        sc = new createjs.Container();
+        sc.set({
+          name: this.preguntas[i].opcionDos,
+          x: (stageSize.w / 4) * 3,
+          y: stageSize.h / 2 + 60
+        });
+        sc.addChild(v, s);
+        sc.scaleX = sc.scaleY = 0.6;
+        this.setReg(sc, sc.getBounds().width / 2, sc.getBounds().height / 2);
+        question.addChild(sc);
+        this.addToLibrary(sc);
       }
       this.addToMain(question);
       return this;

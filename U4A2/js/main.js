@@ -117,7 +117,8 @@
     U4A2.prototype.setStage = function() {
       U4A2.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Find the words and drag the cursor.', 80, 200);
+      this.library.header.mouseEnabled = false;
+      this.insertInstructions('instructions', ['Find the words and drag the cursor.'], 80, 200);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 150, 0));
       return this.setAnimals().setSopa().introEvaluation();
     };
@@ -168,7 +169,7 @@
 
     U4A2.prototype.updateCounter = function() {
       this.time--;
-      this.library['score'].updateTotal(this.time);
+      this.library.score.updateTotal(this.time);
       if (this.time === 0) {
         return this.finish();
       }
@@ -176,17 +177,17 @@
 
     U4A2.prototype.introEvaluation = function() {
       U4A2.__super__.introEvaluation.apply(this, arguments);
-      TweenLite.from(this.library['header'], 1, {
-        y: -this.library['header'].height
+      TweenLite.from(this.library.header, 1, {
+        y: -this.library.header.height
       });
-      TweenLite.from(this.library['instructions'], 1, {
+      TweenLite.from(this.library.instructions, 1, {
         alpha: 0,
         x: 0,
         delay: 0.5,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
-      return TweenMax.allFrom([this.library['bluewhale'], this.library['dolphin'], this.library['eagle'], this.library['giantpanda'], this.library['gorilla'], this.library['jaguar'], this.library['lion'], this.library['seaturtle'], this.library['polarbear']], 1, {
+      return TweenMax.allFrom([this.library.bluewhale, this.library.dolphin, this.library.eagle, this.library.giantpanda, this.library.gorilla, this.library.jaguar, this.library.lion, this.library.seaturtle, this.library.polarbear], 1, {
         alpha: 0,
         delay: 1.5
       }, 0.1);
@@ -198,17 +199,17 @@
       this.timer = setInterval(this.updateCounter, 1000);
       this.library.sopa.visible = true;
       this.library.sopa.cache(-52, -52, 572, 572);
-      TweenLite.from(this.library['sopa'], 1, {
+      TweenLite.from(this.library.sopa, 1, {
         alpha: 0,
         y: this.library['sopa'].y - 40
       });
-      return this.mainContainer.addEventListener('mousedown', this.evaluateAnswer);
+      return this.library.sopa.addEventListener('mousedown', this.evaluateAnswer);
     };
 
     U4A2.prototype.evaluateAnswer = function(e) {
       var answer, clktxt, h, i, oup, pos, pt, shape, target,
         _this = this;
-      answer = Array();
+      answer = [];
       shape = new createjs.Shape();
       target = e.target;
       pt = this.mainContainer.globalToLocal(this.stage.mouseX, this.stage.mouseY);
@@ -243,7 +244,7 @@
                 };
                 answer.push(clktxt.index);
                 shape.graphics.c().s("rgba(255, 0, 0, 1)").f("rgba(255, 0, 0, 0.5)").rr(pos.x, pos.y, npos.w, npos.h, 10);
-                return _this.library.sopa.cache(-52, -52, 572, 572);
+                return _this.library.sopa.updateCache();
               }
             }
           });
@@ -271,7 +272,7 @@
             if (!find) {
               _this.library.shapesContainer.removeChild(shape);
             }
-            return _this.library.sopa.cache(-52, -52, 572, 572);
+            return _this.library.sopa.updateCache();
           });
         }
       }

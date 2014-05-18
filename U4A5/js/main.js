@@ -181,30 +181,43 @@
     }
 
     U4A5.prototype.setStage = function() {
-      var ti;
+      var btnnext, ti;
       U4A5.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Read and drag the sentences to complete the story.', 80, 200);
+      this.insertInstructions('instructions', ['Read and drag the sentences to complete the story.'], 80, 200);
       ti = this.createBitmap('title', 'title1', 665, 245, 'tc');
       ti.scaleX = ti.scaleY = 0.8;
       this.addToMain(ti);
-      this.insertBitmap('btnnext', 'btn', 1520, 1040, 'br');
+      btnnext = new Button('btnnext', this.preload.getResult('btn'), 0, 1220, 1040);
+      this.addToMain(btnnext);
       this.library['btnnext'].visible = false;
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));
       return this.setCuento(1).introEvaluation();
     };
 
     U4A5.prototype.setCuento = function(scene) {
-      var cuento, i, m, t, _i, _j, _ref, _ref1;
+      var cuento, i, s, sc, sp, t, _i, _j, _ref, _ref1;
       cuento = new createjs.Container();
       cuento.name = 'cuento';
       this.scene = scene;
       for (i = _i = 1, _ref = this.game[scene - 1].positions.length; _i <= _ref; i = _i += 1) {
-        m = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, this.game[scene - 1].positions[i - 1].x, this.game[scene - 1].positions[i - 1].y);
-        m.index = (scene - 1) * 4 + i;
-        m.scaleX = m.scaleY = 1.1;
-        cuento.addChild(m);
-        this.addToLibrary(m);
+        sp = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, 0, 0);
+        sp.mouseEnabled = false;
+        s = new createjs.Shape();
+        s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height);
+        sc = new createjs.Container();
+        sc.set({
+          name: "sc" + i,
+          index: (scene - 1) * 4 + i,
+          x: this.game[scene - 1].positions[i - 1].x,
+          y: this.game[scene - 1].positions[i - 1].y,
+          sprite: sp,
+          shape: s
+        });
+        sc.addChild(sp, s);
+        sc.scaleX = sc.scaleY = 1.1;
+        cuento.addChild(sc);
+        this.addToLibrary(sc);
       }
       for (i = _j = 1, _ref1 = this.game[scene - 1].texts.length; _j <= _ref1; i = _j += 1) {
         t = new DraggableText("t" + i, this.game[scene - 1].texts[i - 1].t, this.game[scene - 1].texts[i - 1].idx, 1400, i * 120 + 400);
@@ -278,11 +291,11 @@
       dropped = false;
       _results = [];
       for (i = _i = 1, _ref = this.game[this.scene - 1].positions.length; _i <= _ref; i = _i += 1) {
-        pt = this.library["sc" + i].globalToLocal(this.stage.mouseX, this.stage.mouseY);
-        if (this.library["sc" + i].hitTest(pt.x, pt.y)) {
+        pt = this.library["sc" + i].shape.globalToLocal(this.stage.mouseX, this.stage.mouseY);
+        if (this.library["sc" + i].shape.hitTest(pt.x, pt.y)) {
           if (!this.isArray(this.answer.index)) {
             if (this.answer.index === this.library["sc" + i].index) {
-              this.library["sc" + i].gotoAndStop(1);
+              this.library["sc" + i].sprite.gotoAndStop(1);
               this.answer.visible = false;
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
@@ -304,7 +317,7 @@
               }
             }
             if (hit) {
-              this.library["sc" + i].gotoAndStop(1);
+              this.library["sc" + i].sprite.gotoAndStop(1);
               this.answer.visible = false;
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
@@ -327,7 +340,7 @@
     U4A5.prototype.finishEvaluation = function() {
       var i, _i, _ref;
       for (i = _i = 1, _ref = this.game[this.scene - 1].positions.length; _i <= _ref; i = _i += 1) {
-        if (this.library["sc" + i].currentFrame === 0) {
+        if (this.library["sc" + i].sprite.currentFrame === 0) {
           return;
         }
       }

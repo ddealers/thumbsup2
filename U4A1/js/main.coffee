@@ -156,10 +156,11 @@ class U4A1 extends Oda
 		@game.you = 0
 		@game.pc = 0
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Listen and click on the correct pictures.', 80, 200
+		@insertInstructions 'instructions', ['Listen and click on the correct pictures.'], 80, 200
 		@insertBitmap 'scoreComputer', 'scoreComputer', 38, 926
 		@insertBitmap 'scoreYou', 'scoreYou', 38, 740
-		@insertBitmap 'repeatbtn', 'repeatbtn', 790, 1072
+		repeat = new Button 'repeatbtn', (@preload.getResult 'repeatbtn'), 0, 790, 1072
+		@addToMain repeat
 		@insertText 'pcCount',@game.pc,'48px Quicksand', '#ffffff', 99, 974, 'center'
 		@insertText 'youCount',@game.you,'48px Quicksand', '#ffffff', 94, 794, 'center'
 		@setCardsYou().setCardsPc().introEvaluation()
@@ -184,7 +185,7 @@ class U4A1 extends Oda
 		TweenLite.to @library.cartas, 1, {alpha: 0, y: @library.cartas.y - 100}
 		TweenLite.to @library.cartaspc, 1, {alpha: 0, y: @library.cartaspc.y - 100}
 		clearInterval @interval
-		
+
 		@youcards = @shuffleNoRepeat @animals, 9
 		@pccards = @shuffleNoRepeat @animals, 9
 		@game.animals = @shuffle @animals
@@ -204,22 +205,22 @@ class U4A1 extends Oda
 
 		texto = @createText '', 'You', '44px Quicksand', '#333', 300, -50
 		cartas.addChild texto
-		
+
 		for h in [0..2]
 			for i in [0..2]
 				b = @createSprite 'borde', ['borde1', 'borde2', 'borde3'], null, 0, 0
 				a = @createBitmap 'animal', @youcards[j].id, 0, 0
-				a.scaleX = a.scaleY = 0.72
+				s = new createjs.Shape()
+				s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, a.getBounds().width * 0.72, a.getBounds().height * 0.72)
+				b.mouseEnabled = false
+				a.set {scaleX: 0.72, scaleY: 0.72, mouseEnabled: false}
 				carta = new createjs.Container()
-				carta.name = "cartay#{j}"
-				carta.index = @youcards[j].id
-				carta.x = i * 224
-				carta.y = h * 260
-				carta.addChild b, a
+				carta.set {name: "cartay#{j}", index: @youcards[j].id, x: i * 224, y: h * 260}
+				carta.addChild b, a, s
 				cartas.addChild carta
 				@addToLibrary carta
 				j++
-		
+
 		@addToMain cartas
 		@
 	setCardsPc: ->
@@ -228,10 +229,10 @@ class U4A1 extends Oda
 		cartaspc.x = 898
 		cartaspc.y = 290
 		cartaspc.name = 'cartaspc'
-		
+
 		texto = @createText '', 'Computer','44px Quicksand','#333', 234, -50
 		cartaspc.addChild texto
-		
+
 		for h in [0..2]
 			for i in [0..2]
 				b = @createSprite 'borde', ['borde1', 'borde2', 'borde3'], null, 0, 0
@@ -256,8 +257,8 @@ class U4A1 extends Oda
 		TweenLite.from @library['cartas'], 1, {alpha: 0, y: @library['cartas'].y - 100, delay: 1}
 		if @round is 0
 			TweenLite.from @library['cartaspc'], 1, {alpha: 0, y: @library['cartaspc'].y - 100, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
-		else	
-			TweenLite.from @library['cartaspc'], 1, {alpha: 0, y: @library['cartaspc'].y - 100, delay: 1, onComplete: @initEvaluation, onCompleteParams: [@]}	
+		else
+			TweenLite.from @library['cartaspc'], 1, {alpha: 0, y: @library['cartaspc'].y - 100, delay: 1, onComplete: @initEvaluation, onCompleteParams: [@]}
 
 	initEvaluation: (e) =>
 		super

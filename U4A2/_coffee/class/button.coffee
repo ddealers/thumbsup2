@@ -9,7 +9,7 @@ class Button
 		@bitmap = new createjs.Bitmap image
 		@bitmap.mouseEnabled = false
 		@shape = new createjs.Shape()
-		@shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @bitmap.getBounds().width, @bitmap.getBounds().height)
+		@shape.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, @bitmap.getBounds().width, @bitmap.getBounds().height)
 		@set {width: @bitmap.getBounds().width, height: @bitmap.getBounds().height}
 		@addChild @bitmap, @shape
 		false
