@@ -16,6 +16,7 @@ class ClickableText
 		hit = new createjs.Shape()
 		hit.graphics.beginFill('#000').drawRect(-10, -6, @text.getMeasuredWidth() + 40, @text.getMeasuredHeight() + 12)
 		@text.hitArea = hit
+		@mouseChildren = false
 		@addChild @text
 		false
 	setLineWidth: (width) ->

@@ -13,6 +13,7 @@
     ChooseBitmap.prototype.Container_initialize = ChooseBitmap.prototype.initialize;
 
     ChooseBitmap.prototype.initialize = function(name, img1, img2, success, x, y) {
+      var s1, s2;
       this.Container_initialize();
       this.name = name;
       this.x = x;
@@ -26,52 +27,77 @@
       this.secondOption = new createjs.Container();
       this.rand = Math.random() > 0.5 ? 1 : 2;
       this.first = new createjs.Bitmap(img1);
-      this.first.width = img1.width;
-      this.first.index = 1;
+      this.first.set({
+        width: img1.width,
+        index: 1,
+        mouseEnabled: false
+      });
       this.second = new createjs.Bitmap(img2);
-      this.second.width = img2.width;
-      this.second.index = 2;
+      this.second.set({
+        width: img2.width,
+        index: 2,
+        mouseEnabled: false
+      });
       if (this.rand === 1) {
+        this.firstOption.x = 0;
         this.secondOption.x = this.first.width + 20;
       } else {
         this.firstOption.x = this.first.width + 20;
+        this.secondOption.x = 0;
       }
-      console.log(this.firstOption);
-      this.shape1 = new createjs.Shape();
-      this.shape1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.first.getBounds().width, this.first.getBounds().height);
-      this.shape1.index = 1;
-      this.shape2 = new createjs.Shape();
-      this.shape2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.second.getBounds().width, this.second.getBounds().height);
-      this.shape2.index = 2;
-      this.firstOption.addChild(this.first, this.shape1);
-      this.secondOption.addChild(this.second, this.shape2);
+      s1 = new createjs.Shape();
+      s1.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, this.first.getBounds().width, this.first.getBounds().height);
+      s1.index = 1;
+      s2 = new createjs.Shape();
+      s2.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, this.second.getBounds().width, this.second.getBounds().height);
+      s2.index = 2;
+      this.firstOption.bmp = this.first;
+      this.secondOption.bmp = this.second;
+      this.firstOption.addChild(this.first, s1);
+      this.secondOption.addChild(this.second, s2);
       this.addChild(this.firstOption, this.secondOption);
       return false;
     };
 
     ChooseBitmap.prototype.initListeners = function() {
-      this.firstOption.children[1].addEventListener('click', this._dispatchSelection);
-      return this.secondOption.children[1].addEventListener('click', this._dispatchSelection);
+      this.firstOption.addEventListener('click', this._dispatchSelection);
+      return this.secondOption.addEventListener('click', this._dispatchSelection);
     };
 
     ChooseBitmap.prototype.setImages = function(img1, img2, success) {
-      this.removeAllChildren();
+      var s1, s2;
       this.firstOption = new createjs.Container();
       this.secondOption = new createjs.Container();
+      this.rand = Math.random() > 0.5 ? 1 : 2;
       this.first = new createjs.Bitmap(img1);
-      this.first.width = img1.width;
-      this.first.index = 1;
+      this.first.set({
+        width: img1.width,
+        index: 1,
+        mouseEnabled: false
+      });
       this.second = new createjs.Bitmap(img2);
-      this.second.width = img2.width;
-      this.second.index = 2;
-      this.shape1 = new createjs.Shape();
-      this.shape1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.first.getBounds().width, this.first.getBounds().height);
-      this.shape1.index = 1;
-      this.shape2 = new createjs.Shape();
-      this.shape2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.second.getBounds().width, this.second.getBounds().height);
-      this.shape2.index = 2;
-      this.firstOption.addChild(this.first, this.shape1);
-      this.secondOption.addChild(this.second, this.shape2);
+      this.second.set({
+        width: img2.width,
+        index: 2,
+        mouseEnabled: false
+      });
+      if (this.rand === 1) {
+        this.firstOption.x = 0;
+        this.secondOption.x = this.first.width + 20;
+      } else {
+        this.firstOption.x = this.first.width + 20;
+        this.secondOption.x = 0;
+      }
+      s1 = new createjs.Shape();
+      s1.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, this.first.getBounds().width, this.first.getBounds().height);
+      s1.index = 1;
+      s2 = new createjs.Shape();
+      s2.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, this.second.getBounds().width, this.second.getBounds().height);
+      s2.index = 2;
+      this.firstOption.bmp = this.first;
+      this.secondOption.bmp = this.second;
+      this.firstOption.addChild(this.first, s1);
+      this.secondOption.addChild(this.second, s2);
       return this.addChild(this.firstOption, this.secondOption);
     };
 
@@ -89,11 +115,11 @@
     };
 
     ChooseBitmap.prototype._dispatchSelection = function(e) {
-      console.log(e.target.index);
+      console.log('index', e.target.index);
       if (e.target.index === this.success) {
         if (e.target.index === 1) {
           TweenLite.to(this.firstOption, 1, {
-            x: this.regX - this.first.width / 2
+            x: this.regX - this.firstOption.bmp.width / 2
           });
           TweenLite.to(this.secondOption, 1, {
             alpha: 0
@@ -103,7 +129,7 @@
             alpha: 0
           });
           TweenLite.to(this.secondOption, 1, {
-            x: this.regX + this.second.width / 2
+            x: this.regX + this.secondOption.bmp.width / 2
           });
         }
       }

@@ -71,8 +71,10 @@ class U5A2 extends Oda
 		@steps = @shuffle @game.steps
 		@stepsid = (step.id for step in @steps)
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertBitmap 'repeatbtn', 'repeatbtn', 800, 900, 'mc'
-		@insertInstructions 'instructions', 'Listen and click on the correct option.', 80, 200
+		repeat = new Button 'repeatbtn', (@preload.getResult 'repeatbtn'), 0, 800, 900
+		@setReg repeat, repeat.getBounds().width / 2, repeat.getBounds().height / 2
+		@addToMain repeat
+		@insertInstructions 'instructions', ['Listen and click on the correct option.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 15, 0
 		@setStep().introEvaluation()
 	setStep: ->
@@ -87,7 +89,6 @@ class U5A2 extends Oda
 		choose.scaleX = choose.scaleY = 0.6
 		choose.setDistance 1100, 0
 		choose.addEventListener 'selection', (e)=>
-			
 			@tindex = 0
 			if e.success is false 
 				@warning() 
