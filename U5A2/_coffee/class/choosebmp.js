@@ -46,10 +46,10 @@
         this.secondOption.x = 0;
       }
       s1 = new createjs.Shape();
-      s1.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, this.first.getBounds().width, this.first.getBounds().height);
+      s1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.first.getBounds().width, this.first.getBounds().height);
       s1.index = 1;
       s2 = new createjs.Shape();
-      s2.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, this.second.getBounds().width, this.second.getBounds().height);
+      s2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.second.getBounds().width, this.second.getBounds().height);
       s2.index = 2;
       this.firstOption.bmp = this.first;
       this.secondOption.bmp = this.second;
@@ -89,10 +89,10 @@
         this.secondOption.x = 0;
       }
       s1 = new createjs.Shape();
-      s1.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, this.first.getBounds().width, this.first.getBounds().height);
+      s1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.first.getBounds().width, this.first.getBounds().height);
       s1.index = 1;
       s2 = new createjs.Shape();
-      s2.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, this.second.getBounds().width, this.second.getBounds().height);
+      s2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.second.getBounds().width, this.second.getBounds().height);
       s2.index = 2;
       this.firstOption.bmp = this.first;
       this.secondOption.bmp = this.second;

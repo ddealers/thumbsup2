@@ -30,11 +30,11 @@ class ChooseBitmap
 			@secondOption.x = 0
 			
 		s1 = new createjs.Shape()
-		s1.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, @first.getBounds().width, @first.getBounds().height)
+		s1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @first.getBounds().width, @first.getBounds().height)
 		s1.index = 1
 
 		s2 = new createjs.Shape()
-		s2.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, @second.getBounds().width, @second.getBounds().height)
+		s2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @second.getBounds().width, @second.getBounds().height)
 		s2.index = 2
 		
 		@firstOption.bmp = @first
@@ -68,11 +68,11 @@ class ChooseBitmap
 			@secondOption.x = 0
 			
 		s1 = new createjs.Shape()
-		s1.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, @first.getBounds().width, @first.getBounds().height)
+		s1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @first.getBounds().width, @first.getBounds().height)
 		s1.index = 1
 
 		s2 = new createjs.Shape()
-		s2.graphics.beginFill('rgba(0,255,255,0.1)').drawRect(0, 0, @second.getBounds().width, @second.getBounds().height)
+		s2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @second.getBounds().width, @second.getBounds().height)
 		s2.index = 2
 		
 		@firstOption.bmp = @first
