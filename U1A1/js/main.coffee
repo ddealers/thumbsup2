@@ -124,17 +124,17 @@ class U1A1 extends Oda
 		pt = @library['h1'].globalToLocal @stage.mouseX, @stage.mouseY
 		if @library['h1'].hitTest pt.x, pt.y
 			if @answer.index is @answers[@index].w1
+				createjs.Sound.stop()
+				createjs.Sound.play 'good'
+
 				@answer.visible = false
 				@library['h1'].changeText @answer.text.text
 				@library['h1'].blink off
 				@blink @library['backNube1'], off
 				@library['h2'].blink()
 				@blink @library['backNube2']
-				createjs.Sound.play 'good'
 				for i in [1..4] by 1
 					@library['p'+i+'n2'].initDragListener()
-
-				for i in [1..4] by 1
 					@library['p'+i+'n2'].addEventListener 'drop', @evaluateAnswer2
 				false
 			else
@@ -148,17 +148,20 @@ class U1A1 extends Oda
 		pt = @library['h2'].globalToLocal @stage.mouseX, @stage.mouseY
 		if @library['h2'].hitTest pt.x, pt.y
 			if @answer.index is @answers[@index].w2
+				createjs.Sound.stop()
+				createjs.Sound.play 'good'
+
 				@answer.visible = false
 				@library['h2'].changeText @answer.text.text
 				@library['h2'].blink off
 				@blink @library['backNube2'], off
 				@library['h3'].blink()
 				@blink @library['backNube3']
-				createjs.Sound.play 'good'
 				for i in [1..5] by 1
 					@library['p'+i+'n3'].initDragListener()
-				for i in [1..5] by 1
 					@library['p'+i+'n3'].addEventListener 'drop', @evaluateAnswer3
+				false
+
 			else
 				@warning()
 				@intento = 1
@@ -170,18 +173,21 @@ class U1A1 extends Oda
 		pt = @library['h3'].globalToLocal @stage.mouseX, @stage.mouseY
 		if @library['h3'].hitTest pt.x, pt.y
 			if @answer.index is @answers[@index].w3
+				createjs.Sound.stop()
+				createjs.Sound.play 'good'
+
 				@answer.visible = false
 				@library['h3'].changeText @answer.text.text
 				@library['h3'].blink off
 				@blink @library['backNube3'], off
 				setTimeout @finishEvaluation, 1 * 1000
-				createjs.Sound.play 'good'
 				for i in [1..4] by 1
 					@library['p'+i+'n2'].removeEventListener 'drop', @evaluateAnswer2
 					@library['p'+i+'n2'].endDragListener()
 				for i in [1..5] by 1
 					@library['p'+i+'n3'].removeEventListener 'drop', @evaluateAnswer3
 					@library['p'+i+'n3'].endDragListener()
+				false
 			else
 				@warning()
 				@intento = 1
@@ -191,6 +197,8 @@ class U1A1 extends Oda
 	finishEvaluation: =>
 		if @intento is 0
 			@library['score'].plusOne()
+		createjs.Sound.stop()
+
 		song = createjs.Sound.play @answers[@index].sound
 		song.addEventListener 'complete', @clearEvaluation
 		@intento = 0

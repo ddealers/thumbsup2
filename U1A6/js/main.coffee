@@ -168,7 +168,7 @@ class U1A6 extends Oda
 				letterObj = new DraggableText letter, letter, letter, 83 * i, 0
 				#letterObj = new Draggable letter, (@preload.getResult letter+'Letra'), letter, 83*i, 0
 			else
-				letterObj = new DraggableText letter, letter, letter, 83 * i - 1020, 68
+				letterObj = new DraggableText letter, letter, letter, 83 * i - 1080, 68
 				#letterObj = new Draggable letter, (@preload.getResult letter+'Letra'), letter, 83*i-1020, 68
 			letterObj.text.font = "48px Quicksand"
 			letterObj.onInitEvaluation()

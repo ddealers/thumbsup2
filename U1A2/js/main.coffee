@@ -48,18 +48,27 @@ class U1A2 extends Oda
 		@insertSprite 'characters', ['p1','p2','p3','p4','p5','p6'], null, 200, stageSize.h - 340
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 6, 0
 		@intento = false
+
+ 
 		@setDropper().setNames().introEvaluation()
 	setDropper: ->
 		myname = new createjs.Container()
-		myname.x = 670
-		myname.y = stageSize.h - 140
+		myname.x = 0
+		myname.y = 0
 		myname.name = 'dropname'
-		question = @createBitmap 'question', 'q', 0, 0
+
+		question = @createBitmap 'question', 'q', 670, stageSize.h - 140
+		question.mouseEnabled = false
+
 		h1 = new createjs.Shape new createjs.Graphics().beginFill( '#FFF' ).drawRect( 0, 0, 260, 60 )
-		h1.x = 500
-		h1.y = -14
+		h1.x = 500 + 670
+		h1.y = -14 + stageSize.h - 140
 		h1.name = 'h1'
-		myname.addChild question, h1
+
+		shape = new createjs.Shape()
+		shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, stageSize.w, stageSize.h)
+
+		myname.addChild question, shape, h1 
 		@addToLibrary h1
 		@addToMain myname
 		@
@@ -69,6 +78,8 @@ class U1A2 extends Oda
 		names.y = 264
 		names.name = 'names'
 		faces = @createBitmap 'facesback', 'faces', 69, 0
+		faces.mouseEnabled = false
+
 		repeat = new Button 'btnrepeat', (@preload.getResult 'repeat'), 0, 600, 640
 		name1 = new Draggable 'name1', (@preload.getResult 'n1'), 1, 16, 30
 		name2 = new Draggable 'name2', (@preload.getResult 'n2'), 2, 4, 504
@@ -110,8 +121,8 @@ class U1A2 extends Oda
 		TweenLite.to @library['characters'], 0.5, {alpha: 1, y: stageSize.h - 340, ease: Quart.easeOut}
 	evaluateAnswer: (e) =>
 		@answer = e.target
-		pt = @library['dropname'].globalToLocal @stage.mouseX, @stage.mouseY
-		if @library['dropname'].hitTest pt.x, pt.y
+		pt = @library['h1'].globalToLocal @stage.mouseX, @stage.mouseY
+		if @library['h1'].hitTest pt.x, pt.y
 			console.log @answer.name, 'hit'
 			if @answer.index is @answers[@index].id
 				createjs.Sound.play 'good'

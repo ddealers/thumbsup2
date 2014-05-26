@@ -251,22 +251,21 @@
     };
 
     U1A1.prototype.evaluateAnswer1 = function(e) {
-      var i, pt, _i, _j;
+      var i, pt, _i;
       this.answer = e.target;
       pt = this.library['h1'].globalToLocal(this.stage.mouseX, this.stage.mouseY);
       if (this.library['h1'].hitTest(pt.x, pt.y)) {
         if (this.answer.index === this.answers[this.index].w1) {
+          createjs.Sound.stop();
+          createjs.Sound.play('good');
           this.answer.visible = false;
           this.library['h1'].changeText(this.answer.text.text);
           this.library['h1'].blink(false);
           this.blink(this.library['backNube1'], false);
           this.library['h2'].blink();
           this.blink(this.library['backNube2']);
-          createjs.Sound.play('good');
           for (i = _i = 1; _i <= 4; i = _i += 1) {
             this.library['p' + i + 'n2'].initDragListener();
-          }
-          for (i = _j = 1; _j <= 4; i = _j += 1) {
             this.library['p' + i + 'n2'].addEventListener('drop', this.evaluateAnswer2);
           }
           return false;
@@ -281,26 +280,24 @@
     };
 
     U1A1.prototype.evaluateAnswer2 = function(e) {
-      var i, pt, _i, _j, _results;
+      var i, pt, _i;
       this.answer = e.target;
       pt = this.library['h2'].globalToLocal(this.stage.mouseX, this.stage.mouseY);
       if (this.library['h2'].hitTest(pt.x, pt.y)) {
         if (this.answer.index === this.answers[this.index].w2) {
+          createjs.Sound.stop();
+          createjs.Sound.play('good');
           this.answer.visible = false;
           this.library['h2'].changeText(this.answer.text.text);
           this.library['h2'].blink(false);
           this.blink(this.library['backNube2'], false);
           this.library['h3'].blink();
           this.blink(this.library['backNube3']);
-          createjs.Sound.play('good');
           for (i = _i = 1; _i <= 5; i = _i += 1) {
             this.library['p' + i + 'n3'].initDragListener();
+            this.library['p' + i + 'n3'].addEventListener('drop', this.evaluateAnswer3);
           }
-          _results = [];
-          for (i = _j = 1; _j <= 5; i = _j += 1) {
-            _results.push(this.library['p' + i + 'n3'].addEventListener('drop', this.evaluateAnswer3));
-          }
-          return _results;
+          return false;
         } else {
           this.warning();
           this.intento = 1;
@@ -312,27 +309,27 @@
     };
 
     U1A1.prototype.evaluateAnswer3 = function(e) {
-      var i, pt, _i, _j, _results;
+      var i, pt, _i, _j;
       this.answer = e.target;
       pt = this.library['h3'].globalToLocal(this.stage.mouseX, this.stage.mouseY);
       if (this.library['h3'].hitTest(pt.x, pt.y)) {
         if (this.answer.index === this.answers[this.index].w3) {
+          createjs.Sound.stop();
+          createjs.Sound.play('good');
           this.answer.visible = false;
           this.library['h3'].changeText(this.answer.text.text);
           this.library['h3'].blink(false);
           this.blink(this.library['backNube3'], false);
           setTimeout(this.finishEvaluation, 1 * 1000);
-          createjs.Sound.play('good');
           for (i = _i = 1; _i <= 4; i = _i += 1) {
             this.library['p' + i + 'n2'].removeEventListener('drop', this.evaluateAnswer2);
             this.library['p' + i + 'n2'].endDragListener();
           }
-          _results = [];
           for (i = _j = 1; _j <= 5; i = _j += 1) {
             this.library['p' + i + 'n3'].removeEventListener('drop', this.evaluateAnswer3);
-            _results.push(this.library['p' + i + 'n3'].endDragListener());
+            this.library['p' + i + 'n3'].endDragListener();
           }
-          return _results;
+          return false;
         } else {
           this.warning();
           this.intento = 1;
@@ -348,6 +345,7 @@
       if (this.intento === 0) {
         this.library['score'].plusOne();
       }
+      createjs.Sound.stop();
       song = createjs.Sound.play(this.answers[this.index].sound);
       song.addEventListener('complete', this.clearEvaluation);
       return this.intento = 0;
