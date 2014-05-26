@@ -15,16 +15,26 @@
 
     Button.prototype.initialize = function(name, image, index, x, y) {
       this.Container_initialize();
-      this.name = name;
-      this.bitmap = new createjs.Bitmap(image);
-      this.index = index;
-      this.x = x;
-      this.y = y;
-      this.pos = {
+      this.set({
+        name: name,
+        index: index,
         x: x,
-        y: y
-      };
-      this.addChild(this.bitmap);
+        y: y,
+        pos: {
+          x: x,
+          y: y
+        },
+        mouseChildren: false
+      });
+      this.bitmap = new createjs.Bitmap(image);
+      this.bitmap.mouseEnabled = false;
+      this.shape = new createjs.Shape();
+      this.shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.bitmap.getBounds().width, this.bitmap.getBounds().height);
+      this.set({
+        width: this.bitmap.getBounds().width,
+        height: this.bitmap.getBounds().height
+      });
+      this.addChild(this.bitmap, this.shape);
       return false;
     };
 
@@ -1452,9 +1462,21 @@
     };
 
     Oda.prototype.playInstructions = function(oda) {
-      var inst;
+      var bmp, inst, shape;
       if (dealersjs.mobile.isIOS() || dealersjs.mobile.isAndroid()) {
-        oda.insertBitmap('start', 'sg', stageSize.w / 2, stageSize.h / 2, 'mc');
+        this.start = new createjs.Container();
+        this.start.set({
+          name: 'start',
+          x: stageSize.w / 2,
+          y: stageSize.h / 2
+        });
+        bmp = oda.createBitmap('start', 'sg', 0, 0);
+        bmp.mouseEnabled = false;
+        shape = new createjs.Shape();
+        shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+        this.setReg(this.start, bmp.width / 2, bmp.height / 2);
+        this.start.addChild(bmp, shape);
+        oda.addToMain(this.start);
         oda.library['start'].addEventListener('click', oda.initMobileInstructions);
         return TweenLite.from(oda.library['start'], 0.3, {
           alpha: 0,
@@ -1489,7 +1511,20 @@
     };
 
     Oda.prototype.finish = function() {
-      this.insertBitmap('play_again', 'pa', stageSize.w / 2, stageSize.h / 2, 'mc');
+      var bmp, shape;
+      this.play_again = new createjs.Container();
+      this.play_again.set({
+        name: 'play_again',
+        x: stageSize.w / 2,
+        y: stageSize.h / 2
+      });
+      bmp = this.createBitmap('play_again', 'pa', 0, 0);
+      bmp.mouseEnabled = false;
+      shape = new createjs.Shape();
+      shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+      this.setReg(this.play_again, bmp.width / 2, bmp.height / 2);
+      this.play_again.addChild(bmp, shape);
+      this.addToMain(this.play_again);
       this.library['play_again'].addEventListener('click', this.handlePlayAgain);
       return TweenLite.from(this.library['play_again'], 0.5, {
         alpha: 0,

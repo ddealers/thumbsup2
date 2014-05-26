@@ -51,8 +51,8 @@ class U4A2 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Find the words and drag the cursor.', 80, 200
-	
+		@library.header.mouseEnabled = false
+		@insertInstructions 'instructions', ['Find the words and drag the cursor.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 150, 0
 		@setAnimals().setSopa().introEvaluation()
 	setAnimals:  ->
@@ -67,7 +67,6 @@ class U4A2 extends Oda
 		@insertBitmap 'polarbear', 'polarbear', 736, 848
 		@
 	setSopa: ->
-
 		j = 0
 		h = @letters.length
 		sopa = new createjs.Container()
@@ -95,22 +94,23 @@ class U4A2 extends Oda
 		@
 	updateCounter: =>
 		@time--
-		@library['score'].updateTotal @time
+		@library.score.updateTotal @time
 		@finish() if @time is 0
 	introEvaluation: ->
 		super
-		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0.5, onComplete: @playInstructions, onCompleteParams: [@]}
-		TweenMax.allFrom [@library['bluewhale'], 
-						@library['dolphin'], 
-						@library['eagle'], 
-						@library['giantpanda'], 
-						@library['gorilla'],
-						@library['jaguar'],
-						@library['lion'],
-						@library['seaturtle'],
-						@library['polarbear']
-						], 1, {alpha: 0, delay: 1.5}, 0.1
+		TweenLite.from @library.header, 1, {y:-@library.header.height}
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenMax.allFrom [
+			@library.bluewhale
+			@library.dolphin
+			@library.eagle
+			@library.giantpanda
+			@library.gorilla
+			@library.jaguar
+			@library.lion
+			@library.seaturtle
+			@library.polarbear
+		], 1, {alpha: 0, delay: 1.5}, 0.1
 	initEvaluation: (e) =>
 		super
 		@time = 151
@@ -118,10 +118,10 @@ class U4A2 extends Oda
 
 		@library.sopa.visible = on
 		@library.sopa.cache -52, -52, 572, 572
-		TweenLite.from @library['sopa'], 1, {alpha :0, y: @library['sopa'].y - 40}
-		@mainContainer.addEventListener 'mousedown', @evaluateAnswer
+		TweenLite.from @library.sopa, 1, {alpha :0, y: @library['sopa'].y - 40}
+		@library.sopa.addEventListener 'mousedown', @evaluateAnswer
 	evaluateAnswer: (e) =>
-		answer = Array()
+		answer = []
 		shape = new createjs.Shape()
 		target = e.target
 		pt = @mainContainer.globalToLocal @stage.mouseX, @stage.mouseY
@@ -147,19 +147,19 @@ class U4A2 extends Oda
 							npos = w: i * 52, h: h * 52
 							answer.push clktxt.index
 							shape.graphics.c().s("rgba(255, 0, 0, 1)").f("rgba(255, 0, 0, 0.5)").rr(pos.x,pos.y,npos.w,npos.h,10)
-							@library.sopa.cache -52,-52,572,572
+							@library.sopa.updateCache()
 				target.addEventListener 'pressup', (ev) =>
 					find = off
 					answer = Array()
 					for i in [0..99] by 1
-						if shape.hitTest @library["l#{i}"].x, @library["l#{i}"].y + 13 
+						if shape.hitTest @library["l#{i}"].x, @library["l#{i}"].y + 13
 							answer.push @library["l#{i}"].name
 					for obj in @answers
 						if obj.line.toString() is answer.toString()
 							TweenLite.to @library[obj.id], 0.3, {y:@library[obj.id].y - 200, alpha:0, onComplete: @finishEvaluation}
 							find = on
 					@library.shapesContainer.removeChild shape if not find
-					@library.sopa.cache -52,-52,572,572
+					@library.sopa.updateCache()
 	finishEvaluation: =>
 		createjs.Sound.play 'good'
 		@nextEvaluation()

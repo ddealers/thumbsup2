@@ -159,7 +159,7 @@
     };
 
     U5A2.prototype.setStage = function() {
-      var step;
+      var repeat, step;
       U5A2.__super__.setStage.apply(this, arguments);
       this.steps = this.shuffle(this.game.steps);
       this.stepsid = (function() {
@@ -173,8 +173,10 @@
         return _results;
       }).call(this);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertBitmap('repeatbtn', 'repeatbtn', 800, 900, 'mc');
-      this.insertInstructions('instructions', 'Listen and click on the correct option.', 80, 200);
+      repeat = new Button('repeatbtn', this.preload.getResult('repeatbtn'), 0, 800, 900);
+      this.setReg(repeat, repeat.getBounds().width / 2, repeat.getBounds().height / 2);
+      this.addToMain(repeat);
+      this.insertInstructions('instructions', ['Listen and click on the correct option.'], 80, 200);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 15, 0));
       return this.setStep().introEvaluation();
     };

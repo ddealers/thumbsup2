@@ -310,7 +310,6 @@
           }
         }
         sc.scaleX = sc.scaleY = 1.1;
-        sc.index = (scene - 1) * 4 + i;
         cuento.addChild(sc);
         this.addToLibrary(sc);
       }

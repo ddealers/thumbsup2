@@ -251,7 +251,7 @@
     U4A3.prototype.setStage = function() {
       U4A3.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Look and click on the corresponding picture.', 80, 200);
+      this.insertInstructions('instructions', ['Look and click on the corresponding picture.'], 80, 200);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 10, 0));
       return this.setParts().setAnimals().setText().introEvaluation();
     };
@@ -263,7 +263,8 @@
       _ref = this.answers.pairs;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         value = _ref[_i];
-        m = this.insertBitmap(value.b, value.b, value.x, value.y, 'mc');
+        m = new Button(value.b, this.preload.getResult(value.b), 0, value.x, value.y);
+        this.setReg(m, m.width / 2, m.height / 2);
         this.addToLibrary(m);
         parts.addChild(m);
       }

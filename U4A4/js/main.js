@@ -387,12 +387,14 @@
     };
 
     U4A4.prototype.setClick = function() {
-      this.insertBitmap('btnfalse', 'btnfalse', 1072, 1070);
-      this.insertBitmap('btntrue', 'btntrue', 818, 1072);
+      var btnfalse, btntrue;
+      btnfalse = new Button('btnfalse', this.preload.getResult('btnfalse'), 0, 1072, 1070);
+      btntrue = new Button('btntrue', this.preload.getResult('btntrue'), 0, 818, 1070);
+      this.addToMain(btntrue, btnfalse);
       this.library.btnfalse.index = 'off';
       this.library.btntrue.index = 'on';
-      this.library['btntrue'].addEventListener('click', this.evaluateAnswer);
-      this.library['btnfalse'].addEventListener('click', this.evaluateAnswer);
+      this.library.btntrue.addEventListener('click', this.evaluateAnswer);
+      this.library.btnfalse.addEventListener('click', this.evaluateAnswer);
       return this;
     };
 

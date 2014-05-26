@@ -132,7 +132,6 @@ class U3A5 extends Oda
 					sc.set {name: "sc#{i}", index: (scene - 1) * 4 + i, x: @game[scene - 1].positions[i - 1].x, y: @game[scene - 1].positions[i - 1].y, sprite: sp, shape: s}
 					sc.addChild sp, s
 			sc.scaleX = sc.scaleY = 1.1
-			sc.index = (scene - 1) * 4 + i
 			cuento.addChild sc
 			@addToLibrary sc
 		for i in [1..@game[scene - 1].texts.length] by 1

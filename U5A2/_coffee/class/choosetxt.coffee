@@ -12,19 +12,23 @@ class ChooseText
 		@success = success
 		@prev = new createjs.Text prev, '32px Quicksand', '#333333'
 		@firstOption = new ClickableText text1, text1, 1, @prev.getMeasuredWidth() + 20, 0
+		
 		@slash = new createjs.Text '/', '32px Quicksand', '#333333'
 		@slash.x = @firstOption.x + @firstOption.width
+		
 		@secondOption = new ClickableText text2, text2, 2, @slash.x + @slash.getMeasuredWidth() + 20, 0
+		
 		complement = comp ? ''
 		@complement = new createjs.Text complement, '32px Quicksand', '#333333'
 		@complement.x = @secondOption.x + @secondOption.width
+		
 		@width = @complement.x + @complement.getMeasuredWidth() + 20
 
-		@firstOption.addEventListener 'click', @_dispatchEvent
-		@secondOption.addEventListener 'click', @_dispatchEvent
+		@firstOption.addEventListener 'click', @_dispatchSelection
+		@secondOption.addEventListener 'click', @_dispatchSelection
 		
 		@addChild @prev, @firstOption, @slash, @secondOption, @complement
 		false
-	_dispatchEvent: (e) =>
+	_dispatchSelection: (e) =>
 		@dispatchEvent {type:'selection', success: e.target.index is @success}
 	window.ChooseText = ChooseText

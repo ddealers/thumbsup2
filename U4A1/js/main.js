@@ -393,6 +393,7 @@
     }
 
     U4A1.prototype.setStage = function() {
+      var repeat;
       this.round = 0;
       console.log('Ronda ' + (this.round + 1));
       U4A1.__super__.setStage.apply(this, arguments);
@@ -402,10 +403,11 @@
       this.game.you = 0;
       this.game.pc = 0;
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Listen and click on the correct pictures.', 80, 200);
+      this.insertInstructions('instructions', ['Listen and click on the correct pictures.'], 80, 200);
       this.insertBitmap('scoreComputer', 'scoreComputer', 38, 926);
       this.insertBitmap('scoreYou', 'scoreYou', 38, 740);
-      this.insertBitmap('repeatbtn', 'repeatbtn', 790, 1072);
+      repeat = new Button('repeatbtn', this.preload.getResult('repeatbtn'), 0, 790, 1072);
+      this.addToMain(repeat);
       this.insertText('pcCount', this.game.pc, '48px Quicksand', '#ffffff', 99, 974, 'center');
       this.insertText('youCount', this.game.you, '48px Quicksand', '#ffffff', 94, 794, 'center');
       return this.setCardsYou().setCardsPc().introEvaluation();
@@ -451,7 +453,7 @@
     };
 
     U4A1.prototype.setCardsYou = function() {
-      var a, b, carta, cartas, h, i, j, texto, _i, _j;
+      var a, b, carta, cartas, h, i, j, s, texto, _i, _j;
       j = 0;
       cartas = new createjs.Container();
       cartas.x = 200;
@@ -463,13 +465,22 @@
         for (i = _j = 0; _j <= 2; i = ++_j) {
           b = this.createSprite('borde', ['borde1', 'borde2', 'borde3'], null, 0, 0);
           a = this.createBitmap('animal', this.youcards[j].id, 0, 0);
-          a.scaleX = a.scaleY = 0.72;
+          s = new createjs.Shape();
+          s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, a.getBounds().width * 0.72, a.getBounds().height * 0.72);
+          b.mouseEnabled = false;
+          a.set({
+            scaleX: 0.72,
+            scaleY: 0.72,
+            mouseEnabled: false
+          });
           carta = new createjs.Container();
-          carta.name = "cartay" + j;
-          carta.index = this.youcards[j].id;
-          carta.x = i * 224;
-          carta.y = h * 260;
-          carta.addChild(b, a);
+          carta.set({
+            name: "cartay" + j,
+            index: this.youcards[j].id,
+            x: i * 224,
+            y: h * 260
+          });
+          carta.addChild(b, a, s);
           cartas.addChild(carta);
           this.addToLibrary(carta);
           j++;

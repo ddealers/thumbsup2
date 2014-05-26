@@ -75,7 +75,7 @@ class U4A3 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Look and click on the corresponding picture.', 80, 200
+		@insertInstructions 'instructions', ['Look and click on the corresponding picture.'], 80, 200
 	
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 10, 0
 		@setParts().setAnimals().setText().introEvaluation()
@@ -83,7 +83,9 @@ class U4A3 extends Oda
 		parts = new createjs.Container()
 		parts.name = 'parts'
 		for value in @answers.pairs
-			m = @insertBitmap value.b, value.b, value.x, value.y, 'mc'
+			m = new Button value.b, (@preload.getResult value.b), 0, value.x, value.y
+			@setReg m, m.width / 2, m.height / 2
+			#m = @insertBitmap value.b, value.b, value.x, value.y, 'mc'
 			@addToLibrary m
 			parts.addChild m
 		@addToMain parts
