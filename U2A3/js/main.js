@@ -647,7 +647,7 @@
     };
 
     U2A3.prototype.setPuzzle = function(num) {
-      var bmp, dpp, dragpieces, i, index, m, pp, puzzle, shape, _i, _j;
+      var bmp, dpp, dragpieces, i, index, m, pp, puzzle, shape, shapebmp, _i, _j;
       this.num = num;
       puzzle = new createjs.Container();
       puzzle.x = (function() {
@@ -668,16 +668,19 @@
         if (this.pieces["p" + num + "p" + i].back) {
           pp = new createjs.Container();
           pp.set({
-            name: "p" + num + "p" + i + "bcont",
+            name: "p" + num + "p" + i + "b",
             x: this.pieces["p" + num + "p" + i].x,
             y: this.pieces["p" + num + "p" + i].y
           });
           bmp = this.createBitmap("p" + num + "p" + i + "b", "p" + num + "p" + i + "back", 0, 0);
           bmp.mouseEnabled = false;
+          shapebmp = new createjs.Shape();
+          shapebmp.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+          shapebmp.name = "p" + num + "p" + i + "shape";
+          this.addToLibrary(shapebmp);
           shape = new createjs.Shape();
-          shape.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h);
-          shape.name = "p" + num + "p" + i + "b";
-          pp.addChild(bmp, shape);
+          shape.graphics.beginFill('rgba(255,255,255,0.0)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h);
+          pp.addChild(bmp, shapebmp, shape);
           pp.mouseChildren = false;
         } else {
           pp = this.createBitmap("p" + num + "p" + i, "p" + num + "p" + i, this.pieces["p" + num + "p" + i].x, this.pieces["p" + num + "p" + i].y);
@@ -690,15 +693,17 @@
       dragpieces.y = 300;
       dragpieces.name = 'dragpieces';
       index = 0;
+      this.drops = [];
       for (i = _j = 1; _j <= 12; i = _j += 1) {
+        dpp = new Draggable("dp" + num + "p" + i, this.preload.getResult("p" + num + "p" + i), "p" + num + "p" + i, index * 176, 0);
+        dpp.addEventListener('drop', this.evaluateAnswer);
+        this.observer.subscribe('init_drag', dpp.onInitEvaluation);
+        this.observer.subscribe('stop_drag', dpp.onStopEvaluation);
+        dpp.scaleX = dpp.scaleY = 0.6;
+        this.addToLibrary(dpp);
+        this.drops.push(dpp);
         if (this.pieces["p" + num + "p" + i].back) {
-          dpp = new Draggable("dp" + num + "p" + i, this.preload.getResult("p" + num + "p" + i), "p" + num + "p" + i, index * 176, 0);
-          dpp.addEventListener('drop', this.evaluateAnswer);
-          this.observer.subscribe('init_drag', dpp.onInitEvaluation);
-          this.observer.subscribe('stop_drag', dpp.onStopEvaluation);
-          dpp.scaleX = dpp.scaleY = 0.6;
           index++;
-          this.addToLibrary(dpp);
           dragpieces.addChild(dpp);
         }
       }
@@ -742,14 +747,16 @@
     };
 
     U2A3.prototype.evaluateAnswer = function(e) {
-      var hit, hpt, htt, pt;
+      var currentdrop, ficha, hit, hpt, htt, i, pt, _i;
       this.answer = e.target;
-      hit = this.library[this.answer.index + 'b'];
+      hit = this.library[this.answer.index + 'shape'];
       pt = hit.globalToLocal(this.stage.mouseX, this.stage.mouseY);
-      console.log('hit', hit);
-      console.log('pt', pt);
       if (hit.hitTest(pt.x, pt.y)) {
-        console.log('hit');
+        console.log('array drops ', this.drops);
+        currentdrop = this.drops.indexOf(this.library[this.answer.name]);
+        console.log('indexof', currentdrop);
+        this.drops.splice(currentdrop, 1);
+        console.log('array nuevo ', this.drops);
         hpt = hit.parent.localToGlobal(hit.x, hit.y);
         htt = this.answer.parent.globalToLocal(hpt.x, hpt.y);
         this.wordcompleter = new AfterBeforeWord('dropper', this.pieces[this.answer.index].texta, '', this.pieces[this.answer.index].textb, '#FFF', '#E90E2C', 300, 1120, 220, 60);
@@ -758,8 +765,12 @@
           this.mainContainer.removeChild(this.library['dropper']);
         }
         this.addToMain(this.wordcompleter);
-        this.observer.notify('stop_drag');
+        this.answer.observer.notify('stop_drag');
         this.answer.putInPlace(htt);
+        for (i = _i = 1; _i <= 12; i = _i += 1) {
+          ficha = this.library["dp" + this.num + "p" + i];
+          ficha.removeAllEventListeners();
+        }
         return this.initListeners();
       } else {
         return this.answer.returnToPlace(this.answer.alpha, this.answer.scaleX, this.answer.scaleY);
@@ -767,21 +778,32 @@
     };
 
     U2A3.prototype.evaluateLocation = function(e) {
-      var name;
+      var currentficha, ficha, i, name, _i, _results;
       name = e.target.name;
       if (name === 'next') {
         name = 'next to';
       }
       if (name === this.pieces[this.answer.index].label) {
         this.wordcompleter.changeText(this.pieces[this.answer.index].label);
-        this.stopListeners();
         createjs.Sound.play('good');
         this.library['score'].plusOne();
-        return setTimeout(this.finishEvaluation, 1 * 1000);
+        setTimeout(this.finishEvaluation, 1 * 1000);
       } else {
         setTimeout(this.finishEvaluation, 1 * 1000);
-        return this.warning();
+        this.warning();
       }
+      this.stopListeners();
+      _results = [];
+      for (i = _i = 1; _i <= 12; i = _i += 1) {
+        ficha = this.library["dp" + this.num + "p" + i];
+        currentficha = this.drops.indexOf(this.library["dp" + this.num + "p" + i]);
+        if (currentficha !== -1) {
+          _results.push(ficha.addEventListener('drop', this.evaluateAnswer));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
     };
 
     U2A3.prototype.finishEvaluation = function() {

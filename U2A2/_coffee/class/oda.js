@@ -318,7 +318,7 @@
       triangle.y = 10;
       console.log(text);
       it = 0;
-      npos = 14;
+      npos = 24;
       for (_i = 0, _len = text.length; _i < _len; _i++) {
         frase = text[_i];
         if (frase === '#ital') {

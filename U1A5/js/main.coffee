@@ -150,12 +150,13 @@ class U1A5 extends Oda
 						@library["sc#{i}"].sprite.gotoAndStop 1
 						@answer.returnToOrigin()
 						#@answer.visible = off
+						createjs.Sound.stop()
 						createjs.Sound.play 'good'
 						if not @library["sc#{i}"].failed
 							#if @intento is 0
 							@library['score'].plusOne()
 							#@intento = 0
-						@finishEvaluation()
+						setTimeout @finishEvaluation(), 500
 					else
 						@library["sc#{i}"].failed = on
 						@warning()
@@ -170,13 +171,15 @@ class U1A5 extends Oda
 						@library["sc#{i}"].sprite.gotoAndStop 1
 						@answer.returnToOrigin()
 						#@answer.visible = off
+						createjs.Sound.stop()
+
 						createjs.Sound.play 'good'
 						if not @library["sc#{i}"].failed
 							#if @intento is 0
 							@library['score'].plusOne()
 							#@intento = 0
 
-						@finishEvaluation()
+						setTimeout @finishEvaluation(), 500
 					else
 						@library["sc#{i}"].failed = on
 						@warning()
@@ -198,7 +201,6 @@ class U1A5 extends Oda
 			@nextEvaluation()
 	nextEvaluation: =>
 		@index++
-		createjs.Sound.stop()
 		if @index < @game.length
 			TweenLite.to @library['btnnext'], 1, {alpha:0, y:@library['btnnext'].y + 20}
 			TweenLite.to @library['cuento'], 1, {alpha:0, y:@library['cuento'].y + 20}

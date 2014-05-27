@@ -201,14 +201,18 @@ class U2A3 extends Oda
 		for i in [1..12] by 1
 			if @pieces["p#{num}p#{i}"].back
 				pp = new createjs.Container()
-				pp.set {name: "p#{num}p#{i}bcont", x: @pieces["p#{num}p#{i}"].x, y: @pieces["p#{num}p#{i}"].y}
+				pp.set {name: "p#{num}p#{i}b", x: @pieces["p#{num}p#{i}"].x, y: @pieces["p#{num}p#{i}"].y}
 				bmp = @createBitmap "p#{num}p#{i}b", "p#{num}p#{i}back", 0, 0
 				bmp.mouseEnabled = false
 
+				shapebmp = new createjs.Shape()
+				shapebmp.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0,0, bmp.getBounds().width, bmp.getBounds().height)
+				shapebmp.name = "p#{num}p#{i}shape"
+				@addToLibrary shapebmp
+
 				shape = new createjs.Shape()
-				shape.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h)
-				shape.name = "p#{num}p#{i}b"
-				pp.addChild bmp, shape
+				shape.graphics.beginFill('rgba(255,255,255,0.0)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h)
+				pp.addChild bmp, shapebmp, shape
 				pp.mouseChildren = false
 			else
 				pp = @createBitmap "p#{num}p#{i}", "p#{num}p#{i}", @pieces["p#{num}p#{i}"].x, @pieces["p#{num}p#{i}"].y
@@ -221,18 +225,23 @@ class U2A3 extends Oda
 		dragpieces.y = 300
 		dragpieces.name = 'dragpieces'
 		index = 0
-		
+		@drops = []
 		for i in [1..12] by 1
+			dpp = new Draggable "dp#{num}p#{i}", @preload.getResult("p#{num}p#{i}"), "p#{num}p#{i}", index * 176, 0
+			dpp.addEventListener 'drop', @evaluateAnswer
+			@observer.subscribe 'init_drag', dpp.onInitEvaluation
+			@observer.subscribe 'stop_drag', dpp.onStopEvaluation
+			dpp.scaleX = dpp.scaleY = 0.6
+			@addToLibrary dpp
+
+			
+			@drops.push dpp
+				
 			if @pieces["p#{num}p#{i}"].back
-				dpp = new Draggable "dp#{num}p#{i}", @preload.getResult("p#{num}p#{i}"), "p#{num}p#{i}", index * 176, 0
-				dpp.addEventListener 'drop', @evaluateAnswer
-				@observer.subscribe 'init_drag', dpp.onInitEvaluation
-				@observer.subscribe 'stop_drag', dpp.onStopEvaluation
-				dpp.scaleX = dpp.scaleY = 0.6
 				index++
-				@addToLibrary dpp
 				dragpieces.addChild dpp
-		
+				
+
 		dragpieces.width = index * 176
 		@setReg(dragpieces, dragpieces.width / 2, 0)
 		
@@ -259,12 +268,16 @@ class U2A3 extends Oda
 		@library['above'].removeEventListener 'click', @evaluateLocation
 	evaluateAnswer: (e) =>
 		@answer = e.target
-		hit = @library[@answer.index+'b']
+		hit = @library[@answer.index+'shape']
 		pt = hit.globalToLocal @stage.mouseX, @stage.mouseY
-		console.log 'hit', hit
-		console.log 'pt', pt
 		if hit.hitTest pt.x, pt.y
-			console.log 'hit'
+			console.log 'array drops ', @drops
+			currentdrop = @drops.indexOf(@library[@answer.name])
+
+			console.log 'indexof', currentdrop
+			@drops.splice currentdrop, 1 
+			console.log 'array nuevo ', @drops
+
 			hpt = hit.parent.localToGlobal hit.x, hit.y
 			htt = @answer.parent.globalToLocal hpt.x, hpt.y
 			@wordcompleter = new AfterBeforeWord 'dropper', @pieces[@answer.index].texta, '', @pieces[@answer.index].textb, '#FFF', '#E90E2C', 300, 1120, 220, 60
@@ -275,9 +288,13 @@ class U2A3 extends Oda
 				@mainContainer.removeChild @library['dropper']
 			@addToMain @wordcompleter
 
-			@observer.notify 'stop_drag'
+			@answer.observer.notify 'stop_drag'
 			
 			@answer.putInPlace( htt )
+			for i in [1..12] by 1
+				ficha = @library["dp#{@num}p#{i}"]
+				ficha.removeAllEventListeners() 
+
 			@initListeners()
 		else
 			@answer.returnToPlace(@answer.alpha, @answer.scaleX, @answer.scaleY)
@@ -286,13 +303,21 @@ class U2A3 extends Oda
 		name = 'next to' if name is 'next' 
 		if name is @pieces[@answer.index].label
 			@wordcompleter.changeText @pieces[@answer.index].label
-			@stopListeners()
 			createjs.Sound.play 'good'
 			@library['score'].plusOne()
 			setTimeout @finishEvaluation, 1 * 1000
 		else
 			setTimeout @finishEvaluation, 1 * 1000
 			@warning()
+
+		@stopListeners()
+		for i in [1..12] by 1
+			ficha = @library["dp#{@num}p#{i}"]
+			currentficha = @drops.indexOf(@library["dp#{@num}p#{i}"])
+			if currentficha != -1
+				ficha.addEventListener 'drop', @evaluateAnswer
+
+				
 	finishEvaluation: =>
 		TweenLite.to @library['dropper'], 0.5, {alpha: 0, y: stageSize.h, ease:Quart.easeOut, onComplete: @nextEvaluation}
 	nextEvaluation: =>

@@ -413,9 +413,10 @@
             if (this.intento === 0) {
               this.library['score'].plusOne();
             }
+            createjs.Sound.stop();
             createjs.Sound.play('good');
             this.intento = 0;
-            _results.push(this.finishEvaluation());
+            _results.push(setTimeout(this.finishEvaluation(), 500));
           } else {
             this.warning();
             this.intento = 1;
@@ -452,7 +453,6 @@
     U2A5.prototype.nextEvaluation = function() {
       var i, _i, _ref, _results;
       this.index++;
-      createjs.Sound.stop();
       if (this.index < this.game.length) {
         TweenLite.to(this.library['btnnext'], 1, {
           alpha: 0,

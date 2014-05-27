@@ -329,11 +329,12 @@
             if (this.answer.index === this.library["sc" + i].index) {
               this.library["sc" + i].sprite.gotoAndStop(1);
               this.answer.returnToOrigin();
+              createjs.Sound.stop();
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
                 this.library['score'].plusOne();
               }
-              _results.push(this.finishEvaluation());
+              _results.push(setTimeout(this.finishEvaluation(), 500));
             } else {
               this.library["sc" + i].failed = true;
               this.warning();
@@ -351,11 +352,12 @@
             if (hit) {
               this.library["sc" + i].sprite.gotoAndStop(1);
               this.answer.returnToOrigin();
+              createjs.Sound.stop();
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
                 this.library['score'].plusOne();
               }
-              _results.push(this.finishEvaluation());
+              _results.push(setTimeout(this.finishEvaluation(), 500));
             } else {
               this.library["sc" + i].failed = true;
               this.warning();
@@ -394,7 +396,6 @@
     U1A5.prototype.nextEvaluation = function() {
       var i, _i, _ref, _results;
       this.index++;
-      createjs.Sound.stop();
       if (this.index < this.game.length) {
         TweenLite.to(this.library['btnnext'], 1, {
           alpha: 0,
