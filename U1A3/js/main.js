@@ -109,8 +109,8 @@
     U1A3.prototype.setGrupo1 = function() {
       var group1, word1, word2, word3, word4, word5;
       group1 = new createjs.Container();
-      group1.x = 1130;
-      group1.y = 180;
+      group1.x = 1300;
+      group1.y = 200;
       group1.name = 'group1';
       word1 = new ClickableText('w11', 'We read books', 1, 0, 0);
       word2 = new ClickableText('w12', 'We do exercise', 2, 0, 50);
@@ -126,8 +126,8 @@
     U1A3.prototype.setGrupo2 = function() {
       var group2, word1, word2, word3, word4, word5;
       group2 = new createjs.Container();
-      group2.x = 1130;
-      group2.y = 460;
+      group2.x = 1300;
+      group2.y = 480;
       group2.name = 'group2';
       word1 = new ClickableText('w21', 'in the gym', 1, 0, 0);
       word2 = new ClickableText('w22', 'in the cafeteria', 2, 0, 50);
@@ -143,8 +143,8 @@
     U1A3.prototype.setGrupo3 = function() {
       var group3, word1, word2, word3, word4, word5;
       group3 = new createjs.Container();
-      group3.x = 1130;
-      group3.y = 740;
+      group3.x = 1300;
+      group3.y = 760;
       group3.name = 'group3';
       word1 = new ClickableText('w31', 'on Monday and Friday.', 1, 0, 0);
       word2 = new ClickableText('w32', 'on Tuesday and Thursday.', 2, 0, 50);
