@@ -709,6 +709,7 @@
       }
       dragpieces.width = index * 176;
       this.setReg(dragpieces, dragpieces.width / 2, 0);
+      console.log(this.drops);
       this.addToMain(puzzle);
       this.addToMain(dragpieces);
       TweenLite.from(puzzle, 1, {
@@ -747,9 +748,11 @@
     };
 
     U2A3.prototype.evaluateAnswer = function(e) {
-      var currentdrop, ficha, hit, hpt, htt, i, pt, _i;
+      var currentdrop, ficha, hit, hitname, hpt, htt, i, pt, _i;
       this.answer = e.target;
+      console.log('answer', this.answer);
       hit = this.library[this.answer.index + 'shape'];
+      hitname = this.library[this.answer.name];
       pt = hit.globalToLocal(this.stage.mouseX, this.stage.mouseY);
       if (hit.hitTest(pt.x, pt.y)) {
         console.log('array drops ', this.drops);
@@ -765,7 +768,7 @@
           this.mainContainer.removeChild(this.library['dropper']);
         }
         this.addToMain(this.wordcompleter);
-        this.answer.observer.notify('stop_drag');
+        this.answer.complete = true;
         this.answer.putInPlace(htt);
         for (i = _i = 1; _i <= 12; i = _i += 1) {
           ficha = this.library["dp" + this.num + "p" + i];
@@ -787,11 +790,10 @@
         this.wordcompleter.changeText(this.pieces[this.answer.index].label);
         createjs.Sound.play('good');
         this.library['score'].plusOne();
-        setTimeout(this.finishEvaluation, 1 * 1000);
       } else {
-        setTimeout(this.finishEvaluation, 1 * 1000);
         this.warning();
       }
+      setTimeout(this.finishEvaluation, 1 * 1000);
       this.stopListeners();
       _results = [];
       for (i = _i = 1; _i <= 12; i = _i += 1) {
@@ -800,7 +802,7 @@
         if (currentficha !== -1) {
           _results.push(ficha.addEventListener('drop', this.evaluateAnswer));
         } else {
-          _results.push(void 0);
+          _results.push(ficha.onStopEvaluation());
         }
       }
       return _results;
