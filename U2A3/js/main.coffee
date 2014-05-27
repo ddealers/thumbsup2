@@ -201,10 +201,13 @@ class U2A3 extends Oda
 		for i in [1..12] by 1
 			if @pieces["p#{num}p#{i}"].back
 				pp = new createjs.Container()
-				pp.set {name: "p#{num}p#{i}b", x: @pieces["p#{num}p#{i}"].x, y: @pieces["p#{num}p#{i}"].y}
+				pp.set {name: "p#{num}p#{i}bcont", x: @pieces["p#{num}p#{i}"].x, y: @pieces["p#{num}p#{i}"].y}
 				bmp = @createBitmap "p#{num}p#{i}b", "p#{num}p#{i}back", 0, 0
+				bmp.mouseEnabled = false
+
 				shape = new createjs.Shape()
-				shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
+				shape.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h)
+				shape.name = "p#{num}p#{i}b"
 				pp.addChild bmp, shape
 				pp.mouseChildren = false
 			else
@@ -258,8 +261,10 @@ class U2A3 extends Oda
 		@answer = e.target
 		hit = @library[@answer.index+'b']
 		pt = hit.globalToLocal @stage.mouseX, @stage.mouseY
-		
+		console.log 'hit', hit
+		console.log 'pt', pt
 		if hit.hitTest pt.x, pt.y
+			console.log 'hit'
 			hpt = hit.parent.localToGlobal hit.x, hit.y
 			htt = @answer.parent.globalToLocal hpt.x, hpt.y
 			@wordcompleter = new AfterBeforeWord 'dropper', @pieces[@answer.index].texta, '', @pieces[@answer.index].textb, '#FFF', '#E90E2C', 300, 1120, 220, 60

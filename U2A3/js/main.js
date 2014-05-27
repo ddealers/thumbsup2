@@ -668,13 +668,15 @@
         if (this.pieces["p" + num + "p" + i].back) {
           pp = new createjs.Container();
           pp.set({
-            name: "p" + num + "p" + i + "b",
+            name: "p" + num + "p" + i + "bcont",
             x: this.pieces["p" + num + "p" + i].x,
             y: this.pieces["p" + num + "p" + i].y
           });
           bmp = this.createBitmap("p" + num + "p" + i + "b", "p" + num + "p" + i + "back", 0, 0);
+          bmp.mouseEnabled = false;
           shape = new createjs.Shape();
-          shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+          shape.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h);
+          shape.name = "p" + num + "p" + i + "b";
           pp.addChild(bmp, shape);
           pp.mouseChildren = false;
         } else {
@@ -744,7 +746,10 @@
       this.answer = e.target;
       hit = this.library[this.answer.index + 'b'];
       pt = hit.globalToLocal(this.stage.mouseX, this.stage.mouseY);
+      console.log('hit', hit);
+      console.log('pt', pt);
       if (hit.hitTest(pt.x, pt.y)) {
+        console.log('hit');
         hpt = hit.parent.localToGlobal(hit.x, hit.y);
         htt = this.answer.parent.globalToLocal(hpt.x, hpt.y);
         this.wordcompleter = new AfterBeforeWord('dropper', this.pieces[this.answer.index].texta, '', this.pieces[this.answer.index].textb, '#FFF', '#E90E2C', 300, 1120, 220, 60);
