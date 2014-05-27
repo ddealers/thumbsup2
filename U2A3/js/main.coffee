@@ -206,7 +206,7 @@ class U2A3 extends Oda
 				bmp.mouseEnabled = false
 
 				shapebmp = new createjs.Shape()
-				shapebmp.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0,0, bmp.getBounds().width, bmp.getBounds().height)
+				shapebmp.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0,0, bmp.getBounds().width, bmp.getBounds().height)
 				shapebmp.name = "p#{num}p#{i}shape"
 				@addToLibrary shapebmp
 
@@ -222,12 +222,14 @@ class U2A3 extends Oda
 
 		dragpieces = new createjs.Container()
 		dragpieces.x = stageSize.w / 2
-		dragpieces.y = 300
+		dragpieces.y = 380
 		dragpieces.name = 'dragpieces'
 		index = 0
 		@drops = []
 		for i in [1..12] by 1
-			dpp = new Draggable "dp#{num}p#{i}", @preload.getResult("p#{num}p#{i}"), "p#{num}p#{i}", index * 176, 0
+			predpp = @preload.getResult("p#{num}p#{i}")
+			dpp = new Draggable "dp#{num}p#{i}", @preload.getResult("p#{num}p#{i}"), "p#{num}p#{i}", index * 176, 0 
+			dpp.y = dpp.y - predpp.height / 2
 			dpp.addEventListener 'drop', @evaluateAnswer
 			@observer.subscribe 'init_drag', dpp.onInitEvaluation
 			@observer.subscribe 'stop_drag', dpp.onStopEvaluation

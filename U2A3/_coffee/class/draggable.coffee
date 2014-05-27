@@ -19,8 +19,6 @@ class Draggable
 		@addChild @bitmap, hit
 		@inPlace = off
 	onInitEvaluation: =>
-		if @complete
-			return
 		@on 'mousedown', @handleMouseDown
 	onStopEvaluation: =>
 		@off 'mousedown', @handleMouseDown

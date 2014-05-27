@@ -1074,7 +1074,7 @@
     };
 
     U3A1.prototype.setDropper = function() {
-      var b, c, common, i, repeat, s, _i, _ref;
+      var b, c, common, i, repeat, s, shape, _i, _ref;
       common = new createjs.Container();
       common.name = 'common';
       repeat = new Button('repeat', this.preload.getResult('repeatbtn'), 0, 808, 826);
@@ -1082,15 +1082,19 @@
         c = new createjs.Container();
         s = new createjs.Shape();
         b = this.createBitmap(this.game.common[i - 1].id, this.game.common[i - 1].id, 0, 0);
+        b.mouseEnabled = false;
         s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, b.getBounds().width, b.getBounds().height);
         c.set({
-          name: this.game.common[i - 1].id,
+          name: '',
           x: this.game.common[i - 1].x,
           y: this.game.common[i - 1].y
         });
-        c.addChild(b, s);
+        shape = new createjs.Shape();
+        shape.graphics.beginFill('rgba(255,255,255,0.0)').drawRect(-c.x, -c.y, stageSize.w, stageSize.h);
+        s.name = this.game.common[i - 1].id;
+        c.addChild(b, s, shape);
         common.addChild(c);
-        this.addToLibrary(c);
+        this.addToLibrary(c, s);
       }
       this.addToMain(common, repeat);
       return this;
@@ -1223,7 +1227,7 @@
         this.a_index = 0;
         this.setMenu(this.index + 1);
         this.observer.notify("init_" + (this.index + 1) + "_evaluation");
-        return TweenLite.to(this.library['menu'], 0.5, {
+        return TweenLite.to(this.library['menu'], 1, {
           alpha: 1,
           y: 0,
           ease: Back.easeOut,

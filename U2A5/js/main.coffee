@@ -212,8 +212,10 @@ class U2A5 extends Oda
 			@library['btnnext'].y = 1040
 			TweenLite.from @library['btnnext'], 1, {alpha:0, y:@library['btnnext'].y + 20}
 			@library['btnnext'].addEventListener 'click', @nextEvaluation
+			console.log 'btn'
 		else
 			@nextEvaluation()
+			console.log 'next'
 	nextEvaluation: =>
 		@index++
 		

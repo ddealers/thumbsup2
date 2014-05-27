@@ -413,11 +413,18 @@ class U3A1 extends Oda
 			c = new createjs.Container()
 			s = new createjs.Shape()
 			b = @createBitmap @game.common[i - 1].id, @game.common[i - 1].id, 0, 0
+			b.mouseEnabled = false
+
 			s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, b.getBounds().width, b.getBounds().height)
-			c.set {name: @game.common[i - 1].id, x: @game.common[i - 1].x, y: @game.common[i - 1].y}
-			c.addChild b, s
+			c.set {name: '', x: @game.common[i - 1].x, y: @game.common[i - 1].y}
+
+			shape = new createjs.Shape()
+			shape.graphics.beginFill('rgba(255,255,255,0.0)').drawRect(-c.x, -c.y, stageSize.w, stageSize.h)
+			s.name = @game.common[i - 1].id
+			c.addChild b, s, shape
+
 			common.addChild c
-			@addToLibrary c
+			@addToLibrary c, s
 		@addToMain common, repeat
 		@
 	setMenu: (num) ->
@@ -462,6 +469,7 @@ class U3A1 extends Oda
 				@evaluateValues()
 				if @intento is 0
 					@library['score'].plusOne()
+
 				createjs.Sound.play 'good'
 				@intento = 0
 			else
@@ -491,7 +499,7 @@ class U3A1 extends Oda
 			@a_index = 0
 			@setMenu @index + 1
 			@observer.notify "init_#{@index + 1}_evaluation"
-			TweenLite.to @library['menu'], 0.5, {alpha: 1, y: 0, ease: Back.easeOut, onComplete: @playSound}
+			TweenLite.to @library['menu'], 1, {alpha: 1, y: 0, ease: Back.easeOut, onComplete: @playSound}
 		else
 			@finish()
 	playSound: =>

@@ -22,6 +22,7 @@
       this.Container_initialize();
       this.name = name;
       this.bitmap = new createjs.Bitmap(image);
+      this.bitmap.mouseEnabled = false;
       this.index = index;
       this.x = x;
       this.y = y;
@@ -32,13 +33,15 @@
         y: y
       };
       hit = new createjs.Shape();
-      hit.graphics.beginFill('rgba(0,0,0,0.5)').drawRect(0, 0, image.width, image.height);
-      this.hitArea = hit;
-      this.inPlace = false;
-      return this.addChild(this.bitmap);
+      hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, image.width, image.height);
+      this.addChild(this.bitmap, hit);
+      return this.inPlace = false;
     };
 
     Draggable.prototype.onInitEvaluation = function() {
+      if (this.complete) {
+        return;
+      }
       return this.on('mousedown', this.handleMouseDown);
     };
 

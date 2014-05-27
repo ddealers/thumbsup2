@@ -387,9 +387,11 @@
           alpha: 0,
           y: this.library['btnnext'].y + 20
         });
-        return this.library['btnnext'].addEventListener('click', this.nextEvaluation);
+        this.library['btnnext'].addEventListener('click', this.nextEvaluation);
+        return console.log('btn');
       } else {
-        return this.nextEvaluation();
+        this.nextEvaluation();
+        return console.log('next');
       }
     };
 

@@ -647,7 +647,7 @@
     };
 
     U2A3.prototype.setPuzzle = function(num) {
-      var bmp, dpp, dragpieces, i, index, m, pp, puzzle, shape, shapebmp, _i, _j;
+      var bmp, dpp, dragpieces, i, index, m, pp, predpp, puzzle, shape, shapebmp, _i, _j;
       this.num = num;
       puzzle = new createjs.Container();
       puzzle.x = (function() {
@@ -675,7 +675,7 @@
           bmp = this.createBitmap("p" + num + "p" + i + "b", "p" + num + "p" + i + "back", 0, 0);
           bmp.mouseEnabled = false;
           shapebmp = new createjs.Shape();
-          shapebmp.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+          shapebmp.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
           shapebmp.name = "p" + num + "p" + i + "shape";
           this.addToLibrary(shapebmp);
           shape = new createjs.Shape();
@@ -690,12 +690,14 @@
       }
       dragpieces = new createjs.Container();
       dragpieces.x = stageSize.w / 2;
-      dragpieces.y = 300;
+      dragpieces.y = 380;
       dragpieces.name = 'dragpieces';
       index = 0;
       this.drops = [];
       for (i = _j = 1; _j <= 12; i = _j += 1) {
+        predpp = this.preload.getResult("p" + num + "p" + i);
         dpp = new Draggable("dp" + num + "p" + i, this.preload.getResult("p" + num + "p" + i), "p" + num + "p" + i, index * 176, 0);
+        dpp.y = dpp.y - predpp.height / 2;
         dpp.addEventListener('drop', this.evaluateAnswer);
         this.observer.subscribe('init_drag', dpp.onInitEvaluation);
         this.observer.subscribe('stop_drag', dpp.onStopEvaluation);
