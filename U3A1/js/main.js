@@ -1206,7 +1206,8 @@
     U3A1.prototype.evaluateAnswer = function() {
       if (this.a_index < this.answers["m" + (this.index + 1)].length - 1) {
         this.a_index++;
-        return this.playSound();
+        createjs.Sound.stop();
+        return setTimeout(this.playSound, 1000);
       } else {
         return setTimeout(this.finishEvaluation, 1 * 1000);
       }
@@ -1239,7 +1240,6 @@
     };
 
     U3A1.prototype.playSound = function() {
-      createjs.Sound.stop();
       return createjs.Sound.play(this.answers["m" + (this.index + 1)][this.a_index].sound);
     };
 

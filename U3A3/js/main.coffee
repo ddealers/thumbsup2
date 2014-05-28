@@ -180,7 +180,7 @@ class U3A3 extends Oda
 		@setStart()
 	setStart:  ->
 		@insertBitmap 'propsalad', 'propsalad', 824, 722, 'tc'
-		btnsalad = new Button 'btnsalad', (@preload.getResult 'btnsalad'), 0, 824, 900, 'tc'
+		btnsalad = new Button 'btnsalad', (@preload.getResult 'btnsalad'), 0, 824, 950, 'tc'
 		@setReg btnsalad, btnsalad.width / 2, 0
 		@insertBitmap 'propsandwich', 'propsandwich', 824, 298, 'tc'
 		btnsandwich = new Button 'btnsandwich', (@preload.getResult 'btnsandwich'), 0, 824, 488, 'tc'
@@ -205,27 +205,43 @@ class U3A3 extends Oda
 
 		for i in [1..5] by 1
 			sac = new createjs.Container()
-			sas = new createjs.Shape()
+
 			sast = @createBitmap "sandwichstep#{i}", 'sandwichstep', 0, 0 
-			sasn = @createBitmap "sandwichnumber#{i}", "sandwichnumber#{i}", 66, 13
+			sast.mouseEnabled = false
 			sast.set {scaleX: 0.46, scaleY: 0.46}
+
+			sasn = @createBitmap "sandwichnumber#{i}", "sandwichnumber#{i}", 66, 13
+			sasn.mouseEnabled = false
+
+			sas = new createjs.Shape()
 			sas.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sast.getBounds().width * 0.46, sast.getBounds().height * 0.46)
-			sac.set {name: "sandwichstep#{i}", x: @positions.steps[i-1].x, y: @positions.steps[i-1].y, shape: sas}
+			sas.name = "sandwichstep#{i}"
+
+			sac.set {name: "sandwichstep#{i}cont", x: @positions.steps[i-1].x, y: @positions.steps[i-1].y, shape: sas}
 			sac.addChild sast, sasn, sas
 			
 			sacl = new createjs.Container()
-			sasl = new createjs.Shape()
+
 			sasll = @createBitmap "sandwichline#{i}", 'sandwichline', 0, 0
+			sasll.mouseEnabled = false
+
+			sasl = new createjs.Shape()
 			sasl.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sasll.getBounds().width, sasll.getBounds().height)
-			sacl.set {name: "sandwichline#{i}", x: sac.x - 20, y: sac.y + 180, shape: sasl}
+			sasl.name = "sandwichline#{i}"
+
+			sacl.set {name: "sandwichline#{i}cont", x: sac.x - 20, y: sac.y + 180, shape: sasl}
 			sacl.addChild sasll, sasl
-			@addToLibrary sac, sacl
+			@addToLibrary sac, sacl,  sas, sasl
+			
 			sandwich.addChild sac, sacl
 
 		label = @createBitmap 'label', 'sandwichlabel', @positions.titulo.x, @positions.titulo.y, 'tc'
+		label.mouseEnabled = false
+
 		ready = new Button 'btnready', (@preload.getResult 'sandwichbtnready'), 'ready', @positions.ready.x, @positions.ready.y
 		start = new Button 'btnstart', (@preload.getResult 'sandwichbtnstart'), 'start', @positions.start.x, @positions.start.y
 		counter = new Counter 'counter', 60, '#56bb5b', @positions.score.x, @positions.score.y
+
 		sandwich.addChild label, ready, start, counter
 		@addToLibrary counter, ready, start
 
@@ -264,22 +280,32 @@ class U3A3 extends Oda
 			sac = new createjs.Container()
 			sas = new createjs.Shape()
 			sast = @createBitmap "saladhstep#{i}", 'saladstep', 0, 0 
+			sast.mouseEnabled = false
+
 			sasn = @createBitmap "saladnumber#{i}", "saladnumber#{i}", 66, 13
+			sasn.mouseEnabled = false
+
 			sast.set {scaleX: 0.46, scaleY: 0.46}
 			sas.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sast.getBounds().width * 0.46, sast.getBounds().height * 0.46)
-			sac.set {name: "saladstep#{i}", x: @positions.steps[i-1].x, y: @positions.steps[i-1].y, shape: sas}
+			sas.name = "saladstep#{i}"
+			sac.set {name: "saladstep#{i}cont", x: @positions.steps[i-1].x, y: @positions.steps[i-1].y, shape: sas}
 			sac.addChild sast, sasn, sas
 			
 			sacl = new createjs.Container()
 			sasl = new createjs.Shape()
 			sasll = @createBitmap "saladline#{i}", 'saladline', 0, 0
+			sasll.mouseEnabled = false
+
 			sasl.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sasll.getBounds().width, sasll.getBounds().height)
-			sacl.set {name: "saladline#{i}", x: sac.x - 20, y: sac.y + 180, width: sasll.getBounds().width,height: sasll.getBounds().height, shape: sasl}
+			sasl.name = "saladline#{i}"
+			sacl.set {name: "saladline#{i}cont", x: sac.x - 20, y: sac.y + 180, width: sasll.getBounds().width,height: sasll.getBounds().height, shape: sasl}
 			sacl.addChild sasll, sasl
-			@addToLibrary sac, sacl
+			@addToLibrary sac, sacl, sas, sasl
 			salad.addChild sac, sacl
 
 		label = @createBitmap 'label', 'saladlabel', @positions.titulo.x, @positions.titulo.y, 'tc'
+		label.mouseEnabled = false
+
 		ready = new Button 'btnready', (@preload.getResult 'saladbtnready'), 'ready', @positions.ready.x, @positions.ready.y
 		start = new Button 'btnstart', (@preload.getResult 'saladbtnstart'), 'start', @positions.start.x, @positions.start.y
 		counter = new Counter 'counter', 60, '#eb2d3d', @positions.score.x, @positions.score.y
@@ -334,7 +360,7 @@ class U3A3 extends Oda
 		dropped = off
 		i = 1
 		until dropped is on or i > 5
-			hit = @library["#{@current}step#{i}"]
+			hit = @library["#{@current}step#{i}cont"]
 			pt = hit.shape.globalToLocal @stage.mouseX, @stage.mouseY
 			if hit.shape.hitTest pt.x, pt.y
 				@answer.putInPlace {x: hit.x, y: hit.y}, 1, @answer.scaleX, @answer.scaleY
@@ -348,7 +374,7 @@ class U3A3 extends Oda
 		dropped = off
 		i = 1
 		until dropped is on or i > 5
-			hit = @library["#{@current}line#{i}"]
+			hit = @library["#{@current}line#{i}cont"]
 			pt = hit.shape.globalToLocal @stage.mouseX, @stage.mouseY
 			if hit.shape.hitTest pt.x, pt.y
 				if @current is 'sandwich'
@@ -365,13 +391,17 @@ class U3A3 extends Oda
 		@library.btnready.removeEventListener 'click', @evaluateAnswer
 		@library.btnready.blink(off)
 		@library.counter.stop()
+
 		for value in @answers[@current]
+			hit = @library[value.t]
+
 			pt = @library[value.t].localToLocal 20, 20, @library[value.d]
 			if @library[value.t].name.length > 3
 				npt = @library[value.t].localToLocal 0, 0, @mainContainer
 			else
 				npt = @library[value.d].localToLocal 0, 0, @mainContainer
-			if @library[value.t].hitTest pt.x, pt.y
+			
+			if hit.hitTest pt.x, pt.y
 				@library.score.plusOne()
 				r = @createBitmap 'correct', 'correct', npt.x, npt.y
 			else

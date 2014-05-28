@@ -489,7 +489,7 @@
     U3A3.prototype.setStart = function() {
       var btnsalad, btnsandwich;
       this.insertBitmap('propsalad', 'propsalad', 824, 722, 'tc');
-      btnsalad = new Button('btnsalad', this.preload.getResult('btnsalad'), 0, 824, 900, 'tc');
+      btnsalad = new Button('btnsalad', this.preload.getResult('btnsalad'), 0, 824, 950, 'tc');
       this.setReg(btnsalad, btnsalad.width / 2, 0);
       this.insertBitmap('propsandwich', 'propsandwich', 824, 298, 'tc');
       btnsandwich = new Button('btnsandwich', this.preload.getResult('btnsandwich'), 0, 824, 488, 'tc');
@@ -524,36 +524,42 @@
       this.current = sandwich.name = 'sandwich';
       for (i = _i = 1; _i <= 5; i = _i += 1) {
         sac = new createjs.Container();
-        sas = new createjs.Shape();
         sast = this.createBitmap("sandwichstep" + i, 'sandwichstep', 0, 0);
-        sasn = this.createBitmap("sandwichnumber" + i, "sandwichnumber" + i, 66, 13);
+        sast.mouseEnabled = false;
         sast.set({
           scaleX: 0.46,
           scaleY: 0.46
         });
+        sasn = this.createBitmap("sandwichnumber" + i, "sandwichnumber" + i, 66, 13);
+        sasn.mouseEnabled = false;
+        sas = new createjs.Shape();
         sas.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sast.getBounds().width * 0.46, sast.getBounds().height * 0.46);
+        sas.name = "sandwichstep" + i;
         sac.set({
-          name: "sandwichstep" + i,
+          name: "sandwichstep" + i + "cont",
           x: this.positions.steps[i - 1].x,
           y: this.positions.steps[i - 1].y,
           shape: sas
         });
         sac.addChild(sast, sasn, sas);
         sacl = new createjs.Container();
-        sasl = new createjs.Shape();
         sasll = this.createBitmap("sandwichline" + i, 'sandwichline', 0, 0);
+        sasll.mouseEnabled = false;
+        sasl = new createjs.Shape();
         sasl.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sasll.getBounds().width, sasll.getBounds().height);
+        sasl.name = "sandwichline" + i;
         sacl.set({
-          name: "sandwichline" + i,
+          name: "sandwichline" + i + "cont",
           x: sac.x - 20,
           y: sac.y + 180,
           shape: sasl
         });
         sacl.addChild(sasll, sasl);
-        this.addToLibrary(sac, sacl);
+        this.addToLibrary(sac, sacl, sas, sasl);
         sandwich.addChild(sac, sacl);
       }
       label = this.createBitmap('label', 'sandwichlabel', this.positions.titulo.x, this.positions.titulo.y, 'tc');
+      label.mouseEnabled = false;
       ready = new Button('btnready', this.preload.getResult('sandwichbtnready'), 'ready', this.positions.ready.x, this.positions.ready.y);
       start = new Button('btnstart', this.preload.getResult('sandwichbtnstart'), 'start', this.positions.start.x, this.positions.start.y);
       counter = new Counter('counter', 60, '#56bb5b', this.positions.score.x, this.positions.score.y);
@@ -596,14 +602,17 @@
         sac = new createjs.Container();
         sas = new createjs.Shape();
         sast = this.createBitmap("saladhstep" + i, 'saladstep', 0, 0);
+        sast.mouseEnabled = false;
         sasn = this.createBitmap("saladnumber" + i, "saladnumber" + i, 66, 13);
+        sasn.mouseEnabled = false;
         sast.set({
           scaleX: 0.46,
           scaleY: 0.46
         });
         sas.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sast.getBounds().width * 0.46, sast.getBounds().height * 0.46);
+        sas.name = "saladstep" + i;
         sac.set({
-          name: "saladstep" + i,
+          name: "saladstep" + i + "cont",
           x: this.positions.steps[i - 1].x,
           y: this.positions.steps[i - 1].y,
           shape: sas
@@ -612,9 +621,11 @@
         sacl = new createjs.Container();
         sasl = new createjs.Shape();
         sasll = this.createBitmap("saladline" + i, 'saladline', 0, 0);
+        sasll.mouseEnabled = false;
         sasl.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sasll.getBounds().width, sasll.getBounds().height);
+        sasl.name = "saladline" + i;
         sacl.set({
-          name: "saladline" + i,
+          name: "saladline" + i + "cont",
           x: sac.x - 20,
           y: sac.y + 180,
           width: sasll.getBounds().width,
@@ -622,10 +633,11 @@
           shape: sasl
         });
         sacl.addChild(sasll, sasl);
-        this.addToLibrary(sac, sacl);
+        this.addToLibrary(sac, sacl, sas, sasl);
         salad.addChild(sac, sacl);
       }
       label = this.createBitmap('label', 'saladlabel', this.positions.titulo.x, this.positions.titulo.y, 'tc');
+      label.mouseEnabled = false;
       ready = new Button('btnready', this.preload.getResult('saladbtnready'), 'ready', this.positions.ready.x, this.positions.ready.y);
       start = new Button('btnstart', this.preload.getResult('saladbtnstart'), 'start', this.positions.start.x, this.positions.start.y);
       counter = new Counter('counter', 60, '#eb2d3d', this.positions.score.x, this.positions.score.y);
@@ -692,7 +704,7 @@
       dropped = false;
       i = 1;
       while (!(dropped === true || i > 5)) {
-        hit = this.library["" + this.current + "step" + i];
+        hit = this.library["" + this.current + "step" + i + "cont"];
         pt = hit.shape.globalToLocal(this.stage.mouseX, this.stage.mouseY);
         if (hit.shape.hitTest(pt.x, pt.y)) {
           this.answer.putInPlace({
@@ -715,7 +727,7 @@
       dropped = false;
       i = 1;
       while (!(dropped === true || i > 5)) {
-        hit = this.library["" + this.current + "line" + i];
+        hit = this.library["" + this.current + "line" + i + "cont"];
         pt = hit.shape.globalToLocal(this.stage.mouseX, this.stage.mouseY);
         if (hit.shape.hitTest(pt.x, pt.y)) {
           if (this.current === 'sandwich') {
@@ -741,7 +753,7 @@
     };
 
     U3A3.prototype.evaluateAnswer = function(e) {
-      var npt, pt, r, value, _i, _len, _ref;
+      var hit, npt, pt, r, value, _i, _len, _ref;
       this.complete = true;
       this.library.btnready.removeEventListener('click', this.evaluateAnswer);
       this.library.btnready.blink(false);
@@ -749,13 +761,14 @@
       _ref = this.answers[this.current];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         value = _ref[_i];
+        hit = this.library[value.t];
         pt = this.library[value.t].localToLocal(20, 20, this.library[value.d]);
         if (this.library[value.t].name.length > 3) {
           npt = this.library[value.t].localToLocal(0, 0, this.mainContainer);
         } else {
           npt = this.library[value.d].localToLocal(0, 0, this.mainContainer);
         }
-        if (this.library[value.t].hitTest(pt.x, pt.y)) {
+        if (hit.hitTest(pt.x, pt.y)) {
           this.library.score.plusOne();
           r = this.createBitmap('correct', 'correct', npt.x, npt.y);
         } else {

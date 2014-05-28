@@ -125,8 +125,8 @@ class U3A4 extends Oda
 		i2 = @createBitmap 'imageMeg', 'imageMeg', -352, -100
 		i3 = @createBitmap 'imageTomandSue', 'imageTomandSue', -490, 132
 		n1 = @createBitmap 'labelJack', 'labelJack', -138, 180
-		n2 = @createBitmap 'labelMeg', 'labelMeg', -302, 24
-		n3 = @createBitmap 'labelTomandSue', 'labelTomandSue', -376, 298
+		n2 = @createBitmap 'labelMeg', 'labelMeg', -320, 24
+		n3 = @createBitmap 'labelTomandSue', 'labelTomandSue', -362, 284
 		f1 = @createBitmap "table#{table}food1", "table#{table}food1", 104, -6, 'bc'
 		f2 = @createBitmap "table#{table}food2", "table#{table}food2", 366, -6, 'bc'
 		f3 = @createBitmap "table#{table}food3", "table#{table}food3", 624, -6, 'bc'
@@ -257,17 +257,21 @@ class U3A4 extends Oda
 		if not dropped 
 			@answer.returnToPlace()
 		else
+
 			###
 			if success
 				if @intento is 0
 					@library.score.plusOne()
 				@intento = 0
-				createjs.Sound.play 'good'
+				
 			###
 			if not success
 				@answer.returnToPlace()
 				@warning() 
 				@intento = 1
+			else
+				createjs.Sound.stop()
+				createjs.Sound.play 'good'
 	evaluateAnswer2: (e) =>
 		@answer = e.target
 		success = off
@@ -299,6 +303,9 @@ class U3A4 extends Oda
 				@answer.returnToPlace()
 				@warning() 
 				@intento = 1
+			else
+				createjs.Sound.stop()
+				createjs.Sound.play 'good'
 	evaluateAnswer3: (e) =>
 		console.log e.target
 		@answer = e.target
@@ -319,6 +326,7 @@ class U3A4 extends Oda
 			if success
 				if @intento is 0 then @library.score.plusOne()
 				@intento = 0
+				createjs.Sound.stop()
 				createjs.Sound.play 'good'
 				for i in [1..6] by 1
 					@library["t#{i}n2"].endDragListener()
@@ -329,6 +337,7 @@ class U3A4 extends Oda
 				@answer.returnToPlace()
 				@intento = 1
 				@warning()
+
 	finishEvaluation: =>
 		@blink @library[@answers[@table - 1][@aindex].a], off
 		#@library.score.plusOne()

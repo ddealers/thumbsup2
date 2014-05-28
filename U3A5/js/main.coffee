@@ -191,6 +191,7 @@ class U3A5 extends Oda
 						@library['score'].plusOne()
 					@intento = 0
 					@answer.visible = off
+					createjs.Sound.stop()
 					createjs.Sound.play 'good'
 					@finishEvaluation()
 				else
@@ -213,7 +214,7 @@ class U3A5 extends Oda
 			@nextEvaluation()
 	nextEvaluation: =>
 		@index++
-		createjs.Sound.stop()
+		#createjs.Sound.stop()
 		if @index < @game.length
 			TweenLite.to @library['btnnext'], 1, {alpha:0, y:@library['btnnext'].y + 20}
 			TweenLite.to @library['cuento'], 1, {alpha:0, y:@library['cuento'].y + 20}

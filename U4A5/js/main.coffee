@@ -137,6 +137,7 @@ class U4A5 extends Oda
 					if @answer.index is @library["sc#{i}"].index
 						@library["sc#{i}"].sprite.gotoAndStop 1
 						@answer.visible = off
+						createjs.Sound.stop()
 						createjs.Sound.play 'good'
 						if not @library["sc#{i}"].failed
 							@library['score'].plusOne()
@@ -153,6 +154,7 @@ class U4A5 extends Oda
 					if hit
 						@library["sc#{i}"].sprite.gotoAndStop 1
 						@answer.visible = off
+						createjs.Sound.stop()
 						createjs.Sound.play 'good'
 						if not @library["sc#{i}"].failed
 							@library['score'].plusOne()
@@ -177,7 +179,7 @@ class U4A5 extends Oda
 			@nextEvaluation()
 	nextEvaluation: =>
 		@index++
-		createjs.Sound.stop()
+		#createjs.Sound.stop()
 		if @index < @game.length
 			TweenLite.to @library['btnnext'], 1, {alpha:0, y:@library['btnnext'].y + 20}
 			TweenLite.to @library['cuento'], 1, {alpha:0, y:@library['cuento'].y + 20}

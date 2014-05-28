@@ -153,7 +153,7 @@ class U3A6 extends Oda
 			else if i <= 18
 				letterObj = new ClickableLetter "l#{i}", letter, letter, 83 * i - 790, 68
 			else
-				letterObj = new ClickableLetter "l#{i}", letter, letter, 83 * i - 1500, 136
+				letterObj = new ClickableLetter "l#{i}", letter, letter, 83 * i - 1450, 136
 			letterObj.text.font = '40px Quicksand'
 			@addToLibrary letterObj
 			alphabet.addChild letterObj

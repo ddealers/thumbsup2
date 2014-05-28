@@ -297,6 +297,7 @@
             if (this.answer.index === this.library["sc" + i].index) {
               this.library["sc" + i].sprite.gotoAndStop(1);
               this.answer.visible = false;
+              createjs.Sound.stop();
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
                 this.library['score'].plusOne();
@@ -319,6 +320,7 @@
             if (hit) {
               this.library["sc" + i].sprite.gotoAndStop(1);
               this.answer.visible = false;
+              createjs.Sound.stop();
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
                 this.library['score'].plusOne();
@@ -361,7 +363,6 @@
     U4A5.prototype.nextEvaluation = function() {
       var i, _i, _ref, _results;
       this.index++;
-      createjs.Sound.stop();
       if (this.index < this.game.length) {
         TweenLite.to(this.library['btnnext'], 1, {
           alpha: 0,

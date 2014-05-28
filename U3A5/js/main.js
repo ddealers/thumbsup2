@@ -407,6 +407,7 @@
             }
             this.intento = 0;
             this.answer.visible = false;
+            createjs.Sound.stop();
             createjs.Sound.play('good');
             _results.push(this.finishEvaluation());
           } else {
@@ -445,7 +446,6 @@
     U3A5.prototype.nextEvaluation = function() {
       var i, _i, _ref, _results;
       this.index++;
-      createjs.Sound.stop();
       if (this.index < this.game.length) {
         TweenLite.to(this.library['btnnext'], 1, {
           alpha: 0,

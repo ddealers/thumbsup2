@@ -180,7 +180,7 @@ class Oda
 		console.log text
 
 		it = 0			
-		npos = 14
+		npos = 24
 
 		for frase in text
 			if frase is '#ital'

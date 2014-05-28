@@ -332,8 +332,8 @@
       i2 = this.createBitmap('imageMeg', 'imageMeg', -352, -100);
       i3 = this.createBitmap('imageTomandSue', 'imageTomandSue', -490, 132);
       n1 = this.createBitmap('labelJack', 'labelJack', -138, 180);
-      n2 = this.createBitmap('labelMeg', 'labelMeg', -302, 24);
-      n3 = this.createBitmap('labelTomandSue', 'labelTomandSue', -376, 298);
+      n2 = this.createBitmap('labelMeg', 'labelMeg', -320, 24);
+      n3 = this.createBitmap('labelTomandSue', 'labelTomandSue', -362, 284);
       f1 = this.createBitmap("table" + table + "food1", "table" + table + "food1", 104, -6, 'bc');
       f2 = this.createBitmap("table" + table + "food2", "table" + table + "food2", 366, -6, 'bc');
       f3 = this.createBitmap("table" + table + "food3", "table" + table + "food3", 624, -6, 'bc');
@@ -498,13 +498,15 @@
         				if @intento is 0
         					@library.score.plusOne()
         				@intento = 0
-        				createjs.Sound.play 'good'
         */
 
         if (!success) {
           this.answer.returnToPlace();
           this.warning();
           return this.intento = 1;
+        } else {
+          createjs.Sound.stop();
+          return createjs.Sound.play('good');
         }
       }
     };
@@ -547,6 +549,9 @@
           this.answer.returnToPlace();
           this.warning();
           return this.intento = 1;
+        } else {
+          createjs.Sound.stop();
+          return createjs.Sound.play('good');
         }
       }
     };
@@ -577,6 +582,7 @@
             this.library.score.plusOne();
           }
           this.intento = 0;
+          createjs.Sound.stop();
           createjs.Sound.play('good');
           for (i = _j = 1; _j <= 6; i = _j += 1) {
             this.library["t" + i + "n2"].endDragListener();

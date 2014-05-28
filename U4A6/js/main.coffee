@@ -172,6 +172,7 @@ class U4A6 extends Oda
 	evaluateAnswer: (e) =>
 		@answer = e.currentTarget
 		if @answer.index is @preguntas[@index].respuesta
+			createjs.Sound.stop()
 			createjs.Sound.play 'good'
 			@library['score'].plusOne()
 			@finishEvaluation()
