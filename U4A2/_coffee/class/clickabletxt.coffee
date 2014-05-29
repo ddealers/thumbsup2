@@ -11,12 +11,13 @@ class ClickableText
 		@y = y
 		@pos = x:x, y:y
 		@text = new createjs.Text text, '32px Quicksand', '#333333'
+		@text.mouseEnabled = false
 		@width = @text.getMeasuredWidth() + 20
 		@height = @text.getMeasuredHeight() + 6
 		hit = new createjs.Shape()
-		hit.graphics.beginFill('#000').drawRect(-10, -6, @text.getMeasuredWidth() + 40, @text.getMeasuredHeight() + 12)
-		@text.hitArea = hit
-		@addChild @text
+		hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-10, -6, @text.getMeasuredWidth() + 40, @text.getMeasuredHeight() + 12)
+		
+		@addChild @text, hit
 		false
 	setLineWidth: (width) ->
 		@text.lineWidth = width

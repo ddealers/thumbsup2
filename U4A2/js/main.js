@@ -137,7 +137,7 @@
     };
 
     U4A2.prototype.setSopa = function() {
-      var h, i, j, letra, lhlength, llength, shapesContainer, sopa, _i, _j;
+      var h, i, j, letra, lhlength, llength, sha, shapesContainer, sopa, _i, _j;
       j = 0;
       h = this.letters.length;
       sopa = new createjs.Container();
@@ -150,6 +150,9 @@
       sopa.addChild(shapesContainer);
       this.addToLibrary(shapesContainer);
       llength = this.letters.length - 1;
+      sha = new createjs.Shape();
+      sha.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-sopa.x, -sopa.y, stageSize.w, stageSize.h);
+      sopa.addChild(sha);
       for (h = _i = 0; _i <= llength; h = _i += 1) {
         lhlength = this.letters[h].length - 1;
         for (i = _j = 0; _j <= lhlength; i = _j += 1) {
@@ -214,6 +217,8 @@
       target = e.target;
       pt = this.mainContainer.globalToLocal(this.stage.mouseX, this.stage.mouseY);
       oup = this.mainContainer.getObjectUnderPoint(pt.x, pt.y);
+      console.log('pt', pt, console.log('oup', oup));
+      console.log('target', target);
       i = 0;
       h = 0;
       this.library.shapesContainer.addChild(shape);

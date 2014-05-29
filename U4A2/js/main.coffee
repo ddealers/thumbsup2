@@ -79,6 +79,10 @@ class U4A2 extends Oda
 		sopa.addChild shapesContainer
 		@addToLibrary shapesContainer
 		llength = @letters.length - 1
+		sha = new createjs.Shape()
+		sha.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(- sopa.x, - sopa.y, stageSize.w, stageSize.h)
+		sopa.addChild sha
+
 		for h in [0..llength] by 1
 			lhlength = @letters[h].length - 1
 			for i in [0..lhlength] by 1
@@ -90,6 +94,9 @@ class U4A2 extends Oda
 				sopa.addChild letra
 				@addToLibrary letra
 				j++
+
+		
+	
 		@addToMain sopa
 		@
 	updateCounter: =>
@@ -126,6 +133,9 @@ class U4A2 extends Oda
 		target = e.target
 		pt = @mainContainer.globalToLocal @stage.mouseX, @stage.mouseY
 		oup = @mainContainer.getObjectUnderPoint pt.x, pt.y
+		console.log 'pt', pt, 
+		console.log 'oup', oup
+		console.log 'target', target 
 		i = 0
 		h = 0
 		@library.shapesContainer.addChild shape

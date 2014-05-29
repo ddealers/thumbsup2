@@ -261,12 +261,12 @@
         y: y
       };
       this.text = new createjs.Text(text, '32px Quicksand', '#333333');
+      this.text.mouseEnabled = false;
       this.width = this.text.getMeasuredWidth() + 20;
       this.height = this.text.getMeasuredHeight() + 6;
       hit = new createjs.Shape();
-      hit.graphics.beginFill('#000').drawRect(-10, -6, this.text.getMeasuredWidth() + 40, this.text.getMeasuredHeight() + 12);
-      this.text.hitArea = hit;
-      this.addChild(this.text);
+      hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-10, -6, this.text.getMeasuredWidth() + 40, this.text.getMeasuredHeight() + 12);
+      this.addChild(this.text, hit);
       return false;
     };
 
