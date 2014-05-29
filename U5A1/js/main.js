@@ -381,17 +381,20 @@
     }
 
     U5A1.prototype.setStage = function() {
+      var btnfinished, btnrepeat;
       U5A1.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
       this.insertInstructions('instructions', 'Listen and drag the pictures to the correct month on the calendar.', 80, 200);
-      this.insertBitmap('btnRepeat', 'btnRepeat', 1196, 490);
-      this.insertBitmap('btnFinished', 'btnFinished', 1196, 584);
+      btnrepeat = new Button('btnRepeat', this.preload.getResult('btnRepeat'), 0, 1196, 490);
+      btnfinished = new Button('btnFinished', this.preload.getResult('btnFinished'), 0, 1196, 584);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 16, 0));
+      this.addToMain(btnrepeat, btnfinished);
+      this.addToLibrary(btnrepeat, btnfinished);
       return this.setCalendar(1).introEvaluation();
     };
 
     U5A1.prototype.setCalendar = function(calendar) {
-      var c, cal, hit, i, v, _i, _j;
+      var c, cal, hit, i, shape, v, _i, _j;
       this.calendar = calendar;
       cal = new createjs.Container();
       cal.name = 'calendar';
@@ -400,30 +403,37 @@
       this.insertBitmap('propCalendar', 'propCalendar', 120, 256);
       for (i = _i = 1; _i <= 12; i = ++_i) {
         c = new createjs.Container();
-        c.name = "cal" + calendar + "Final" + i;
+        c.name = "cal" + calendar + "Final" + i + "cont";
         c.x = this.game[calendar - 1].finales[i - 1].x;
         c.y = this.game[calendar - 1].finales[i - 1].y;
         if (calendar === 1) {
           if (i === 2 || i === 6 || i === 9 || i === 11) {
             v = this.createBitmap("", "cal" + calendar + "Final" + i, 0, 0);
+            v.mouseEnabled = false;
             c.addChild(v);
           } else {
             hit = new createjs.Shape();
             hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-50, -50, 180, 110);
+            hit.name = "cal" + calendar + "Final" + i;
             c.addChild(hit);
           }
         } else if (calendar === 2) {
           if (i === 6 || i === 8 || i === 10 || i === 12) {
             v = this.createBitmap("", "cal" + calendar + "Final" + i, 0, 0);
+            v.mouseEnabled = false;
             c.addChild(v);
           } else {
             hit = new createjs.Shape();
             hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-50, -50, 180, 110);
+            hit.name = "cal" + calendar + "Final" + i;
             c.addChild(hit);
           }
         }
+        shape = new createjs.Shape();
+        shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-50 - c.x, -50 - c.y, stageSize.w, stageSize.h);
+        c.addChild(shape);
         cal.addChild(c);
-        this.addToLibrary(c);
+        this.addToLibrary(c, hit);
       }
       for (i = _j = 1; _j <= 8; i = ++_j) {
         v = new Draggable("cal" + calendar + "Dragble" + i, this.preload.getResult("cal" + calendar + "Dragble" + i), "cal" + calendar + "Final" + i, this.game[calendar - 1].drags[i - 1].x, this.game[calendar - 1].drags[i - 1].y);
@@ -432,6 +442,7 @@
         this.addToLibrary(v);
       }
       this.addToMain(cal);
+      this.addToLibrary(cal);
       TweenLite.to(cal, 1, {
         alpha: 1,
         y: 0
@@ -475,9 +486,10 @@
     };
 
     U5A1.prototype.evaluateDrop = function(e) {
-      var drop, dropped, pt, relation, v, _i, _len, _ref;
+      var drop, dropped, i, pt, relation, v, _i, _len, _ref;
       this.answer = e.target;
       dropped = false;
+      i = 0;
       _ref = this.game[this.calendar - 1].drops;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         drop = _ref[_i];
@@ -490,24 +502,10 @@
           });
           v = this.createBitmap(relation[0].id, relation[0].tgt, 45, 25);
           v.hitter = this.answer;
-          v.addEventListener('mousedown', function(e) {
-            var cv;
-            cv = e.currentTarget;
-            return cv.addEventListener('pressmove', function(ev) {
-              var parent;
-              if (cv.hitter) {
-                cv.removeAllEventListeners();
-                parent = cv.parent;
-                while (parent.children.length > 1) {
-                  parent.removeChildAt(parent.children.length - 1);
-                }
-                cv.hitter.visible = true;
-                return cv.hitter.returnToPlace();
-              }
-            });
-          });
           this.setReg(v, v.width / 2, v.height / 2);
-          this.library[drop.tgt].addChild(v);
+          this.library[drop.tgt].respuesta = this.answer.name;
+          console.log(this.library[drop.tgt]);
+          this.library[drop.tgt].parent.addChild(v);
         }
       }
       if (!dropped) {
@@ -522,9 +520,9 @@
       createjs.Sound.stop();
       answers = this.game[this.calendar - 1].drops;
       for (i = _i = 1, _ref = answers.length; _i <= _ref; i = _i += 1) {
-        if (this.library[answers[i - 1].tgt].children.length > 1) {
-          if (this.library[answers[i - 1].tgt].children[1].name === answers[i - 1].id) {
-            this.blink(this.library[answers[i - 1].tgt]);
+        if (this.library[answers[i - 1].tgt].parent.children.length > 2) {
+          if (this.library[answers[i - 1].tgt].parent.children[2].name === answers[i - 1].id) {
+            this.blink(this.library[answers[i - 1].tgt].parent);
             this.library.score.plusOne();
             createjs.Sound.play('good');
           }

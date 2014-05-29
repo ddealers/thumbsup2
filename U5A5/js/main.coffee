@@ -37,10 +37,10 @@ class U5A5 extends Oda
 		@game = [
 			{
 				texts:[
-					{idx:3, t:"Outside it's snowing hard!"}
 					{idx:4, t:'She is watching the weather report on TV'}
 					{idx:1, t:'He is drinking hot chocolate and petting his dog, Bo.'}
 					{idx:2, t:"Its windy and cold, but it isn't snowing"}
+					{idx:3, t:"Outside it's snowing hard!"}
 				]
 				positions:[
 					{x:202, y:320}
@@ -69,9 +69,12 @@ class U5A5 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Read and drag the sentences to complete the story.', 80, 200
-		@insertBitmap 'title', 'title1', 700, 250, 'tc'
-		@insertBitmap 'btnnext', 'btn', 1520, 1040, 'br'
+		@insertInstructions 'instructions', ['Read and drag the sentences to complete the story.'], 80, 200
+		ti = @createBitmap 'title', 'title1', 665, 265, 'tc'
+		ti.scaleX = ti.scaleY = 0.8
+		@addToMain ti
+		btnnext = new Button 'btnnext', (@preload.getResult 'btn'), 0, 1220, 1040
+		@addToMain btnnext
 		@library['btnnext'].visible = off
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
 		@setCuento(1).introEvaluation()
@@ -79,20 +82,18 @@ class U5A5 extends Oda
 		cuento = new createjs.Container()
 		cuento.name = 'cuento'
 		@scene = scene
-		scn = @game[scene - 1]
-		for i in [1..scn.positions.length] by 1
-			sp = @createSprite "sp#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, 0, 0
+		for i in [1..@game[scene - 1].positions.length] by 1
+			sp = @createSprite "sc#{i}", ["#{(scene - 1) * 4 + i}", "#{(scene - 1) * 4 + i}b"],null, 0, 0
 			sp.mouseEnabled = false
-			sp.scaleX = sp.scaleY = 1.2
 			s = new createjs.Shape()
-			s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width + 40, sp.getBounds().height + 40)
+			s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height)
 			sc = new createjs.Container()
-			sc.set {name: "sc#{i}", index: (scene - 1) * 4 + i, x: scn.positions[i - 1].x, y: scn.positions[i - 1].y, sprite: sp, shape: s}
+			sc.set {name: "sc#{i}", index: (scene - 1) * 4 + i, x: @game[scene - 1].positions[i - 1].x, y: @game[scene - 1].positions[i - 1].y, sprite: sp, shape: s}
 			sc.addChild sp, s
+			sc.scaleX = sc.scaleY = 1.1
 			cuento.addChild sc
 			@addToLibrary sc
-
-		for i in [1..scn.texts.length] by 1
+		for i in [1..@game[scene - 1].texts.length] by 1
 			t = new DraggableText "t#{i}", @game[scene - 1].texts[i-1].t, @game[scene - 1].texts[i-1].idx, 1400, i * 120 + 400
 			t.text.lineHeight = 40
 			t.text.lineWidth = 450
@@ -100,7 +101,6 @@ class U5A5 extends Oda
 			t.setHitArea()
 			@addToLibrary t
 			cuento.addChild t
-		
 		@addToMain cuento
 		@
 	setCuentoFinal: (scene) ->
@@ -110,7 +110,7 @@ class U5A5 extends Oda
 		scn = @game[scene - 1]
 		for i in [1..scn.positions.length] by 1
 			m = @createBitmap "#{(scene - 1) * 4 + i}b", "#{(scene - 1) * 4 + i}b", scn.positions[i - 1].x, scn.positions[i - 1].y
-			m.scaleX = m.scaleY = 1.2
+			m.scaleX = m.scaleY = 1.1
 			cuento.addChild m
 			@addToLibrary m
 
@@ -126,7 +126,7 @@ class U5A5 extends Oda
 	initEvaluation: (e) =>
 		super
 		for i in [1..@game[@scene - 1].texts.length] by 1
-			@library["t#{i}"].addEventListener 'drop', @evaluateAnswer
+			@library["t#{i}"].addEventListener 'click', @evaluateAnswer
 	evaluateAnswer: (e) =>
 		@answer = e.currentTarget
 		dropped = off
@@ -136,19 +136,15 @@ class U5A5 extends Oda
 				if not @isArray @answer.index 
 					if @answer.index is @library["sc#{i}"].index
 						@library["sc#{i}"].sprite.gotoAndStop 1
-						@answer.returnToOrigin()
-						#@answer.visible = off
+						@answer.visible = off
 						createjs.Sound.stop()
 						createjs.Sound.play 'good'
 						if not @library["sc#{i}"].failed
-							#if @intento is 0
 							@library['score'].plusOne()
-							#@intento = 0
 						@finishEvaluation()
 					else
 						@library["sc#{i}"].failed = on
 						@warning()
-						#@intento = 1
 						@answer.returnToPlace()
 				else
 					hit = false
@@ -157,20 +153,15 @@ class U5A5 extends Oda
 							hit = true	
 					if hit
 						@library["sc#{i}"].sprite.gotoAndStop 1
-						@answer.returnToOrigin()
-						#@answer.visible = off
+						@answer.visible = off
 						createjs.Sound.stop()
 						createjs.Sound.play 'good'
 						if not @library["sc#{i}"].failed
-							#if @intento is 0
 							@library['score'].plusOne()
-							#@intento = 0
-
 						@finishEvaluation()
 					else
 						@library["sc#{i}"].failed = on
 						@warning()
-						@intento = 1
 						@answer.returnToPlace()
 			else
 				@answer.returnToPlace()

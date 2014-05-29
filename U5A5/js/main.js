@@ -115,9 +115,6 @@
         {
           texts: [
             {
-              idx: 3,
-              t: "Outside it's snowing hard!"
-            }, {
               idx: 4,
               t: 'She is watching the weather report on TV'
             }, {
@@ -126,6 +123,9 @@
             }, {
               idx: 2,
               t: "Its windy and cold, but it isn't snowing"
+            }, {
+              idx: 3,
+              t: "Outside it's snowing hard!"
             }
           ],
           positions: [
@@ -181,42 +181,45 @@
     }
 
     U5A5.prototype.setStage = function() {
+      var btnnext, ti;
       U5A5.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Read and drag the sentences to complete the story.', 80, 200);
-      this.insertBitmap('title', 'title1', 700, 250, 'tc');
-      this.insertBitmap('btnnext', 'btn', 1520, 1040, 'br');
+      this.insertInstructions('instructions', ['Read and drag the sentences to complete the story.'], 80, 200);
+      ti = this.createBitmap('title', 'title1', 665, 265, 'tc');
+      ti.scaleX = ti.scaleY = 0.8;
+      this.addToMain(ti);
+      btnnext = new Button('btnnext', this.preload.getResult('btn'), 0, 1220, 1040);
+      this.addToMain(btnnext);
       this.library['btnnext'].visible = false;
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));
       return this.setCuento(1).introEvaluation();
     };
 
     U5A5.prototype.setCuento = function(scene) {
-      var cuento, i, s, sc, scn, sp, t, _i, _j, _ref, _ref1;
+      var cuento, i, s, sc, sp, t, _i, _j, _ref, _ref1;
       cuento = new createjs.Container();
       cuento.name = 'cuento';
       this.scene = scene;
-      scn = this.game[scene - 1];
-      for (i = _i = 1, _ref = scn.positions.length; _i <= _ref; i = _i += 1) {
-        sp = this.createSprite("sp" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, 0, 0);
+      for (i = _i = 1, _ref = this.game[scene - 1].positions.length; _i <= _ref; i = _i += 1) {
+        sp = this.createSprite("sc" + i, ["" + ((scene - 1) * 4 + i), "" + ((scene - 1) * 4 + i) + "b"], null, 0, 0);
         sp.mouseEnabled = false;
-        sp.scaleX = sp.scaleY = 1.2;
         s = new createjs.Shape();
-        s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width + 40, sp.getBounds().height + 40);
+        s.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, sp.getBounds().width, sp.getBounds().height);
         sc = new createjs.Container();
         sc.set({
           name: "sc" + i,
           index: (scene - 1) * 4 + i,
-          x: scn.positions[i - 1].x,
-          y: scn.positions[i - 1].y,
+          x: this.game[scene - 1].positions[i - 1].x,
+          y: this.game[scene - 1].positions[i - 1].y,
           sprite: sp,
           shape: s
         });
         sc.addChild(sp, s);
+        sc.scaleX = sc.scaleY = 1.1;
         cuento.addChild(sc);
         this.addToLibrary(sc);
       }
-      for (i = _j = 1, _ref1 = scn.texts.length; _j <= _ref1; i = _j += 1) {
+      for (i = _j = 1, _ref1 = this.game[scene - 1].texts.length; _j <= _ref1; i = _j += 1) {
         t = new DraggableText("t" + i, this.game[scene - 1].texts[i - 1].t, this.game[scene - 1].texts[i - 1].idx, 1400, i * 120 + 400);
         t.text.lineHeight = 40;
         t.text.lineWidth = 450;
@@ -237,7 +240,7 @@
       scn = this.game[scene - 1];
       for (i = _i = 1, _ref = scn.positions.length; _i <= _ref; i = _i += 1) {
         m = this.createBitmap("" + ((scene - 1) * 4 + i) + "b", "" + ((scene - 1) * 4 + i) + "b", scn.positions[i - 1].x, scn.positions[i - 1].y);
-        m.scaleX = m.scaleY = 1.2;
+        m.scaleX = m.scaleY = 1.1;
         cuento.addChild(m);
         this.addToLibrary(m);
       }
@@ -277,7 +280,7 @@
       U5A5.__super__.initEvaluation.apply(this, arguments);
       _results = [];
       for (i = _i = 1, _ref = this.game[this.scene - 1].texts.length; _i <= _ref; i = _i += 1) {
-        _results.push(this.library["t" + i].addEventListener('drop', this.evaluateAnswer));
+        _results.push(this.library["t" + i].addEventListener('click', this.evaluateAnswer));
       }
       return _results;
     };
@@ -293,7 +296,7 @@
           if (!this.isArray(this.answer.index)) {
             if (this.answer.index === this.library["sc" + i].index) {
               this.library["sc" + i].sprite.gotoAndStop(1);
-              this.answer.returnToOrigin();
+              this.answer.visible = false;
               createjs.Sound.stop();
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
@@ -316,7 +319,7 @@
             }
             if (hit) {
               this.library["sc" + i].sprite.gotoAndStop(1);
-              this.answer.returnToOrigin();
+              this.answer.visible = false;
               createjs.Sound.stop();
               createjs.Sound.play('good');
               if (!this.library["sc" + i].failed) {
@@ -326,7 +329,6 @@
             } else {
               this.library["sc" + i].failed = true;
               this.warning();
-              this.intento = 1;
               _results.push(this.answer.returnToPlace());
             }
           }

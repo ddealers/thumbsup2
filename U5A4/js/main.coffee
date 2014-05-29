@@ -106,29 +106,35 @@ class U5A4 extends Oda
 					['summerchildrachel', 'summerchildrachelhat', 'summerchildrachelshoes', 'summerchildrachelsuit']
 					['summerchildmike', 'summerchildmikeglasses', 'summerchildmikehat', 'summerchildmikeshort', 'summerchildmikeshirt', 'summerchildmikeshoes']
 				]
+				imgs: [
+					['kid0asset0', 'kid0asset1', 'kid0asset2', 'kid0asset3', 'kid0asset4']
+					['kid1asset0', 'kid1asset1', 'kid1asset2', 'kid1asset3']
+					['kid2asset0', 'kid2asset1', 'kid2asset2', 'kid2asset3']
+					['kid3asset0', 'kid3asset1', 'kid3asset2', 'kid3asset3', 'kid3asset4', 'kid3asset5']
+				]
 				drops: [
 					{
-						summerJenifferdressclothdrag: 'summerchildjenniferdress'
-						summerJenifferhatclothdrag:'summerchildjenniferhat'
-						summerJeniffersandalsclothdrag:'summerchildjennifershoes'
-						summerJeniffersunglassesclothdrag:'summerchildjenniferglasses'
+						summerJenifferdressclothdrag: 'kid0asset1'
+						summerJenifferhatclothdrag:'kid0asset3'
+						summerJeniffersandalsclothdrag:'kid0asset4'
+						summerJeniffersunglassesclothdrag:'kid0asset2'
 					}
 					{
-						summerTylercapclothdrag: 'summerchildtylerhat'
-						summerTylersandalsclothdrag: 'summerchildtylershoes'
-						summerTylerswimsuitclothdrag: 'summerchildtylershort'
+						summerTylercapclothdrag: 'kid1asset2'
+						summerTylersandalsclothdrag: 'kid1asset3'
+						summerTylerswimsuitclothdrag: 'kid1asset1'
 					}
 					{
-						summerRachelhatclothdrag: 'summerchildrachelhat'
-						summerRachelsandalsclothdrag: 'summerchildrachelshoes'
-						summerRachelswimsuitclothdrag: 'summerchildrachelsuit'
+						summerRachelhatclothdrag: 'kid2asset1'
+						summerRachelsandalsclothdrag: 'kid2asset2'
+						summerRachelswimsuitclothdrag: 'kid2asset3'
 					}
 					{
-						summerMIkecapclothdrag: 'summerchildmikehat'
-						summerMIkeshirtclothdrag:'summerchildmikeshirt'
-						summerMIkesunglassesclothdrag:'summerchildmikeglasses'
-						summerMIkeswimsuitclothdrag:'summerchildmikeshort'
-						summerMIketennisclothdrag:'summerchildmikeshoes'
+						summerMIkecapclothdrag: 'kid3asset2'
+						summerMIkeshirtclothdrag:'kid3asset4'
+						summerMIkesunglassesclothdrag:'kid3asset1'
+						summerMIkeswimsuitclothdrag:'kid3asset3'
+						summerMIketennisclothdrag:'kid3asset5'
 					}
 				]
 				positions: [
@@ -197,6 +203,8 @@ class U5A4 extends Oda
 			boton.name = "repeat#{current[i][0]}"
 
 			bt = @createBitmap "repeat", 'repeatbtn', 0, 0
+			bt.mouseEnabled = false
+
 			shape = new createjs.Shape()
 			shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bt.getBounds().width, bt.getBounds().height)
 			boton.addChild bt, shape
@@ -204,18 +212,27 @@ class U5A4 extends Oda
 			@addToLibrary boton, bt, shape
 			kids.addChild boton
 		for i in [0..3] by 1
+			kid = new createjs.Container()
+			
 			for j in [0..current[i].length-1] by 1
-				asset = @createBitmap current[i][j], current[i][j], i * 320 + 40, 170, 'mc'
+				asset = @createBitmap "kid#{i}asset#{j}", current[i][j], i * 320 + 40, 170, 'mc'
+				asset.mouseEnabled = false
 				asset.scaleX = asset.scaleY = 0.45
 				if j > 0 
 					asset.visible = off
+					
 				else 
 					hit = new createjs.Shape()
-					hit.graphics.beginFill('#000').drawRect(-5, -3, asset.width + 40, asset.height + 20)
-					asset.index = i
-					asset.hitArea = hit
+					hit.graphics.beginFill('rgba(255,255,255,00.1)').drawRect(i * 320 + 40 - (asset.width * 0.45) / 2, 120 - (asset.width * 0.45) / 2, asset.width * 0.45, asset.height * 0.45)
+					hit.name = current[i][j]
+					hit.index = kid.index = i
+					#asset.hitArea = hit
+					@addToLibrary hit
+					kid.addChild hit
 				@addToLibrary asset
-				kids.addChild asset
+				kid.addChild asset
+			kids.addChild kid
+			@addToLibrary kid
 		@addToMain kids
 		@
 	setRopa: ->
@@ -236,7 +253,8 @@ class U5A4 extends Oda
 		for i in [0..@game[@station].positions.length - 1] by 1
 			@observer.subscribe 'init_kid_evaluation', @library["r#{i}"].onInitEvaluation
 		for kid in @game[@station].kids
-			@blink @library[kid[0]]
+			@blink @library[kid[0]].parent
+			true
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
 		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5}
 		TweenLite.from @library.bg, 1, {alpha: 0, y: @library.bg.y + 40, delay: 1}
@@ -248,7 +266,7 @@ class U5A4 extends Oda
 			@library[kid[0]].addEventListener 'click', @selectKid
 	selectKid: (e) =>
 		@selected = e.target
-		@blink @selected, off
+		@blink @selected.parent, off
 		
 		for kid in @game[@station].kids
 			@library[kid[0]].removeEventListener 'click', @selectKid
@@ -257,6 +275,7 @@ class U5A4 extends Oda
 			@library["r#{i}"].removeAllEventListeners()
 			@library["r#{i}"].addEventListener 'drop', @evaluateAnswer
 		@intento = 0
+		createjs.Sound.stop()
 
 		createjs.Sound.play "s#{@selected.name}"
 		console.log @library["repeat#{@selected.name}"]
@@ -267,7 +286,8 @@ class U5A4 extends Oda
 		@answer = e.target
 		pt = @selected.globalToLocal @stage.mouseX, @stage.mouseY
 		if @selected.hitTest pt.x, pt.y
-			drops = @game[@station].drops[@selected.index]
+			drops = @game[@station].drops[@selected.parent.index]
+			
 			if drops[@answer.index]
 				if @intento is 0
 					@library.score.plusOne()
@@ -284,7 +304,8 @@ class U5A4 extends Oda
 		else
 			@answer.returnToPlace()
 	finishEvaluation: =>
-		for asset in @game[@station].kids[@selected.index]
+		for asset in @game[@station].imgs[@selected.index]
+			console.log  @game[@station].imgs[@selected.index]
 			if @library[asset].visible is off
 				return
 		@library["repeat#{@selected.name}"].removeEventListener 'click', @repeatSound

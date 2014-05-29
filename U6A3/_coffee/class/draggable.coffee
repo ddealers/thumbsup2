@@ -7,6 +7,7 @@ class Draggable
 		@Container_initialize()
 		@name = name
 		@bitmap = new createjs.Bitmap image
+		@bitmap.mouseEnabled = false
 		@index = index
 		@x = x
 		@y = y
@@ -14,10 +15,9 @@ class Draggable
 		@height = image.height
 		@pos = x:x, y:y
 		hit = new createjs.Shape()
-		hit.graphics.beginFill('rgba(0,0,0,0.5)').drawRect(0, 0, image.width, image.height)
-		@hitArea = hit
+		hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, image.width, image.height)
+		@addChild @bitmap, hit
 		@inPlace = off
-		@addChild @bitmap
 	onInitEvaluation: =>
 		@on 'mousedown', @handleMouseDown
 	onStopEvaluation: =>

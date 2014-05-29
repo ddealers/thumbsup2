@@ -146,11 +146,15 @@ class U6A2 extends Oda
 		@intento = 0
 		createjs.Sound.stop()
 		if @mindex < @current.length
-			createjs.Sound.play "s#{@current[@mindex].i}"
+			setTimeout @playsound, 500
+
 		else
 			@mindex = 0
 			setTimeout @nextEvaluation, 2 * 1000
 			@library.btnRepeat.removeEventListener 'click', @repeatSound
+	playsound: =>
+		createjs.Sound.play "s#{@current[@mindex].i}"
+
 	nextEvaluation: =>
 		@index++
 		TweenLite.to @library.mapa, 1, {alpha: 0, y: @library.mapa.y + 40}

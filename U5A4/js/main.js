@@ -291,26 +291,27 @@
       this.game = {
         summer: {
           kids: [['summerchildjennifer', 'summerchildjenniferdress', 'summerchildjenniferglasses', 'summerchildjenniferhat', 'summerchildjennifershoes'], ['summerchildtyler', 'summerchildtylershort', 'summerchildtylerhat', 'summerchildtylershoes'], ['summerchildrachel', 'summerchildrachelhat', 'summerchildrachelshoes', 'summerchildrachelsuit'], ['summerchildmike', 'summerchildmikeglasses', 'summerchildmikehat', 'summerchildmikeshort', 'summerchildmikeshirt', 'summerchildmikeshoes']],
+          imgs: [['kid0asset0', 'kid0asset1', 'kid0asset2', 'kid0asset3', 'kid0asset4'], ['kid1asset0', 'kid1asset1', 'kid1asset2', 'kid1asset3'], ['kid2asset0', 'kid2asset1', 'kid2asset2', 'kid2asset3'], ['kid3asset0', 'kid3asset1', 'kid3asset2', 'kid3asset3', 'kid3asset4', 'kid3asset5']],
           drops: [
             {
-              summerJenifferdressclothdrag: 'summerchildjenniferdress',
-              summerJenifferhatclothdrag: 'summerchildjenniferhat',
-              summerJeniffersandalsclothdrag: 'summerchildjennifershoes',
-              summerJeniffersunglassesclothdrag: 'summerchildjenniferglasses'
+              summerJenifferdressclothdrag: 'kid0asset1',
+              summerJenifferhatclothdrag: 'kid0asset3',
+              summerJeniffersandalsclothdrag: 'kid0asset4',
+              summerJeniffersunglassesclothdrag: 'kid0asset2'
             }, {
-              summerTylercapclothdrag: 'summerchildtylerhat',
-              summerTylersandalsclothdrag: 'summerchildtylershoes',
-              summerTylerswimsuitclothdrag: 'summerchildtylershort'
+              summerTylercapclothdrag: 'kid1asset2',
+              summerTylersandalsclothdrag: 'kid1asset3',
+              summerTylerswimsuitclothdrag: 'kid1asset1'
             }, {
-              summerRachelhatclothdrag: 'summerchildrachelhat',
-              summerRachelsandalsclothdrag: 'summerchildrachelshoes',
-              summerRachelswimsuitclothdrag: 'summerchildrachelsuit'
+              summerRachelhatclothdrag: 'kid2asset1',
+              summerRachelsandalsclothdrag: 'kid2asset2',
+              summerRachelswimsuitclothdrag: 'kid2asset3'
             }, {
-              summerMIkecapclothdrag: 'summerchildmikehat',
-              summerMIkeshirtclothdrag: 'summerchildmikeshirt',
-              summerMIkesunglassesclothdrag: 'summerchildmikeglasses',
-              summerMIkeswimsuitclothdrag: 'summerchildmikeshort',
-              summerMIketennisclothdrag: 'summerchildmikeshoes'
+              summerMIkecapclothdrag: 'kid3asset2',
+              summerMIkeshirtclothdrag: 'kid3asset4',
+              summerMIkesunglassesclothdrag: 'kid3asset1',
+              summerMIkeswimsuitclothdrag: 'kid3asset3',
+              summerMIketennisclothdrag: 'kid3asset5'
             }
           ],
           positions: [
@@ -462,7 +463,7 @@
     };
 
     U5A4.prototype.setKids = function(station) {
-      var asset, boton, bt, current, hit, i, j, kids, shape, _i, _j, _k, _ref;
+      var asset, boton, bt, current, hit, i, j, kid, kids, shape, _i, _j, _k, _ref;
       kids = new createjs.Container();
       kids.name = 'kids';
       kids.x = 320;
@@ -476,6 +477,7 @@
         boton.visible = false;
         boton.name = "repeat" + current[i][0];
         bt = this.createBitmap("repeat", 'repeatbtn', 0, 0);
+        bt.mouseEnabled = false;
         shape = new createjs.Shape();
         shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bt.getBounds().width, bt.getBounds().height);
         boton.addChild(bt, shape);
@@ -483,20 +485,26 @@
         kids.addChild(boton);
       }
       for (i = _j = 0; _j <= 3; i = _j += 1) {
+        kid = new createjs.Container();
         for (j = _k = 0, _ref = current[i].length - 1; _k <= _ref; j = _k += 1) {
-          asset = this.createBitmap(current[i][j], current[i][j], i * 320 + 40, 170, 'mc');
+          asset = this.createBitmap("kid" + i + "asset" + j, current[i][j], i * 320 + 40, 170, 'mc');
+          asset.mouseEnabled = false;
           asset.scaleX = asset.scaleY = 0.45;
           if (j > 0) {
             asset.visible = false;
           } else {
             hit = new createjs.Shape();
-            hit.graphics.beginFill('#000').drawRect(-5, -3, asset.width + 40, asset.height + 20);
-            asset.index = i;
-            asset.hitArea = hit;
+            hit.graphics.beginFill('rgba(255,255,255,00.1)').drawRect(i * 320 + 40 - (asset.width * 0.45) / 2, 120 - (asset.width * 0.45) / 2, asset.width * 0.45, asset.height * 0.45);
+            hit.name = current[i][j];
+            hit.index = kid.index = i;
+            this.addToLibrary(hit);
+            kid.addChild(hit);
           }
           this.addToLibrary(asset);
-          kids.addChild(asset);
+          kid.addChild(asset);
         }
+        kids.addChild(kid);
+        this.addToLibrary(kid);
       }
       this.addToMain(kids);
       return this;
@@ -527,7 +535,8 @@
       _ref1 = this.game[this.station].kids;
       for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
         kid = _ref1[_j];
-        this.blink(this.library[kid[0]]);
+        this.blink(this.library[kid[0]].parent);
+        true;
       }
       TweenLite.from(this.library.header, 1, {
         y: -this.library.header.height
@@ -571,7 +580,7 @@
     U5A4.prototype.selectKid = function(e) {
       var i, kid, _i, _j, _len, _ref, _ref1;
       this.selected = e.target;
-      this.blink(this.selected, false);
+      this.blink(this.selected.parent, false);
       _ref = this.game[this.station].kids;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         kid = _ref[_i];
@@ -582,6 +591,7 @@
         this.library["r" + i].addEventListener('drop', this.evaluateAnswer);
       }
       this.intento = 0;
+      createjs.Sound.stop();
       createjs.Sound.play("s" + this.selected.name);
       console.log(this.library["repeat" + this.selected.name]);
       this.library["repeat" + this.selected.name].visible = true;
@@ -594,7 +604,7 @@
       this.answer = e.target;
       pt = this.selected.globalToLocal(this.stage.mouseX, this.stage.mouseY);
       if (this.selected.hitTest(pt.x, pt.y)) {
-        drops = this.game[this.station].drops[this.selected.index];
+        drops = this.game[this.station].drops[this.selected.parent.index];
         if (drops[this.answer.index]) {
           if (this.intento === 0) {
             this.library.score.plusOne();
@@ -616,9 +626,10 @@
 
     U5A4.prototype.finishEvaluation = function() {
       var asset, _i, _len, _ref;
-      _ref = this.game[this.station].kids[this.selected.index];
+      _ref = this.game[this.station].imgs[this.selected.index];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         asset = _ref[_i];
+        console.log(this.game[this.station].imgs[this.selected.index]);
         if (this.library[asset].visible === false) {
           return;
         }

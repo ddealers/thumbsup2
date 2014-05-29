@@ -141,9 +141,14 @@ class U5A1 extends Oda
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', 'Listen and drag the pictures to the correct month on the calendar.', 80, 200
-		@insertBitmap 'btnRepeat', 'btnRepeat', 1196, 490
-		@insertBitmap 'btnFinished', 'btnFinished', 1196, 584
+
+		btnrepeat = new Button 'btnRepeat', (@preload.getResult 'btnRepeat'), 0, 1196, 490
+		btnfinished = new Button 'btnFinished', (@preload.getResult 'btnFinished'), 0, 1196, 584
+ 		#@insertBitmap 'btnFinished', 'btnFinished', 1196, 584
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 16, 0
+
+		@addToMain btnrepeat, btnfinished
+		@addToLibrary btnrepeat, btnfinished
 		@setCalendar(1).introEvaluation()
 	setCalendar: (calendar) ->
 		@calendar = calendar
@@ -154,33 +159,47 @@ class U5A1 extends Oda
 		@insertBitmap 'propCalendar', 'propCalendar', 120, 256
 		for i in [1..12]
 			c = new createjs.Container()
-			c.name = "cal#{calendar}Final#{i}"
+			c.name = "cal#{calendar}Final#{i}cont"
+
 			c.x = @game[calendar - 1].finales[i - 1].x
 			c.y = @game[calendar - 1].finales[i - 1].y
 			if calendar is 1
 				if i in [2, 6, 9, 11]
 					v = @createBitmap "", "cal#{calendar}Final#{i}", 0, 0
+					v.mouseEnabled = false
 					c.addChild v
 				else
 					hit = new createjs.Shape()
+					#it.graphics.beginFill('rgba(255,0,0,0.1)').drawRect(-50 -c.x, -50 - c.y, stageSize.w, stageSize.h)
 					hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-50, -50, 180, 110)
+					hit.name = "cal#{calendar}Final#{i}"
 					c.addChild hit
 			else if calendar is 2
 				if i in [6, 8, 10, 12]
 					v = @createBitmap "", "cal#{calendar}Final#{i}", 0, 0
+					v.mouseEnabled = false
 					c.addChild v
 				else
 					hit = new createjs.Shape()
 					hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-50, -50, 180, 110)
+					hit.name = "cal#{calendar}Final#{i}"
 					c.addChild hit
+			shape = new createjs.Shape()
+			shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-50 -c.x, -50 - c.y, stageSize.w, stageSize.h)
+			c.addChild  shape
+
 			cal.addChild c
-			@addToLibrary c
+			@addToLibrary c, hit
 		for i in [1..8]
 			v = new Draggable "cal#{calendar}Dragble#{i}", (@preload.getResult "cal#{calendar}Dragble#{i}"), "cal#{calendar}Final#{i}", @game[calendar - 1].drags[i-1].x, @game[calendar - 1].drags[i-1].y
 			v.onInitEvaluation()
 			cal.addChild v
 			@addToLibrary v
+
+
+		
 		@addToMain cal
+		@addToLibrary cal
 		TweenLite.to cal, 1, {alpha:1, y:0}
 		@
 	introEvaluation: ->
@@ -199,6 +218,7 @@ class U5A1 extends Oda
 	evaluateDrop: (e) =>
 		@answer = e.target
 		dropped = off
+		i = 0
 		for drop in @game[@calendar - 1].drops
 			pt = @library[drop.tgt].globalToLocal @stage.mouseX, @stage.mouseY
 			if @library[drop.tgt].hitTest pt.x, pt.y
@@ -207,18 +227,14 @@ class U5A1 extends Oda
 				relation = @game[@calendar - 1].drops.where id:@answer.name
 				v = @createBitmap relation[0].id, relation[0].tgt, 45, 25
 				v.hitter = @answer
-				v.addEventListener 'mousedown', (e) ->
-					cv = e.currentTarget
-					cv.addEventListener 'pressmove', (ev) ->
-						if cv.hitter
-							cv.removeAllEventListeners()
-							parent = cv.parent 
-							while parent.children.length > 1
-								parent.removeChildAt parent.children.length - 1
-							cv.hitter.visible = on
-							cv.hitter.returnToPlace()
+
+				
 				@setReg v, v.width / 2, v.height / 2
-				@library[drop.tgt].addChild v
+				@library[drop.tgt].respuesta = @answer.name
+				console.log @library[drop.tgt]
+				#@library["#{drop.tgt}cont"].addChild v
+				@library[drop.tgt].parent.addChild v
+				#@library['calendar'].addChild v
 		if not dropped then @answer.returnToPlace()
 	evaluateAnswer: (e) =>
 		@library.btnRepeat.removeEventListener 'click', @repeatSound
@@ -226,9 +242,12 @@ class U5A1 extends Oda
 		createjs.Sound.stop()
 		answers = @game[@calendar - 1].drops
 		for i in [1..answers.length] by 1
-			if @library[answers[i - 1].tgt].children.length > 1
-				if @library[answers[i - 1].tgt].children[1].name is answers[i - 1].id
-					@blink @library[answers[i - 1].tgt]
+
+			if @library[answers[i - 1].tgt].parent.children.length > 2
+				
+				if @library[answers[i - 1].tgt].parent.children[2].name is answers[i - 1].id
+
+					@blink @library[answers[i - 1].tgt].parent
 					@library.score.plusOne()
 					createjs.Sound.play 'good'
 

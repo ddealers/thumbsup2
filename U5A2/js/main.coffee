@@ -98,6 +98,8 @@ class U5A2 extends Oda
 					@library.score.plusOne()
 					createjs.Sound.play "good"
 				@showText()
+				choose.removeAllEventListeners()
+
 				TweenLite.to @library.repeatbtn, 0.5, {alpha :0}
 		@addToMain choose
 		TweenLite.from choose, 1, {alpha: 0, y: @library.chooseImg.y + 100, delay: 1}
@@ -113,6 +115,7 @@ class U5A2 extends Oda
 		createjs.Sound.play "s#{@stepsid[@index]}"
 		@library.repeatbtn.addEventListener 'click', @repeatSound
 	showText: () ->
+
 		text = @steps[@index].texts[@tindex]
 		intento = 0
 		choosetxt = new ChooseText 'chooseTxt', text.p, "want", "don't want", text.c, text.s, 0, 900

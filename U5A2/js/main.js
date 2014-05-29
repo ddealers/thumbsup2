@@ -204,6 +204,7 @@
             createjs.Sound.play("good");
           }
           _this.showText();
+          choose.removeAllEventListeners();
           return TweenLite.to(_this.library.repeatbtn, 0.5, {
             alpha: 0
           });

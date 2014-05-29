@@ -10,6 +10,7 @@
     function U6A2() {
       this.repeatSound = __bind(this.repeatSound, this);
       this.nextEvaluation = __bind(this.nextEvaluation, this);
+      this.playsound = __bind(this.playsound, this);
       this.finishEvaluation = __bind(this.finishEvaluation, this);
       this.evaluateAnswer = __bind(this.evaluateAnswer, this);
       this.initEvaluation = __bind(this.initEvaluation, this);
@@ -305,12 +306,16 @@
       this.intento = 0;
       createjs.Sound.stop();
       if (this.mindex < this.current.length) {
-        return createjs.Sound.play("s" + this.current[this.mindex].i);
+        return setTimeout(this.playsound, 500);
       } else {
         this.mindex = 0;
         setTimeout(this.nextEvaluation, 2 * 1000);
         return this.library.btnRepeat.removeEventListener('click', this.repeatSound);
       }
+    };
+
+    U6A2.prototype.playsound = function() {
+      return createjs.Sound.play("s" + this.current[this.mindex].i);
     };
 
     U6A2.prototype.nextEvaluation = function() {
