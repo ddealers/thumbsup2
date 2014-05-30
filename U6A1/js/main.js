@@ -285,7 +285,7 @@
       this["true"] = this.createBitmap('btrue', 'btntrue', 0, 0);
       this["true"].mouseEnabled = false;
       this.shapetrue = new createjs.Shape();
-      this.shapetrue.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(0, 0, this["true"].getBounds().width, this["true"].getBounds().height);
+      this.shapetrue.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this["true"].getBounds().width, this["true"].getBounds().height);
       this.trueb.addChild(this["true"], this.shapetrue);
       this.falseb = new createjs.Container();
       this.falseb.x = 840;
@@ -294,7 +294,7 @@
       this["false"] = this.createBitmap('bfalse', 'btnfalse', 0, 0);
       this["false"].mouseEnabled = false;
       this.shapefalse = new createjs.Shape();
-      this.shapefalse.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(0, 0, this["false"].getBounds().width, this["false"].getBounds().height);
+      this.shapefalse.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this["false"].getBounds().width, this["false"].getBounds().height);
       this.falseb.addChild(this["false"], this.shapefalse);
       this.addToMain(this.trueb, this.falseb);
       this.addToLibrary(this.trueb, this.falseb);

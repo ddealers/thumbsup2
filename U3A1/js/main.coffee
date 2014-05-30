@@ -504,7 +504,7 @@ class U3A1 extends Oda
 		else
 			@finish()
 	playSound: =>
-		
+		createjs.Sound.stop()
 		createjs.Sound.play @answers["m#{@index+1}"][@a_index].sound
 	finish: ->
 		TweenLite.to @library['common'], 1, {alpha :0, x: 0}

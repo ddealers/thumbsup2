@@ -122,11 +122,11 @@ class U7A6 extends Oda
 		super
 		@answers = @shuffleNoRepeat @game.answers, 10
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Click on the letters and guess the word before George is complete!', 80, 200
+		@insertInstructions 'instructions', 'Click on the letters and guess the word before George is complete.', 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 10, 0
 		@setChango().createAlphabet().introEvaluation()
 	setChango: ->
-		@insertSprite 'chango', ['ch01', 'ch02', 'ch03', 'ch04', 'ch05', 'ch06', 'ch07', 'ch08', 'ch09', 'ch10', 'ch11', 'ch12', 'ch13', 'ch14', 'ch15', 'ch16'], null, 1098, 300, 'tl'
+		@insertSprite 'chango', ['ch01', 'ch02', 'ch03', 'ch04', 'ch05', 'ch06', 'ch07', 'ch08', 'ch09', 'ch10', 'ch11', 'ch12', 'ch13', 'ch14'], null, 1098, 300, 'tl'
 		burbuja = new createjs.Container()
 		burbuja.name = 'burbuja'
 		burbuja.y = 298
@@ -145,7 +145,7 @@ class U7A6 extends Oda
 			else if i <= 18
 				letterObj = new ClickableLetter "l#{i}", letter, letter, 83 * i - 790, 68
 			else
-				letterObj = new ClickableLetter "l#{i}", letter, letter, 83 * i - 1500, 136
+				letterObj = new ClickableLetter "l#{i}", letter, letter, 83 * i - 1450, 136
 			letterObj.text.font = '40px Quicksand'
 			@addToLibrary letterObj
 			alphabet.addChild letterObj
@@ -203,7 +203,7 @@ class U7A6 extends Oda
 		if not check
 			current = @library.chango.currentFrame
 			current++
-			if @library.chango.currentFrame is @library.chango.spriteSheet.getNumFrames() - 1		
+			if @library.chango.currentFrame is @library.chango.spriteSheet.getNumFrames() - 1
 				current--
 				b = @createBitmap 'bubble2', 'bubble2', 0,0
 				@library.burbuja.addChild b

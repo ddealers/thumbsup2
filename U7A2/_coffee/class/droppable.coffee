@@ -7,6 +7,8 @@ class Droppable
 		@Container_initialize()
 		@name = name
 		@bitmap = new createjs.Bitmap image
+		@bitmap.mouseEnabled = false
+
 		@index = index
 		@x = x
 		@y = y
@@ -16,10 +18,10 @@ class Droppable
 		@stage = stage
 		@drops = drops
 		hit = new createjs.Shape()
-		hit.graphics.beginFill('rgba(0,0,0,0.5)').drawRect(0, 0, image.width, image.height)
-		@hitArea = hit
+		hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, image.width, image.height)
+		#@hitArea = hit
 		@inPlace = off
-		@addChild @bitmap
+		@addChild @bitmap, hit
 	updateDrops: (drop, drops...) ->
 		@drops = []
 		if @isArray drop
@@ -34,13 +36,13 @@ class Droppable
 		Array.isArray value || (value) ->
 			{}.toString.call( value ) is '[object Array]'
 	onInitEvaluation: =>
-		@addEventListener 'mousedown', @handleMouseDown
+		@on 'mousedown', @handleMouseDown
 	onStopEvaluation: =>
-		@removeEventListener 'mousedown', @handleMouseDown
+		@off 'mousedown', @handleMouseDown
 	initDragListener: =>
-		@addEventListener 'mousedown', @handleMouseDown
+		@on 'mousedown', @handleMouseDown
 	endDragListener: =>
-		@removeEventListener 'mousedown', @handleMouseDown
+		@off 'mousedown', @handleMouseDown
 	handleMouseDown: (e) =>
 		TweenMax.killTweensOf @
 		TweenLite.killTweensOf @
@@ -50,13 +52,15 @@ class Droppable
 		offset = x: posX - @x, y: posY - @y
 		@x = posX - offset.x
 		@y = posY - offset.y
-		@addEventListener 'mousemove', (ev)=>
+		@addEventListener 'pressmove', (ev)=>
 			posX = ev.stageX / stageSize.r
 			posY = ev.stageY / stageSize.r
 			@x = posX - offset.x
 			@y = posY - offset.y
 			false
-		@addEventListener 'mouseup', (ev)=>
+		@addEventListener 'pressup', (ev)=>
+			@removeAllEventListeners 'pressmove'
+			@removeAllEventListeners 'pressup'
 			if @drops.length > 0
 				@evaluateDrop e
 			else
@@ -67,10 +71,11 @@ class Droppable
 		object = null
 		dropped = false
 		for drop in @drops
-			pt = drop.globalToLocal @stage.mouseX, @stage.mouseY
-			if drop.hitTest pt.x, pt.y
-				object = drop
-				dropped = true
+			if drop.children && drop.children.length < 2
+				pt = drop.globalToLocal @stage.mouseX, @stage.mouseY
+				if drop.hitTest pt.x, pt.y
+					object = drop
+					dropped = true
 		if dropped
 			@dispatchEvent {type:'dropped', drop:object}
 		else

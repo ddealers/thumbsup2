@@ -356,14 +356,14 @@
       U7A6.__super__.setStage.apply(this, arguments);
       this.answers = this.shuffleNoRepeat(this.game.answers, 10);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Click on the letters and guess the word before George is complete!', 80, 200);
+      this.insertInstructions('instructions', 'Click on the letters and guess the word before George is complete.', 80, 200);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 10, 0));
       return this.setChango().createAlphabet().introEvaluation();
     };
 
     U7A6.prototype.setChango = function() {
       var burbuja;
-      this.insertSprite('chango', ['ch01', 'ch02', 'ch03', 'ch04', 'ch05', 'ch06', 'ch07', 'ch08', 'ch09', 'ch10', 'ch11', 'ch12', 'ch13', 'ch14', 'ch15', 'ch16'], null, 1098, 300, 'tl');
+      this.insertSprite('chango', ['ch01', 'ch02', 'ch03', 'ch04', 'ch05', 'ch06', 'ch07', 'ch08', 'ch09', 'ch10', 'ch11', 'ch12', 'ch13', 'ch14'], null, 1098, 300, 'tl');
       burbuja = new createjs.Container();
       burbuja.name = 'burbuja';
       burbuja.y = 298;
@@ -385,7 +385,7 @@
         } else if (i <= 18) {
           letterObj = new ClickableLetter("l" + i, letter, letter, 83 * i - 790, 68);
         } else {
-          letterObj = new ClickableLetter("l" + i, letter, letter, 83 * i - 1500, 136);
+          letterObj = new ClickableLetter("l" + i, letter, letter, 83 * i - 1450, 136);
         }
         letterObj.text.font = '40px Quicksand';
         this.addToLibrary(letterObj);

@@ -369,7 +369,6 @@
       this.Container_initialize();
       this.name = name;
       this.bitmap = new createjs.Bitmap(image);
-      this.bitmap.mouseEnabled = false;
       this.index = index;
       this.x = x;
       this.y = y;
@@ -380,9 +379,10 @@
         y: y
       };
       hit = new createjs.Shape();
-      hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, image.width, image.height);
-      this.addChild(this.bitmap, hit);
-      return this.inPlace = false;
+      hit.graphics.beginFill('rgba(0,0,0,0.5)').drawRect(0, 0, image.width, image.height);
+      this.hitArea = hit;
+      this.inPlace = false;
+      return this.addChild(this.bitmap);
     };
 
     Draggable.prototype.onInitEvaluation = function() {
@@ -746,6 +746,7 @@
       this.Container_initialize();
       this.name = name;
       this.bitmap = new createjs.Bitmap(image);
+      this.bitmap.mouseEnabled = false;
       this.index = index;
       this.x = x;
       this.y = y;
@@ -758,10 +759,9 @@
       this.stage = stage;
       this.drops = drops;
       hit = new createjs.Shape();
-      hit.graphics.beginFill('rgba(0,0,0,0.5)').drawRect(0, 0, image.width, image.height);
-      this.hitArea = hit;
+      hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, image.width, image.height);
       this.inPlace = false;
-      return this.addChild(this.bitmap);
+      return this.addChild(this.bitmap, hit);
     };
 
     Droppable.prototype.updateDrops = function() {
@@ -790,19 +790,19 @@
     };
 
     Droppable.prototype.onInitEvaluation = function() {
-      return this.addEventListener('mousedown', this.handleMouseDown);
+      return this.on('mousedown', this.handleMouseDown);
     };
 
     Droppable.prototype.onStopEvaluation = function() {
-      return this.removeEventListener('mousedown', this.handleMouseDown);
+      return this.off('mousedown', this.handleMouseDown);
     };
 
     Droppable.prototype.initDragListener = function() {
-      return this.addEventListener('mousedown', this.handleMouseDown);
+      return this.on('mousedown', this.handleMouseDown);
     };
 
     Droppable.prototype.endDragListener = function() {
-      return this.removeEventListener('mousedown', this.handleMouseDown);
+      return this.off('mousedown', this.handleMouseDown);
     };
 
     Droppable.prototype.handleMouseDown = function(e) {
@@ -818,7 +818,7 @@
       };
       this.x = posX - offset.x;
       this.y = posY - offset.y;
-      this.addEventListener('mousemove', (function(_this) {
+      this.addEventListener('pressmove', (function(_this) {
         return function(ev) {
           posX = ev.stageX / stageSize.r;
           posY = ev.stageY / stageSize.r;
@@ -827,8 +827,10 @@
           return false;
         };
       })(this));
-      this.addEventListener('mouseup', (function(_this) {
+      this.addEventListener('pressup', (function(_this) {
         return function(ev) {
+          _this.removeAllEventListeners('pressmove');
+          _this.removeAllEventListeners('pressup');
           if (_this.drops.length > 0) {
             _this.evaluateDrop(e);
           } else {
@@ -847,10 +849,12 @@
       _ref = this.drops;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         drop = _ref[_i];
-        pt = drop.globalToLocal(this.stage.mouseX, this.stage.mouseY);
-        if (drop.hitTest(pt.x, pt.y)) {
-          object = drop;
-          dropped = true;
+        if (drop.children && drop.children.length < 2) {
+          pt = drop.globalToLocal(this.stage.mouseX, this.stage.mouseY);
+          if (drop.hitTest(pt.x, pt.y)) {
+            object = drop;
+            dropped = true;
+          }
         }
       }
       if (dropped) {

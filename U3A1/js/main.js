@@ -1240,6 +1240,7 @@
     };
 
     U3A1.prototype.playSound = function() {
+      createjs.Sound.stop();
       return createjs.Sound.play(this.answers["m" + (this.index + 1)][this.a_index].sound);
     };
 

@@ -124,7 +124,7 @@ class U6A1 extends Oda
 		@true = @createBitmap 'btrue', 'btntrue', 0, 0
 		@true.mouseEnabled = false
 		@shapetrue = new createjs.Shape()
-		@shapetrue.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(0, 0, @true.getBounds().width, @true.getBounds().height)
+		@shapetrue.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @true.getBounds().width, @true.getBounds().height)
 		@trueb.addChild @true, @shapetrue
 
 		@falseb = new createjs.Container()
@@ -135,7 +135,7 @@ class U6A1 extends Oda
 		@false = @createBitmap 'bfalse', 'btnfalse', 0, 0
 		@false.mouseEnabled = false
 		@shapefalse = new createjs.Shape()
-		@shapefalse.graphics.beginFill('rgba(0,0,0,0.1)').drawRect(0, 0, @false.getBounds().width, @false.getBounds().height)
+		@shapefalse.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @false.getBounds().width, @false.getBounds().height)
 		@falseb.addChild @false, @shapefalse
 		
 		@addToMain @trueb, @falseb

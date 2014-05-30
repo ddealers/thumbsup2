@@ -479,7 +479,7 @@
         bt = this.createBitmap("repeat", 'repeatbtn', 0, 0);
         bt.mouseEnabled = false;
         shape = new createjs.Shape();
-        shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bt.getBounds().width, bt.getBounds().height);
+        shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, bt.getBounds().width, bt.getBounds().height);
         boton.addChild(bt, shape);
         this.addToLibrary(boton, bt, shape);
         kids.addChild(boton);
@@ -494,7 +494,7 @@
             asset.visible = false;
           } else {
             hit = new createjs.Shape();
-            hit.graphics.beginFill('rgba(255,255,255,00.1)').drawRect(i * 320 + 40 - (asset.width * 0.45) / 2, 120 - (asset.width * 0.45) / 2, asset.width * 0.45, asset.height * 0.45);
+            hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(i * 320 + 40 - (asset.width * 0.45) / 2, 170 - (asset.height * 0.45) / 2, asset.width * 0.45, asset.height * 0.45);
             hit.name = current[i][j];
             hit.index = kid.index = i;
             this.addToLibrary(hit);

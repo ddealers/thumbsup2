@@ -137,12 +137,10 @@
     };
 
     U7A4.prototype.setClick = function() {
-      this.insertBitmap('btnfalse', 'btnFalse', 1072, 1070);
-      this.insertBitmap('btntrue', 'btnTrue', 818, 1072);
-      this.library.btnfalse.index = false;
-      this.library.btntrue.index = true;
-      this.library.btntrue.addEventListener('click', this.evaluateAnswer);
-      this.library.btnfalse.addEventListener('click', this.evaluateAnswer);
+      var btnFalse, btnTrue;
+      btnFalse = new Button('btnFalse', this.preload.getResult('btnFalse'), false, 1072, 1070);
+      btnTrue = new Button('btnTrue', this.preload.getResult('btnTrue'), true, 818, 1072);
+      this.addToMain(btnFalse, btnTrue);
       return this;
     };
 
@@ -160,15 +158,15 @@
         y: this.library.boy.y - 20,
         ease: Quart.easeOut
       });
-      TweenLite.from(this.library.btnfalse, 1, {
+      TweenLite.from(this.library.btnFalse, 1, {
         alpha: 0,
-        y: this.library.btnfalse.y - 20,
+        y: this.library.btnFalse.y - 20,
         ease: Quart.easeOut,
         delay: 0.5
       });
-      return TweenLite.from(this.library.btntrue, 1, {
+      return TweenLite.from(this.library.btnTrue, 1, {
         alpha: 0,
-        y: this.library.btntrue.y - 20,
+        y: this.library.btnTrue.y - 20,
         ease: Quart.easeOut,
         delay: 0.5,
         onComplete: this.playInstructions,
@@ -178,6 +176,8 @@
 
     U7A4.prototype.initEvaluation = function(e) {
       U7A4.__super__.initEvaluation.apply(this, arguments);
+      this.library.btnTrue.addEventListener('click', this.evaluateAnswer);
+      this.library.btnFalse.addEventListener('click', this.evaluateAnswer);
       this.insertText('frases', this.answers[this.index].text, '40px Quicksand', '#333', 1040, 1000, 'center');
       return TweenLite.from(this.library.frases, 0.5, {
         alpha: 0,
@@ -187,8 +187,8 @@
     };
 
     U7A4.prototype.evaluateAnswer = function(e) {
-      this.library.btntrue.removeEventListener('click', this.evaluateAnswer);
-      this.library.btnfalse.removeEventListener('click', this.evaluateAnswer);
+      this.library.btnTrue.removeEventListener('click', this.evaluateAnswer);
+      this.library.btnFalse.removeEventListener('click', this.evaluateAnswer);
       this.answer = e.target;
       if (this.answer.index === this.answers[this.index].respuestas) {
         this.library.score.plusOne();
@@ -212,8 +212,8 @@
       this.index++;
       if (this.index < this.answers.length) {
         this.library.frases.text = this.answers[this.index].text;
-        this.library.btntrue.addEventListener('click', this.evaluateAnswer);
-        this.library.btnfalse.addEventListener('click', this.evaluateAnswer);
+        this.library.btnTrue.addEventListener('click', this.evaluateAnswer);
+        this.library.btnFalse.addEventListener('click', this.evaluateAnswer);
         return TweenLite.to(this.library.frases, 0.5, {
           alpha: 1,
           y: this.library.frases.y + 40,
@@ -223,14 +223,14 @@
         if (this.escena === 1) {
           this.index = 0;
           this.escena = 2;
-          TweenLite.to(this.library.btnfalse, 1, {
+          TweenLite.to(this.library.btnFalse, 1, {
             alpha: 0,
-            y: this.library.btnfalse.y - 20,
+            y: this.library.btnFalse.y - 20,
             ease: Quart.easeOut
           });
-          TweenLite.to(this.library.btntrue, 1, {
+          TweenLite.to(this.library.btnTrue, 1, {
             alpha: 0,
-            y: this.library.btntrue.y - 20,
+            y: this.library.btnTrue.y - 20,
             ease: Quart.easeOut
           });
           TweenLite.to(this.library.boy, 1, {
@@ -252,14 +252,14 @@
 
     U7A4.prototype.finish = function() {
       U7A4.__super__.finish.apply(this, arguments);
-      TweenLite.to(this.library.btnfalse, 1, {
+      TweenLite.to(this.library.btnFalse, 1, {
         alpha: 0,
-        y: this.library.btnfalse.y - 20,
+        y: this.library.btnFalse.y - 20,
         ease: Quart.easeOut
       });
-      TweenLite.to(this.library.btntrue, 1, {
+      TweenLite.to(this.library.btnTrue, 1, {
         alpha: 0,
-        y: this.library.btntrue.y - 20,
+        y: this.library.btnTrue.y - 20,
         ease: Quart.easeOut
       });
       TweenLite.to(this.library.boy, 1, {

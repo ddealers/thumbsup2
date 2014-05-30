@@ -71,10 +71,7 @@ class Droppable
 			if drop.hitTest pt.x, pt.y
 				object = drop
 				dropped = true
-		if dropped
-			@dispatchEvent {type:'dropped', drop:object}
-		else
-			@returnToPlace @alpha, @scaleX, @scaleY
+		
 	blink: (state=on) ->
 		TweenMax.killTweensOf @
 		@alpha = 1

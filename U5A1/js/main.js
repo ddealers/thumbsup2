@@ -413,7 +413,7 @@
             c.addChild(v);
           } else {
             hit = new createjs.Shape();
-            hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-50, -50, 180, 110);
+            hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-50, -50, 180, 110);
             hit.name = "cal" + calendar + "Final" + i;
             c.addChild(hit);
           }
@@ -424,7 +424,7 @@
             c.addChild(v);
           } else {
             hit = new createjs.Shape();
-            hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-50, -50, 180, 110);
+            hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-50, -50, 180, 110);
             hit.name = "cal" + calendar + "Final" + i;
             c.addChild(hit);
           }

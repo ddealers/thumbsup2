@@ -146,7 +146,7 @@ class U6A2 extends Oda
 		@intento = 0
 		createjs.Sound.stop()
 		if @mindex < @current.length
-			setTimeout @playsound, 500
+			setTimeout @playsound, 2000
 
 		else
 			@mindex = 0

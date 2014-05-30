@@ -1492,8 +1492,23 @@
       return this.observer.notify('init_evaluation');
     };
 
+
+  
     Oda.prototype.finish = function() {
-      this.insertBitmap('play_again', 'pa', stageSize.w / 2, stageSize.h / 2, 'mc');
+      var bmp, shape;
+      this.play_again = new createjs.Container();
+      this.play_again.set({
+        name: 'play_again',
+        x: stageSize.w / 2,
+        y: stageSize.h / 2
+      });
+      bmp = this.createBitmap('play_again', 'pa', 0, 0);
+      bmp.mouseEnabled = false;
+      shape = new createjs.Shape();
+      shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+      this.setReg(this.play_again, bmp.width / 2, bmp.height / 2);
+      this.play_again.addChild(bmp, shape);
+      this.addToMain(this.play_again);
       this.library['play_again'].addEventListener('click', this.handlePlayAgain);
       return TweenLite.from(this.library['play_again'], 0.5, {
         alpha: 0,

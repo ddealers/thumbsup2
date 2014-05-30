@@ -171,7 +171,7 @@ class U5A1 extends Oda
 				else
 					hit = new createjs.Shape()
 					#it.graphics.beginFill('rgba(255,0,0,0.1)').drawRect(-50 -c.x, -50 - c.y, stageSize.w, stageSize.h)
-					hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-50, -50, 180, 110)
+					hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-50, -50, 180, 110)
 					hit.name = "cal#{calendar}Final#{i}"
 					c.addChild hit
 			else if calendar is 2
@@ -181,7 +181,7 @@ class U5A1 extends Oda
 					c.addChild v
 				else
 					hit = new createjs.Shape()
-					hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(-50, -50, 180, 110)
+					hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-50, -50, 180, 110)
 					hit.name = "cal#{calendar}Final#{i}"
 					c.addChild hit
 			shape = new createjs.Shape()

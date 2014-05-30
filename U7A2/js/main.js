@@ -38,10 +38,10 @@
           id: 'startgame',
           src: 'start_game.png'
         }, {
-          id: 'btnfinished',
+          id: 'btnFinished',
           src: 'btn_finished.png'
         }, {
-          id: 'btnrepeat',
+          id: 'btnRepeat',
           src: 'btn_repeat.png'
         }, {
           id: 'pizarra',
@@ -144,24 +144,28 @@
     }
 
     U7A2.prototype.setStage = function() {
+      var btnfinished, btnrepeat;
       U7A2.__super__.setStage.apply(this, arguments);
       this.actividades = this.game.actividades;
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Listen and drag the icons to the correct place on the schedule.', 80, 200);
-      this.insertBitmap('btnRepeat', 'btnrepeat', 1300, 734);
-      this.insertBitmap('btnFinished', 'btnfinished', 1300, 828);
+      this.insertInstructions('instructions', ['Listen and drag the icons to the correct place on the schedule.'], 80, 200);
+      btnrepeat = new Button('btnRepeat', this.preload.getResult('btnRepeat'), 0, 1300, 734);
+      btnfinished = new Button('btnFinished', this.preload.getResult('btnFinished'), 0, 1300, 828);
+      this.addToMain(btnrepeat, btnfinished);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 12, 0));
       return this.setPizarra(1).introEvaluation();
     };
 
     U7A2.prototype.setPizarra = function(schedule) {
-      var a, actividades, board, c, child, drops, hit, i, pizarra, _i, _j, _ref, _ref1;
+      var a, actividades, c, child, drops, hit, i, imgs, pizarra, shape, _i, _j, _ref, _ref1;
       this.schedule = schedule;
       pizarra = new createjs.Container();
+      imgs = new createjs.Container();
       pizarra.name = 'pizarra';
-      pizarra.x = 122;
-      pizarra.y = 206;
-      board = this.createBitmap('pizarra', 'pizarra', 334, 62);
+      imgs.name = 'imgs';
+      imgs.x = pizarra.x = 122;
+      imgs.y = pizarra.y = 206;
+      this.insertBitmap('pizarra', 'pizarra', 334 + 122, 62 + 206);
       if (schedule === 1) {
         child = this.createBitmap('girl', 'girl', 118, 760, 'bl');
         drops = this.actividades.girl;
@@ -176,6 +180,10 @@
       actividades.x = 718;
       actividades.y = 226;
       this.addToLibrary(actividades);
+      shape = new createjs.Shape();
+      shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-actividades.x, -actividades.y, stageSize.w, stageSize.h);
+      actividades.addChild(shape);
+      this.targets = new Array();
       for (i = _i = 0, _ref = drops.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
         c = new createjs.Container();
         c.name = "cont" + i;
@@ -192,9 +200,10 @@
             this.setReg(hit, 40, -40);
             c.addChild(hit);
           } else {
-            a = this.createBitmap(drops[i], drops[i], 0, 0, 'tc');
+            a = this.createBitmap(drops[i], drops[i], c.x + imgs.x + 600, c.y + imgs.y + 30, 'tc');
             a.scaleX = a.scaleY = 80 / a.image.height;
-            c.addChild(a);
+            a.mouseEnabled = false;
+            imgs.addChild(a);
           }
         } else {
           if (i === 1 || i === 2 || i === 5 || i === 7 || i === 8 || i === 9) {
@@ -204,14 +213,16 @@
             c.addChild(hit);
           } else {
             a = this.createBitmap(drops[i], drops[i], 0, 0, 'tc');
-            a.scaleX = a.scaleY = 80 / a.image.height;
-            c.addChild(a);
+            a.mouseEnabled = false;
+            a.x = c.x + actividades.x + (a.scaleX = a.scaleY = 80 / a.image.height);
+            imgs.addChild(a);
           }
         }
+        this.targets.push(c);
         this.addToLibrary(c);
         actividades.addChild(c);
       }
-      pizarra.addChild(board, child, actividades);
+      pizarra.addChild(child, actividades);
       for (i = _j = 0, _ref1 = this.drags.length - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
         if (i % 2 === 0) {
           c = new Droppable("" + this.drags[i], this.preload.getResult(this.drags[i]), i, 200 * i + 100, 880, this.stage, actividades.children);
@@ -222,7 +233,7 @@
         this.addToLibrary(c);
         pizarra.addChild(c);
       }
-      this.addToMain(pizarra);
+      this.addToMain(pizarra, imgs);
       return this;
     };
 
@@ -268,11 +279,21 @@
     };
 
     U7A2.prototype.evaluateDrop = function(e) {
-      var v;
+      var bmp, hit, v;
       this.answer = e.target;
       this.drop = e.drop;
+      console.log(this.drop);
       this.answer.visible = false;
-      v = this.createBitmap(this.answer.name, this.answer.name, 0, 40);
+      v = new createjs.Container();
+      v.x = 0;
+      v.y = 40;
+      v.name = this.answer.name;
+      bmp = this.createBitmap("a", this.answer.name, 0, 0, 'mc');
+      bmp.mouseEnabled = false;
+      hit = new createjs.Shape();
+      hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-bmp.getBounds().width / 2, -bmp.getBounds().height / 2, bmp.getBounds().width, bmp.getBounds().height);
+      hit.name = 'hit';
+      v.addChild(bmp, hit);
       v.hitter = this.answer;
       v.addEventListener('mousedown', function(e) {
         var cv;

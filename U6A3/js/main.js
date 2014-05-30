@@ -516,6 +516,7 @@
         }
         return _results;
       } else {
+        this.index = 0;
         return this.finish();
       }
     };

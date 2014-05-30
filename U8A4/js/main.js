@@ -39,10 +39,10 @@
           id: 'startgame',
           src: 'start_game.png'
         }, {
-          id: 'btnfinished',
+          id: 'finish',
           src: 'btn_finished.png'
         }, {
-          id: 'btnrepeat',
+          id: 'repeat',
           src: 'btn_repeat.png'
         }, {
           id: 'dragble2',
@@ -177,40 +177,68 @@
     }
 
     U8A4.prototype.setStage = function() {
+      var finish, repeat;
       U8A4.__super__.setStage.apply(this, arguments);
       this.steps = this.shuffle(this.game.steps);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
       this.insertInstructions('instructions', 'Listen and drag the name to the corresponding person.', 80, 200);
-      this.insertBitmap('finish', 'btnfinished', 774, 1082);
-      this.insertBitmap('repeat', 'btnrepeat', 528, 1082);
+      repeat = new Button('repeat', this.preload.getResult('repeat'), 0, 774, 1082);
+      finish = new Button('finish', this.preload.getResult('finish'), 0, 528, 1082);
+      this.addToMain(repeat, finish);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));
       return this.setKids().introEvaluation();
     };
 
     U8A4.prototype.setKids = function() {
-      var c, caras, d, i, _i, _j;
+      var bmp, c, caras, d, hit, i, imgs, shape, _i, _j, _k;
       caras = new createjs.Container();
-      caras.x = 180;
-      caras.y = 300;
+      imgs = new createjs.Container();
+      imgs.x = caras.x = 180;
+      imgs.y = caras.y = 300;
       caras.name = 'caras';
+      imgs.name = 'imgs';
+      shape = new createjs.Shape();
+      shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-caras.x, -caras.y, stageSize.w, stageSize.h);
+      caras.addChild(shape);
       this.targets = new Array();
       for (i = _i = 1; _i <= 8; i = ++_i) {
+        c = new createjs.Container();
+        c.name = "image" + i;
+        hit = new createjs.Shape();
+        hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, 266, 368);
+        c.addChild(hit);
         if (i < 5) {
-          c = this.createBitmap("image" + i, "image" + i, (290 * i) - 290, 0);
+          c.x = (290 * i) - 290;
+          c.y = 0;
         } else {
-          c = this.createBitmap("image" + i, "image" + i, (290 * i) - 290 * 5, 380);
+          c.x = (290 * i) - 290 * 5;
+          c.y = 380;
         }
         this.targets.push(c);
         this.addToLibrary(c);
         caras.addChild(c);
       }
-      for (i = _j = 1; _j <= 8; i = _j += 1) {
+      for (i = _j = 1; _j <= 8; i = ++_j) {
+        c = new createjs.Container();
+        bmp = this.createBitmap("image" + i + "bmp", "image" + i, 0, 0);
+        bmp.mouseEnabled = false;
+        c.addChild(bmp);
+        if (i < 5) {
+          c.x = (290 * i) - 290;
+          c.y = 0;
+        } else {
+          c.x = (290 * i) - 290 * 5;
+          c.y = 380;
+        }
+        imgs.addChild(c);
+      }
+      for (i = _k = 1; _k <= 8; i = _k += 1) {
         d = new Droppable("dragble" + i, this.preload.getResult("dragble" + i), i, 1260, i * 74, this.stage);
         this.setReg(d, d.width / 2, d.height / 2);
         this.addToLibrary(d);
         caras.addChild(d);
       }
-      this.addToMain(caras);
+      this.addToMain(imgs, caras);
       return this;
     };
 
@@ -233,6 +261,11 @@
         alpha: 0,
         y: this.library.repeat.y + 20,
         delay: 0.7
+      });
+      TweenLite.from(this.library.imgs, 1, {
+        alpha: 0,
+        y: this.library.caras.y + 40,
+        delay: 1
       });
       return TweenLite.from(this.library.caras, 1, {
         alpha: 0,
@@ -261,8 +294,9 @@
     U8A4.prototype.evaluateDrop = function(e) {
       this.answer = e.target;
       this.drop = e.drop;
+      console.log('drop', this.drop);
       this.answer.putInPlace({
-        x: this.drop.x + 130,
+        x: this.drop.x + 500,
         y: this.drop.y + 300
       });
       return setTimeout(this.finishEvaluation, 1 * 1000);
@@ -310,6 +344,10 @@
       TweenLite.to(this.library.repeat, 1, {
         alpha: 0,
         y: this.library.repeat.y + 20
+      });
+      TweenLite.to(this.library.imgs, 1, {
+        alpha: 0,
+        y: this.library.caras.y + 40
       });
       TweenLite.to(this.library.caras, 1, {
         alpha: 0,

@@ -216,7 +216,9 @@ class U6A3 extends Oda
 				else
 					@library["n2d#{opt.i}"].updateDrops @library.h1
 		else
+			@index = 0
 			@finish()
+
 	finish: ->
 		TweenLite.to @library.nube1, 1, {alpha: 0, y: @library.nube1.y + 40}
 		TweenLite.to @library.nube2, 1, {alpha: 0, y: @library.nube2.y + 40}

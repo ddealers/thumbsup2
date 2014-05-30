@@ -306,7 +306,7 @@
       this.intento = 0;
       createjs.Sound.stop();
       if (this.mindex < this.current.length) {
-        return setTimeout(this.playsound, 500);
+        return setTimeout(this.playsound, 2000);
       } else {
         this.mindex = 0;
         setTimeout(this.nextEvaluation, 2 * 1000);

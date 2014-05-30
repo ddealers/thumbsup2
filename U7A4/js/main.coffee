@@ -59,27 +59,29 @@ class U7A4 extends Oda
 		@library.boy.scaleX = @library.boy.scaleY = 0.9
 		@
 	setClick:  ->
-		@insertBitmap 'btnfalse', 'btnFalse', 1072, 1070
-		@insertBitmap 'btntrue', 'btnTrue', 818, 1072
-		@library.btnfalse.index = off
-		@library.btntrue.index = on
-		@library.btntrue.addEventListener 'click', @evaluateAnswer
-		@library.btnfalse.addEventListener 'click', @evaluateAnswer
+		btnFalse = new Button 'btnFalse', (@preload.getResult 'btnFalse'), off, 1072, 1070
+		btnTrue = new Button 'btnTrue', (@preload.getResult 'btnTrue'), on, 818, 1072
+
+		@addToMain btnFalse, btnTrue
+		
+		
 		@
 	introEvaluation: ->
 		super
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
 		TweenLite.from @library.instructions, 1, {alpha :0, x: 0}
 		TweenLite.from @library.boy, 1, {alpha: 0, y: @library.boy.y - 20, ease: Quart.easeOut}
-		TweenLite.from @library.btnfalse, 1, {alpha: 0, y: @library.btnfalse.y - 20, ease: Quart.easeOut, delay: 0.5}
-		TweenLite.from @library.btntrue, 1, {alpha: 0, y: @library.btntrue.y - 20, ease: Quart.easeOut, delay:0.5, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.btnFalse, 1, {alpha: 0, y: @library.btnFalse.y - 20, ease: Quart.easeOut, delay: 0.5}
+		TweenLite.from @library.btnTrue, 1, {alpha: 0, y: @library.btnTrue.y - 20, ease: Quart.easeOut, delay:0.5, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
+		@library.btnTrue.addEventListener 'click', @evaluateAnswer
+		@library.btnFalse.addEventListener 'click', @evaluateAnswer
 		@insertText 'frases', @answers[@index].text, '40px Quicksand', '#333', 1040, 1000, 'center'
 		TweenLite.from @library.frases, 0.5, {alpha: 0, y: @library.frases - 20, ease: Quart.easeOut}
 	evaluateAnswer: (e) =>
-		@library.btntrue.removeEventListener 'click', @evaluateAnswer
-		@library.btnfalse.removeEventListener 'click', @evaluateAnswer
+		@library.btnTrue.removeEventListener 'click', @evaluateAnswer
+		@library.btnFalse.removeEventListener 'click', @evaluateAnswer
 		@answer = e.target
 		if @answer.index is @answers[@index].respuestas
 			@library.score.plusOne()
@@ -93,15 +95,15 @@ class U7A4 extends Oda
 		@index++
 		if @index < @answers.length
 			@library.frases.text = @answers[@index].text
-			@library.btntrue.addEventListener 'click', @evaluateAnswer
-			@library.btnfalse.addEventListener 'click', @evaluateAnswer
+			@library.btnTrue.addEventListener 'click', @evaluateAnswer
+			@library.btnFalse.addEventListener 'click', @evaluateAnswer
 			TweenLite.to @library.frases, 0.5, {alpha: 1, y: @library.frases.y + 40, ease: Back.easeOut}
 		else
 			if @escena is 1
 				@index = 0
 				@escena = 2
-				TweenLite.to @library.btnfalse, 1, {alpha: 0, y: @library.btnfalse.y - 20, ease: Quart.easeOut}
-				TweenLite.to @library.btntrue, 1, {alpha: 0, y: @library.btntrue.y - 20, ease: Quart.easeOut}
+				TweenLite.to @library.btnFalse, 1, {alpha: 0, y: @library.btnFalse.y - 20, ease: Quart.easeOut}
+				TweenLite.to @library.btnTrue, 1, {alpha: 0, y: @library.btnTrue.y - 20, ease: Quart.easeOut}
 				TweenLite.to @library.boy, 1, {alpha: 0, y: @library.boy.y - 20, ease: Quart.easeOut}
 				TweenLite.to @library.frases, 0.5, {alpha: 0, y: @library.frases - 20, ease: Quart.easeOut}
 				@setScene(2).setClick().initEvaluation()
@@ -109,8 +111,8 @@ class U7A4 extends Oda
 				@finish()
 	finish: ->
 		super
-		TweenLite.to @library.btnfalse, 1, {alpha: 0, y: @library.btnfalse.y - 20, ease: Quart.easeOut}
-		TweenLite.to @library.btntrue, 1, {alpha: 0, y: @library.btntrue.y - 20, ease: Quart.easeOut}
+		TweenLite.to @library.btnFalse, 1, {alpha: 0, y: @library.btnFalse.y - 20, ease: Quart.easeOut}
+		TweenLite.to @library.btnTrue, 1, {alpha: 0, y: @library.btnTrue.y - 20, ease: Quart.easeOut}
 		TweenLite.to @library.boy, 1, {alpha: 0, y: @library.boy.y - 20, ease: Quart.easeOut}
 		TweenLite.to @library.frases, 0.5, {alpha: 0, y: @library.frases - 20, ease: Quart.easeOut}
 	window.U7A4 = U7A4

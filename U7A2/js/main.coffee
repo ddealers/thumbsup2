@@ -8,8 +8,8 @@ class U7A2 extends Oda
 			{id: 'repeatbtn', src: 'repeat-btn.png'}
 			{id: 'playagain', src:'play_again.png'}
 			{id: 'startgame', src:'start_game.png'}
- 			{id: 'btnfinished', src:'btn_finished.png'}
-			{id: 'btnrepeat', src:'btn_repeat.png'}
+ 			{id: 'btnFinished', src:'btn_finished.png'}
+			{id: 'btnRepeat', src:'btn_repeat.png'}
 			{id: 'pizarra', src:'pizarra.png'}
 			{id: 'boydragblebiking', src:'boy/dragble_biking.png'}
 			{id: 'boydragblecanoeing', src:'boy/dragble_canoeing.png'}
@@ -52,19 +52,25 @@ class U7A2 extends Oda
 		super
 		@actividades = @game.actividades
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Listen and drag the icons to the correct place on the schedule.', 80, 200
-		@insertBitmap 'btnRepeat', 'btnrepeat', 1300, 734
-		@insertBitmap 'btnFinished', 'btnfinished', 1300, 828
+		@insertInstructions 'instructions', ['Listen and drag the icons to the correct place on the schedule.'], 80, 200
+
+		btnrepeat = new Button 'btnRepeat', (@preload.getResult 'btnRepeat'), 0,  1300, 734
+		btnfinished = new Button 'btnFinished', (@preload.getResult 'btnFinished'), 0, 1300, 828
+
+		@addToMain btnrepeat, btnfinished
+
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 12, 0
 		@setPizarra(1).introEvaluation()
 	setPizarra: (schedule) ->
 		@schedule = schedule
 		pizarra = new createjs.Container()
+		imgs = new createjs.Container()
 		pizarra.name = 'pizarra'
-		pizarra.x = 122
-		pizarra.y = 206
+		imgs.name = 'imgs'
+		imgs.x = pizarra.x = 122
+		imgs.y = pizarra.y = 206
 		
-		board = @createBitmap 'pizarra','pizarra', 334, 62
+		@insertBitmap 'pizarra','pizarra', 334 + 122, 62 + 206
 		
 		if schedule is 1
 			child = @createBitmap 'girl','girl', 118, 760, 'bl'
@@ -81,6 +87,11 @@ class U7A2 extends Oda
 		actividades.y = 226
 		@addToLibrary actividades
 		
+		shape = new createjs.Shape()
+		shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect( -actividades.x, - actividades.y, stageSize.w, stageSize.h)
+		actividades.addChild shape
+		@targets = new Array()
+
 		for i in [0..drops.length - 1]
 			c = new createjs.Container()
 			c.name = "cont#{i}"
@@ -96,9 +107,11 @@ class U7A2 extends Oda
 					@setReg hit, 40, -40
 					c.addChild hit
 				else
-					a = @createBitmap drops[i], drops[i], 0, 0, 'tc'
+					a = @createBitmap drops[i], drops[i], c.x + imgs.x + 600, c.y + imgs.y + 30,  'tc'
 					a.scaleX = a.scaleY = 80 / a.image.height
-					c.addChild a
+					a.mouseEnabled = false
+
+					imgs.addChild a
 			else
 				if i in [1, 2, 5, 7, 8, 9]
 					hit = new createjs.Shape()
@@ -107,11 +120,16 @@ class U7A2 extends Oda
 					c.addChild hit
 				else
 					a = @createBitmap drops[i], drops[i], 0, 0, 'tc'
+					a.mouseEnabled = false
+					a.x = c.x + actividades.x +
 					a.scaleX = a.scaleY = 80 / a.image.height
-					c.addChild a
+					imgs.addChild a
+			@targets.push c
+
 			@addToLibrary c
 			actividades.addChild c
-		pizarra.addChild board, child, actividades
+
+		pizarra.addChild child, actividades
 
 		for i in [0..@drags.length - 1]
 			if i % 2 is 0
@@ -122,7 +140,7 @@ class U7A2 extends Oda
 			@addToLibrary c
 			pizarra.addChild c
 
-		@addToMain pizarra
+		@addToMain pizarra, imgs
 		@
 	introEvaluation: ->
 		super
@@ -142,9 +160,24 @@ class U7A2 extends Oda
 	evaluateDrop: (e) =>
 		@answer = e.target
 		@drop = e.drop
-
+		console.log @drop
 		@answer.visible = off
-		v = @createBitmap @answer.name, @answer.name, 0, 40
+
+		v = new createjs.Container()
+		v.x = 0
+		v.y = 40
+		v.name = @answer.name
+
+		bmp = @createBitmap "a", @answer.name, 0, 0, 'mc'
+		bmp.mouseEnabled = false
+
+		hit = new createjs.Shape()
+		hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-bmp.getBounds().width / 2, -bmp.getBounds().height / 2, bmp.getBounds().width, bmp.getBounds().height)
+		hit.name = 'hit'
+
+		v.addChild bmp, hit
+
+
 		v.hitter = @answer
 		v.addEventListener 'mousedown', (e) ->
 			cv = e.currentTarget
