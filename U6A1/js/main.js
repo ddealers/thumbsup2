@@ -254,7 +254,7 @@
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
-      return TweenMax.from([this.library['p1'], this.library['p2'], this.library['p3']], 1, {
+      return TweenMax.from([this.library['p1'], this.library['p2']], 1, {
         alpha: 0,
         y: stageSize.h,
         delay: 1
@@ -266,8 +266,8 @@
       U6A1.__super__.initEvaluation.apply(this, arguments);
       _results = [];
       for (i = _i = 1; _i <= 2; i = _i += 1) {
-        this.blink(this['p' + i]);
-        _results.push(this['p' + i].addEventListener('click', this.selectPuzzle));
+        this.blink(this.library['p' + i]);
+        _results.push(this.library['p' + i].addEventListener('click', this.selectPuzzle));
       }
       return _results;
     };
@@ -275,8 +275,8 @@
     U6A1.prototype.selectPuzzle = function(e) {
       var i, _i;
       for (i = _i = 1; _i <= 2; i = _i += 1) {
-        this.blink(this["p" + i], false);
-        this['p' + i].removeEventListener('click', this.selectPuzzle);
+        this.blink(this.library["p" + i], false);
+        this.library['p' + i].removeEventListener('click', this.selectPuzzle);
       }
       this.trueb = new createjs.Container();
       this.trueb.x = 600;
@@ -468,7 +468,7 @@
     };
 
     U6A1.prototype.setPuzzle = function(num) {
-      var dpp, dragpieces, i, index, m, pp, puzzle, _i, _j;
+      var bmp, dpp, dragpieces, i, index, m, pp, predpp, puzzle, shape, shapebmp, _i, _j;
       this.num = num;
       puzzle = new createjs.Container();
       puzzle.x = 150;
@@ -478,7 +478,22 @@
       puzzle.addChild(m);
       for (i = _i = 1; _i <= 12; i = _i += 1) {
         if (this.pieces["p" + num + "p" + i].back) {
-          pp = this.createBitmap("p" + num + "p" + i + "b", "p" + num + "p" + i + "back", this.pieces["p" + num + "p" + i].x, this.pieces["p" + num + "p" + i].y);
+          pp = new createjs.Container();
+          pp.set({
+            name: "p" + num + "p" + i + "b",
+            x: this.pieces["p" + num + "p" + i].x,
+            y: this.pieces["p" + num + "p" + i].y
+          });
+          bmp = this.createBitmap("p" + num + "p" + i + "b", "p" + num + "p" + i + "back", 0, 0);
+          bmp.mouseEnabled = false;
+          shapebmp = new createjs.Shape();
+          shapebmp.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+          shapebmp.name = "p" + num + "p" + i + "shape";
+          this.addToLibrary(shapebmp);
+          shape = new createjs.Shape();
+          shape.graphics.beginFill('rgba(255,255,255,0.0)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h);
+          pp.addChild(bmp, shapebmp, shape);
+          pp.mouseChildren = false;
         } else {
           pp = this.createBitmap("p" + num + "p" + i, "p" + num + "p" + i, this.pieces["p" + num + "p" + i].x, this.pieces["p" + num + "p" + i].y);
         }
@@ -490,20 +505,24 @@
       dragpieces.y = 270;
       dragpieces.name = 'dragpieces';
       index = 0;
+      this.drops = [];
       for (i = _j = 1; _j <= 12; i = _j += 1) {
+        predpp = this.preload.getResult("p" + num + "p" + i);
+        dpp = new Draggable("dp" + num + "p" + i, this.preload.getResult("p" + num + "p" + i), "p" + num + "p" + i, index * 176, 0);
+        dpp.addEventListener('drop', this.evaluateAnswer);
+        this.observer.subscribe('init_drag', dpp.onInitEvaluation);
+        this.observer.subscribe('stop_drag', dpp.onStopEvaluation);
+        dpp.scaleX = dpp.scaleY = 0.6;
+        this.addToLibrary(dpp);
+        this.drops.push(dpp);
         if (this.pieces["p" + num + "p" + i].back) {
-          dpp = new Draggable("dp" + num + "p" + i, this.preload.getResult("p" + num + "p" + i), "p" + num + "p" + i, index * 176, 0);
-          dpp.addEventListener('drop', this.evaluateAnswer);
-          this.observer.subscribe('init_drag', dpp.onInitEvaluation);
-          this.observer.subscribe('stop_drag', dpp.onStopEvaluation);
-          dpp.scaleX = dpp.scaleY = 0.6;
           index++;
-          this.addToLibrary(dpp);
           dragpieces.addChild(dpp);
         }
       }
       dragpieces.width = index * 176;
       this.setReg(dragpieces, dragpieces.width / 2, 0);
+      console.log(this.drops);
       this.addToMain(puzzle);
       this.addToMain(dragpieces);
       TweenLite.from(puzzle, 1, {
@@ -534,18 +553,27 @@
     };
 
     U6A1.prototype.evaluateAnswer = function(e) {
-      var hit, hpt, htt, pt;
+      var currentdrop, ficha, hit, hitname, hpt, htt, i, pt, _i;
       this.answer = e.target;
-      hit = this.library[this.answer.index + 'b'];
+      hit = this.library[this.answer.index + 'shape'];
+      hitname = this.library[this.answer.name];
       pt = hit.globalToLocal(this.stage.mouseX, this.stage.mouseY);
       if (hit.hitTest(pt.x, pt.y)) {
+        console.log('array drops ', this.drops);
+        currentdrop = this.drops.indexOf(this.library[this.answer.name]);
+        console.log('indexof', currentdrop);
+        this.drops.splice(currentdrop, 1);
+        console.log('array nuevo ', this.drops);
         hpt = hit.parent.localToGlobal(hit.x, hit.y);
         htt = this.answer.parent.globalToLocal(hpt.x, hpt.y);
         this.insertText('dropper', this.pieces[this.answer.index].text, '48px Quicksand', '#333', stageSize.w / 2, 1020, 'center');
         createjs.Sound.play('bell');
-        this.observer.notify('stop_drag');
+        this.answer.complete = true;
         this.answer.putInPlace(htt);
-        this.answer.removeAllEventListeners();
+        for (i = _i = 1; _i <= 12; i = _i += 1) {
+          ficha = this.library["dp" + this.num + "p" + i];
+          ficha.removeAllEventListeners();
+        }
         return this.initListeners();
       } else {
         return this.answer.returnToPlace(this.answer.alpha, this.answer.scaleX, this.answer.scaleY);
@@ -553,18 +581,29 @@
     };
 
     U6A1.prototype.evaluateLocation = function(e) {
-      var name;
+      var currentficha, ficha, i, name, _i, _results;
       name = e.target.parent.name;
-      console.log(name, "btn" + this.pieces[this.answer.index].label);
+      console.log(name, "btn" + this.pieces, "btn" + this.pieces[this.answer.index].label);
       if (name === ("btn" + this.pieces[this.answer.index].label)) {
-        this.stopListeners();
         createjs.Sound.play('good');
         this.library['score'].plusOne();
-        return setTimeout(this.finishEvaluation, 1 * 1000);
+        setTimeout(this.finishEvaluation, 1 * 1000);
       } else {
         this.warning();
-        return setTimeout(this.finishEvaluation, 1 * 1000);
       }
+      setTimeout(this.finishEvaluation, 1 * 1000);
+      this.stopListeners();
+      _results = [];
+      for (i = _i = 1; _i <= 12; i = _i += 1) {
+        ficha = this.library["dp" + this.num + "p" + i];
+        currentficha = this.drops.indexOf(this.library["dp" + this.num + "p" + i]);
+        if (currentficha !== -1) {
+          _results.push(ficha.addEventListener('drop', this.evaluateAnswer));
+        } else {
+          _results.push(ficha.onStopEvaluation());
+        }
+      }
+      return _results;
     };
 
     U6A1.prototype.finishEvaluation = function() {

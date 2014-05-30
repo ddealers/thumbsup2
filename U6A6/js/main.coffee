@@ -197,30 +197,24 @@ class U6A6 extends Oda
 		t = @createText 'helpertxt', @helps[8], '28px Quicksand', '#333', 660, 50
 		@addToLibrary t
 
-		a = @createBitmap "btndoctor", "btn1", (0) * 80 + 20, 40
-		a.index = 1
+		a = new Button 'btndoctor', (@preload.getResult 'btn1'), 1, (0) * 80 + 20, 40
 		a.addEventListener 'click', @showHelper
-		b = @createBitmap "btnmechanic", "btn2", (1) * 80 + 20, 40
-		b.index = 2
+		b = new Button 'btnmechanic', (@preload.getResult 'btn2'), 2, (1) * 80 + 20, 40
 		b.addEventListener 'click', @showHelper
-		c = @createBitmap "btnchef", "btn3", (2) * 80 + 20, 40
-		c.index = 3
+		c = new Button 'btnchef', (@preload.getResult 'btn3'), 3, (2) * 80 + 20, 40
 		c.addEventListener 'click', @showHelper
-		d = @createBitmap "btnsalesclerk", "btn4", (3) * 80 + 20, 40
-		d.index = 4
+		d = new Button 'btnsalesclerk', (@preload.getResult 'btn4'), 4, (3) * 80 + 20, 40
 		d.addEventListener 'click', @showHelper
-		e = @createBitmap "btnwaiter", "btn5", (4) * 80 + 20, 40
-		e.index = 5
+		e = new Button 'btnwaiter', (@preload.getResult 'btn5'), 5, (4) * 80 + 20, 40
 		e.addEventListener 'click', @showHelper
-		f = @createBitmap "btnpolice", "btn6", (5) * 80 + 20, 40
-		f.index = 6
+		f = new Button 'btnpolice', (@preload.getResult 'btn6'), 6, (5) * 80 + 20, 40
 		f.addEventListener 'click', @showHelper
-		g = @createBitmap "btnvet", "btn7", (6) * 80 + 20, 40
-		g.index = 7
+		g = new Button 'btnvet', (@preload.getResult 'btn7'), 7, (6) * 80 + 20, 40
 		g.addEventListener 'click', @showHelper
-		h = @createBitmap "btnfirefighter", "btn8", (7) * 80 + 20, 40
-		h.index = 8
+		h = new Button 'btnfirefighter', (@preload.getResult 'btn8'), 8, (7) * 80 + 20, 40
 		h.addEventListener 'click', @showHelper
+
+		
 
 		@addToLibrary a, b, c, d, e, f, g, h
 		help.addChild a, b, c, d, e, f, g, h

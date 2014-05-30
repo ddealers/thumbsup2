@@ -75,6 +75,7 @@ class U6A1 extends Oda
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', 'Drag the puzzle pieces, read and click on the correct answers.', 80, 200
 
+		
 		@p1 = new createjs.Container()
 		@p1.name = 'p1'
 		@p1.x = 1462
@@ -104,16 +105,16 @@ class U6A1 extends Oda
 		super
 		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
 		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0.5, onComplete: @playInstructions, onCompleteParams: [@]}
-		TweenMax.from [@library['p1'], @library['p2'], @library['p3']], 1, {alpha:0, y:stageSize.h, delay:1}
+		TweenMax.from [@library['p1'], @library['p2']], 1, {alpha:0, y:stageSize.h, delay:1}
 	initEvaluation: (e) =>
 		super
 		for i in [1..2] by 1
-			@blink @['p'+i]
-			@['p'+i].addEventListener 'click', @selectPuzzle
+			@blink @library['p'+i]
+			@library['p'+i].addEventListener 'click', @selectPuzzle
 	selectPuzzle: (e) =>
 		for i in [1..2] by 1
-			@blink @["p#{i}"], off
-			@['p'+i].removeEventListener 'click', @selectPuzzle
+			@blink @library["p#{i}"], off
+			@library['p'+i].removeEventListener 'click', @selectPuzzle
 
 
 		@trueb = new createjs.Container()
@@ -189,7 +190,20 @@ class U6A1 extends Oda
 		
 		for i in [1..12] by 1
 			if @pieces["p#{num}p#{i}"].back
-				pp = @createBitmap "p#{num}p#{i}b", "p#{num}p#{i}back", @pieces["p#{num}p#{i}"].x, @pieces["p#{num}p#{i}"].y
+				pp = new createjs.Container()
+				pp.set {name: "p#{num}p#{i}b", x: @pieces["p#{num}p#{i}"].x, y: @pieces["p#{num}p#{i}"].y}
+				bmp = @createBitmap "p#{num}p#{i}b", "p#{num}p#{i}back", 0, 0
+				bmp.mouseEnabled = false
+
+				shapebmp = new createjs.Shape()
+				shapebmp.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0,0, bmp.getBounds().width, bmp.getBounds().height)
+				shapebmp.name = "p#{num}p#{i}shape"
+				@addToLibrary shapebmp
+
+				shape = new createjs.Shape()
+				shape.graphics.beginFill('rgba(255,255,255,0.0)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h)
+				pp.addChild bmp, shapebmp, shape
+				pp.mouseChildren = false
 			else
 				pp = @createBitmap "p#{num}p#{i}", "p#{num}p#{i}", @pieces["p#{num}p#{i}"].x, @pieces["p#{num}p#{i}"].y
 			
@@ -202,20 +216,27 @@ class U6A1 extends Oda
 		dragpieces.name = 'dragpieces'
 		index = 0
 		
+
+		@drops = []
 		for i in [1..12] by 1
+			predpp = @preload.getResult("p#{num}p#{i}")
+			dpp = new Draggable "dp#{num}p#{i}", @preload.getResult("p#{num}p#{i}"), "p#{num}p#{i}", index * 176, 0 
+			
+			dpp.addEventListener 'drop', @evaluateAnswer
+			@observer.subscribe 'init_drag', dpp.onInitEvaluation
+			@observer.subscribe 'stop_drag', dpp.onStopEvaluation
+			dpp.scaleX = dpp.scaleY = 0.6
+			@addToLibrary dpp
+			@drops.push dpp
+				
 			if @pieces["p#{num}p#{i}"].back
-				dpp = new Draggable "dp#{num}p#{i}", @preload.getResult("p#{num}p#{i}"), "p#{num}p#{i}", index * 176, 0
-				dpp.addEventListener 'drop', @evaluateAnswer
-				@observer.subscribe 'init_drag', dpp.onInitEvaluation
-				@observer.subscribe 'stop_drag', dpp.onStopEvaluation
-				dpp.scaleX = dpp.scaleY = 0.6
 				index++
-				@addToLibrary dpp
 				dragpieces.addChild dpp
-		
+				
 		dragpieces.width = index * 176
 		@setReg(dragpieces, dragpieces.width / 2, 0)
 		
+		console.log @drops
 		@addToMain puzzle
 		@addToMain dragpieces
 
@@ -231,34 +252,53 @@ class U6A1 extends Oda
 		@library.btnfalse.removeEventListener 'click', @evaluateLocation
 	evaluateAnswer: (e) =>
 		@answer = e.target
-		hit = @library[@answer.index+'b']
+		hit = @library[@answer.index+'shape']
+		hitname = @library[@answer.name]
 		pt = hit.globalToLocal @stage.mouseX, @stage.mouseY
 		
 		if hit.hitTest pt.x, pt.y
+			console.log 'array drops ', @drops
+			currentdrop = @drops.indexOf(@library[@answer.name])
+			console.log 'indexof', currentdrop
+			@drops.splice currentdrop, 1 
+			console.log 'array nuevo ', @drops
+
 			hpt = hit.parent.localToGlobal hit.x, hit.y
 			htt = @answer.parent.globalToLocal hpt.x, hpt.y
 			@insertText 'dropper', @pieces[@answer.index].text,'48px Quicksand','#333', stageSize.w / 2, 1020, 'center'
 			createjs.Sound.play 'bell'
 
-			@observer.notify 'stop_drag'
+			@answer.complete = true
+
 			
-			@answer.putInPlace htt 
-			@answer.removeAllEventListeners()
+			@answer.putInPlace( htt )
+			for i in [1..12] by 1
+				ficha = @library["dp#{@num}p#{i}"]
+				ficha.removeAllEventListeners() 
 			@initListeners()
 		else
 			@answer.returnToPlace @answer.alpha, @answer.scaleX, @answer.scaleY
 	evaluateLocation: (e) =>
 		name = e.target.parent.name
-		console.log name, "btn#{@pieces[@answer.index].label}"
+		console.log name, "btn#{@pieces}", "btn#{@pieces[@answer.index].label}"
 		if name is "btn#{@pieces[@answer.index].label}"
-			@stopListeners()
 			createjs.Sound.play 'good'
 			@library['score'].plusOne()
 			setTimeout @finishEvaluation, 1 * 1000
 		else
 			@warning()
-			setTimeout @finishEvaluation, 1 * 1000
+		
+		setTimeout @finishEvaluation, 1 * 1000
+		@stopListeners()
 
+		for i in [1..12] by 1
+			ficha = @library["dp#{@num}p#{i}"]
+			currentficha = @drops.indexOf(@library["dp#{@num}p#{i}"])
+
+			if currentficha != -1
+				ficha.addEventListener 'drop', @evaluateAnswer
+			else
+	 			ficha.onStopEvaluation()
 	finishEvaluation: =>
 		TweenLite.to @library['dropper'], 0.5, {alpha: 0, y: stageSize.h, ease:Quart.easeOut, onComplete: @nextEvaluation}
 	nextEvaluation: =>

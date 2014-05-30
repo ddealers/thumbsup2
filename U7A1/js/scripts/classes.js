@@ -4,6 +4,7 @@
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __slice = [].slice;
 
+ 
   Button = (function() {
     function Button(name, image, index, x, y) {
       this.initialize(name, image, index, x, y);
@@ -15,16 +16,26 @@
 
     Button.prototype.initialize = function(name, image, index, x, y) {
       this.Container_initialize();
-      this.name = name;
-      this.bitmap = new createjs.Bitmap(image);
-      this.index = index;
-      this.x = x;
-      this.y = y;
-      this.pos = {
+      this.set({
+        name: name,
+        index: index,
         x: x,
-        y: y
-      };
-      this.addChild(this.bitmap);
+        y: y,
+        pos: {
+          x: x,
+          y: y
+        },
+        mouseChildren: false
+      });
+      this.bitmap = new createjs.Bitmap(image);
+      this.bitmap.mouseEnabled = false;
+      this.shape = new createjs.Shape();
+      this.shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this.bitmap.getBounds().width, this.bitmap.getBounds().height);
+      this.set({
+        width: this.bitmap.getBounds().width,
+        height: this.bitmap.getBounds().height
+      });
+      this.addChild(this.bitmap, this.shape);
       return false;
     };
 
@@ -1492,14 +1503,29 @@
       return this.observer.notify('init_evaluation');
     };
 
+  
     Oda.prototype.finish = function() {
-      this.insertBitmap('play_again', 'pa', stageSize.w / 2, stageSize.h / 2, 'mc');
+      var bmp, shape;
+      this.play_again = new createjs.Container();
+      this.play_again.set({
+        name: 'play_again',
+        x: stageSize.w / 2,
+        y: stageSize.h / 2
+      });
+      bmp = this.createBitmap('play_again', 'pa', 0, 0);
+      bmp.mouseEnabled = false;
+      shape = new createjs.Shape();
+      shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+      this.setReg(this.play_again, bmp.width / 2, bmp.height / 2);
+      this.play_again.addChild(bmp, shape);
+      this.addToMain(this.play_again);
       this.library['play_again'].addEventListener('click', this.handlePlayAgain);
       return TweenLite.from(this.library['play_again'], 0.5, {
         alpha: 0,
         y: this.library['play_again'].y - 20
       });
     };
+
 
     Oda.prototype.handlePlayAgain = function(e) {
       this.library['play_again'].removeEventListener('click', this.handlePlayAgain);

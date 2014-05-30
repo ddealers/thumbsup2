@@ -386,6 +386,9 @@
     };
 
     Draggable.prototype.onInitEvaluation = function() {
+      if (this.complete) {
+        return;
+      }
       return this.on('mousedown', this.handleMouseDown);
     };
 
