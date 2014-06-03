@@ -200,7 +200,7 @@
         bmp = oda.createBitmap('start', 'sg', 0, 0);
         bmp.mouseEnabled = false;
         shape = new createjs.Shape();
-        shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+        shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
         this.setReg(this.start, bmp.width / 2, bmp.height / 2);
         this.start.addChild(bmp, shape);
         oda.addToMain(this.start);
@@ -248,7 +248,7 @@
       bmp = this.createBitmap('play_again', 'pa', 0, 0);
       bmp.mouseEnabled = false;
       shape = new createjs.Shape();
-      shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
+      shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
       this.setReg(this.play_again, bmp.width / 2, bmp.height / 2);
       this.play_again.addChild(bmp, shape);
       this.addToMain(this.play_again);

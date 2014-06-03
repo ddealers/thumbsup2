@@ -59,7 +59,7 @@ class U6A2 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Listen and drag the buildings to the correct place on the map.', 80, 200
+		@insertInstructions 'instructions', ['Listen and drag the buildings to the correct place on the map.'], 80, 200
 
 		boton = new createjs.Container()
 		boton.x = stageSize.w / 2

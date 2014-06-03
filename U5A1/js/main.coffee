@@ -140,13 +140,10 @@ class U5A1 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Listen and drag the pictures to the correct month on the calendar.', 80, 200
-
+		@insertInstructions 'instructions', ['Listen and drag the pictures to the correct month on the calendar.'], 80, 200
 		btnrepeat = new Button 'btnRepeat', (@preload.getResult 'btnRepeat'), 0, 1196, 490
 		btnfinished = new Button 'btnFinished', (@preload.getResult 'btnFinished'), 0, 1196, 584
- 		#@insertBitmap 'btnFinished', 'btnFinished', 1196, 584
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 16, 0
-
 		@addToMain btnrepeat, btnfinished
 		@addToLibrary btnrepeat, btnfinished
 		@setCalendar(1).introEvaluation()
@@ -170,7 +167,6 @@ class U5A1 extends Oda
 					c.addChild v
 				else
 					hit = new createjs.Shape()
-					#it.graphics.beginFill('rgba(255,0,0,0.1)').drawRect(-50 -c.x, -50 - c.y, stageSize.w, stageSize.h)
 					hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-50, -50, 180, 110)
 					hit.name = "cal#{calendar}Final#{i}"
 					c.addChild hit
@@ -185,9 +181,8 @@ class U5A1 extends Oda
 					hit.name = "cal#{calendar}Final#{i}"
 					c.addChild hit
 			shape = new createjs.Shape()
-			shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-50 -c.x, -50 - c.y, stageSize.w, stageSize.h)
+			shape.graphics.beginFill('rgba(255,255,255,0.001)').drawRect(-50 -c.x, -50 - c.y, stageSize.w, stageSize.h)
 			c.addChild  shape
-
 			cal.addChild c
 			@addToLibrary c, hit
 		for i in [1..8]
@@ -195,9 +190,6 @@ class U5A1 extends Oda
 			v.onInitEvaluation()
 			cal.addChild v
 			@addToLibrary v
-
-
-		
 		@addToMain cal
 		@addToLibrary cal
 		TweenLite.to cal, 1, {alpha:1, y:0}
@@ -227,14 +219,9 @@ class U5A1 extends Oda
 				relation = @game[@calendar - 1].drops.where id:@answer.name
 				v = @createBitmap relation[0].id, relation[0].tgt, 45, 25
 				v.hitter = @answer
-
-				
 				@setReg v, v.width / 2, v.height / 2
 				@library[drop.tgt].respuesta = @answer.name
-				console.log @library[drop.tgt]
-				#@library["#{drop.tgt}cont"].addChild v
 				@library[drop.tgt].parent.addChild v
-				#@library['calendar'].addChild v
 		if not dropped then @answer.returnToPlace()
 	evaluateAnswer: (e) =>
 		@library.btnRepeat.removeEventListener 'click', @repeatSound
@@ -242,15 +229,11 @@ class U5A1 extends Oda
 		createjs.Sound.stop()
 		answers = @game[@calendar - 1].drops
 		for i in [1..answers.length] by 1
-
 			if @library[answers[i - 1].tgt].parent.children.length > 2
-				
 				if @library[answers[i - 1].tgt].parent.children[2].name is answers[i - 1].id
-
 					@blink @library[answers[i - 1].tgt].parent
 					@library.score.plusOne()
 					createjs.Sound.play 'good'
-
 		setTimeout @finishEvaluation, 4 * 1000
 	finishEvaluation: =>
 		TweenLite.to @library.calendar, 1, {alpha:0, y:@library.calendar.y - 40}

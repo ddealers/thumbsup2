@@ -64,13 +64,12 @@ class U7A2 extends Oda
 	setPizarra: (schedule) ->
 		@schedule = schedule
 		pizarra = new createjs.Container()
-		imgs = new createjs.Container()
 		pizarra.name = 'pizarra'
-		imgs.name = 'imgs'
-		imgs.x = pizarra.x = 122
-		imgs.y = pizarra.y = 206
+		pizarra.x = 122
+		pizarra.y = 206
 		
-		@insertBitmap 'pizarra','pizarra', 334 + 122, 62 + 206
+		piz = @createBitmap 'piz','pizarra', 334, 62
+		pizarra.addChild piz
 		
 		if schedule is 1
 			child = @createBitmap 'girl','girl', 118, 760, 'bl'
@@ -82,16 +81,12 @@ class U7A2 extends Oda
 			@drags = @actividades.boydrags
 
 		actividades = new createjs.Container()
-		actividades.name = 'actividades'
-		actividades.x = 718
-		actividades.y = 226
-		@addToLibrary actividades
-		
+		actividades.set {name: 'actividades', x: 718, y: 226}
 		shape = new createjs.Shape()
 		shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect( -actividades.x, - actividades.y, stageSize.w, stageSize.h)
 		actividades.addChild shape
+		
 		@targets = new Array()
-
 		for i in [0..drops.length - 1]
 			c = new createjs.Container()
 			c.name = "cont#{i}"
@@ -107,11 +102,10 @@ class U7A2 extends Oda
 					@setReg hit, 40, -40
 					c.addChild hit
 				else
-					a = @createBitmap drops[i], drops[i], c.x + imgs.x + 600, c.y + imgs.y + 30,  'tc'
+					a = @createBitmap drops[i], drops[i], c.x + pizarra.x + 600, c.y + pizarra.y + 30,  'tc'
 					a.scaleX = a.scaleY = 80 / a.image.height
 					a.mouseEnabled = false
-
-					imgs.addChild a
+					pizarra.addChild a
 			else
 				if i in [1, 2, 5, 7, 8, 9]
 					hit = new createjs.Shape()
@@ -119,18 +113,15 @@ class U7A2 extends Oda
 					@setReg hit, 40, -40
 					c.addChild hit
 				else
-					a = @createBitmap drops[i], drops[i], 0, 0, 'tc'
-					a.mouseEnabled = false
-					a.x = c.x + actividades.x +
+					a = @createBitmap drops[i], drops[i], c.x + pizarra.x + 600, c.y + pizarra.y + 30, 'tc'
 					a.scaleX = a.scaleY = 80 / a.image.height
-					imgs.addChild a
+					a.mouseEnabled = false
+					pizarra.addChild a
 			@targets.push c
-
 			@addToLibrary c
 			actividades.addChild c
-
 		pizarra.addChild child, actividades
-
+		
 		for i in [0..@drags.length - 1]
 			if i % 2 is 0
 				c = new Droppable "#{@drags[i]}", (@preload.getResult @drags[i]), i, 200 * i + 100, 880, @stage, actividades.children
@@ -139,8 +130,7 @@ class U7A2 extends Oda
 			c.scaleX = c.scaleY = 0.9
 			@addToLibrary c
 			pizarra.addChild c
-
-		@addToMain pizarra, imgs
+		@addToMain pizarra
 		@
 	introEvaluation: ->
 		super
@@ -174,10 +164,7 @@ class U7A2 extends Oda
 		hit = new createjs.Shape()
 		hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-bmp.getBounds().width / 2, -bmp.getBounds().height / 2, bmp.getBounds().width, bmp.getBounds().height)
 		hit.name = 'hit'
-
 		v.addChild bmp, hit
-
-
 		v.hitter = @answer
 		v.addEventListener 'mousedown', (e) ->
 			cv = e.currentTarget

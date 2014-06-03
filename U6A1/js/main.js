@@ -217,7 +217,7 @@
     U6A1.prototype.setStage = function() {
       U6A1.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Drag the puzzle pieces, read and click on the correct answers.', 80, 200);
+      this.insertInstructions('instructions', ['Drag the puzzle pieces, read and click on the correct answers.'], 80, 200);
       this.p1 = new createjs.Container();
       this.p1.name = 'p1';
       this.p1.x = 1462;
@@ -285,7 +285,7 @@
       this["true"] = this.createBitmap('btrue', 'btntrue', 0, 0);
       this["true"].mouseEnabled = false;
       this.shapetrue = new createjs.Shape();
-      this.shapetrue.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this["true"].getBounds().width, this["true"].getBounds().height);
+      this.shapetrue.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, this["true"].getBounds().width, this["true"].getBounds().height);
       this.trueb.addChild(this["true"], this.shapetrue);
       this.falseb = new createjs.Container();
       this.falseb.x = 840;
@@ -294,7 +294,7 @@
       this["false"] = this.createBitmap('bfalse', 'btnfalse', 0, 0);
       this["false"].mouseEnabled = false;
       this.shapefalse = new createjs.Shape();
-      this.shapefalse.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, this["false"].getBounds().width, this["false"].getBounds().height);
+      this.shapefalse.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, this["false"].getBounds().width, this["false"].getBounds().height);
       this.falseb.addChild(this["false"], this.shapefalse);
       this.addToMain(this.trueb, this.falseb);
       this.addToLibrary(this.trueb, this.falseb);
@@ -491,7 +491,7 @@
           shapebmp.name = "p" + num + "p" + i + "shape";
           this.addToLibrary(shapebmp);
           shape = new createjs.Shape();
-          shape.graphics.beginFill('rgba(255,255,255,0.0)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h);
+          shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h);
           pp.addChild(bmp, shapebmp, shape);
           pp.mouseChildren = false;
         } else {

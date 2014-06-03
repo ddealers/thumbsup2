@@ -5,9 +5,7 @@ class U6A1 extends Oda
 			{id: 'inst', src: 'inst.png'}
 			{id: 'c1', src: 'circle1.png'}
 			{id: 'c2', src: 'circle2.png'}
-			
-
-		    {id: 'b1', src: 'p1-btn.png'}
+			{id: 'b1', src: 'p1-btn.png'}
 		    {id: 'b2', src: 'p2-btn.png'}
 		    {id: 'm1', src: 'marco-1.png'}
 		    {id: 'm2', src: 'marco-2.png'}
@@ -73,7 +71,7 @@ class U6A1 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Drag the puzzle pieces, read and click on the correct answers.', 80, 200
+		@insertInstructions 'instructions', ['Drag the puzzle pieces, read and click on the correct answers.'], 80, 200
 
 		
 		@p1 = new createjs.Container()
@@ -124,7 +122,7 @@ class U6A1 extends Oda
 		@true = @createBitmap 'btrue', 'btntrue', 0, 0
 		@true.mouseEnabled = false
 		@shapetrue = new createjs.Shape()
-		@shapetrue.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @true.getBounds().width, @true.getBounds().height)
+		@shapetrue.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, @true.getBounds().width, @true.getBounds().height)
 		@trueb.addChild @true, @shapetrue
 
 		@falseb = new createjs.Container()
@@ -135,7 +133,7 @@ class U6A1 extends Oda
 		@false = @createBitmap 'bfalse', 'btnfalse', 0, 0
 		@false.mouseEnabled = false
 		@shapefalse = new createjs.Shape()
-		@shapefalse.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @false.getBounds().width, @false.getBounds().height)
+		@shapefalse.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, @false.getBounds().width, @false.getBounds().height)
 		@falseb.addChild @false, @shapefalse
 		
 		@addToMain @trueb, @falseb
@@ -201,7 +199,7 @@ class U6A1 extends Oda
 				@addToLibrary shapebmp
 
 				shape = new createjs.Shape()
-				shape.graphics.beginFill('rgba(255,255,255,0.0)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h)
+				shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-pp.x - puzzle.x, -pp.y - puzzle.y, stageSize.w, stageSize.h)
 				pp.addChild bmp, shapebmp, shape
 				pp.mouseChildren = false
 			else

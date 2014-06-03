@@ -74,7 +74,7 @@ class U6A3 extends Oda
 		super null, manifest, sounds
 	setStage: ->
 		super
-		@steps = @shuffleNoRepeat @game.steps, 11
+		@steps = @shuffleNoRepeat @game.steps, 10
 		@intento = 0
 		stepsimg = (step.img for step in @steps)
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
@@ -91,9 +91,11 @@ class U6A3 extends Oda
 			dropper = @library.dropper
 		else
 			dropper = new createjs.Container()
-			dropper.y = @library.images.y + 20
-			dropper.name = 'dropper'
-			@addToMain dropper
+		
+		if !dropper.parent then @addToMain dropper
+		dropper.alpha = 1
+		dropper.y = @library.images.y + 30
+		dropper.name = 'dropper'
 		dropper.removeAllChildren()
 
 		frase = @createText 'frase', @steps[step - 1].frase,'48px Quicksand','#333', 380, 220, 'center'

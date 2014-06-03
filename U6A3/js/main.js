@@ -274,7 +274,7 @@
     U6A3.prototype.setStage = function() {
       var imgs, step, stepsimg;
       U6A3.__super__.setStage.apply(this, arguments);
-      this.steps = this.shuffleNoRepeat(this.game.steps, 11);
+      this.steps = this.shuffleNoRepeat(this.game.steps, 10);
       this.intento = 0;
       stepsimg = (function() {
         var _i, _len, _ref, _results;
@@ -302,10 +302,13 @@
         dropper = this.library.dropper;
       } else {
         dropper = new createjs.Container();
-        dropper.y = this.library.images.y + 20;
-        dropper.name = 'dropper';
+      }
+      if (!dropper.parent) {
         this.addToMain(dropper);
       }
+      dropper.alpha = 1;
+      dropper.y = this.library.images.y + 30;
+      dropper.name = 'dropper';
       dropper.removeAllChildren();
       frase = this.createText('frase', this.steps[step - 1].frase, '48px Quicksand', '#333', 380, 220, 'center');
       this.addToLibrary(frase);

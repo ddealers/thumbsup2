@@ -190,7 +190,7 @@
       var boton, bt, shape;
       U6A2.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Listen and drag the buildings to the correct place on the map.', 80, 200);
+      this.insertInstructions('instructions', ['Listen and drag the buildings to the correct place on the map.'], 80, 200);
       boton = new createjs.Container();
       boton.x = stageSize.w / 2;
       boton.y = 1140;

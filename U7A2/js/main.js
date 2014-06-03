@@ -157,15 +157,14 @@
     };
 
     U7A2.prototype.setPizarra = function(schedule) {
-      var a, actividades, c, child, drops, hit, i, imgs, pizarra, shape, _i, _j, _ref, _ref1;
+      var a, actividades, c, child, drops, hit, i, piz, pizarra, shape, _i, _j, _ref, _ref1;
       this.schedule = schedule;
       pizarra = new createjs.Container();
-      imgs = new createjs.Container();
       pizarra.name = 'pizarra';
-      imgs.name = 'imgs';
-      imgs.x = pizarra.x = 122;
-      imgs.y = pizarra.y = 206;
-      this.insertBitmap('pizarra', 'pizarra', 334 + 122, 62 + 206);
+      pizarra.x = 122;
+      pizarra.y = 206;
+      piz = this.createBitmap('piz', 'pizarra', 334, 62);
+      pizarra.addChild(piz);
       if (schedule === 1) {
         child = this.createBitmap('girl', 'girl', 118, 760, 'bl');
         drops = this.actividades.girl;
@@ -176,10 +175,11 @@
         this.drags = this.actividades.boydrags;
       }
       actividades = new createjs.Container();
-      actividades.name = 'actividades';
-      actividades.x = 718;
-      actividades.y = 226;
-      this.addToLibrary(actividades);
+      actividades.set({
+        name: 'actividades',
+        x: 718,
+        y: 226
+      });
       shape = new createjs.Shape();
       shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-actividades.x, -actividades.y, stageSize.w, stageSize.h);
       actividades.addChild(shape);
@@ -200,10 +200,10 @@
             this.setReg(hit, 40, -40);
             c.addChild(hit);
           } else {
-            a = this.createBitmap(drops[i], drops[i], c.x + imgs.x + 600, c.y + imgs.y + 30, 'tc');
+            a = this.createBitmap(drops[i], drops[i], c.x + pizarra.x + 600, c.y + pizarra.y + 30, 'tc');
             a.scaleX = a.scaleY = 80 / a.image.height;
             a.mouseEnabled = false;
-            imgs.addChild(a);
+            pizarra.addChild(a);
           }
         } else {
           if (i === 1 || i === 2 || i === 5 || i === 7 || i === 8 || i === 9) {
@@ -212,10 +212,10 @@
             this.setReg(hit, 40, -40);
             c.addChild(hit);
           } else {
-            a = this.createBitmap(drops[i], drops[i], 0, 0, 'tc');
+            a = this.createBitmap(drops[i], drops[i], c.x + pizarra.x + 600, c.y + pizarra.y + 30, 'tc');
+            a.scaleX = a.scaleY = 80 / a.image.height;
             a.mouseEnabled = false;
-            a.x = c.x + actividades.x + (a.scaleX = a.scaleY = 80 / a.image.height);
-            imgs.addChild(a);
+            pizarra.addChild(a);
           }
         }
         this.targets.push(c);
@@ -233,7 +233,7 @@
         this.addToLibrary(c);
         pizarra.addChild(c);
       }
-      this.addToMain(pizarra, imgs);
+      this.addToMain(pizarra);
       return this;
     };
 

@@ -384,7 +384,7 @@
       var btnfinished, btnrepeat;
       U5A1.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Listen and drag the pictures to the correct month on the calendar.', 80, 200);
+      this.insertInstructions('instructions', ['Listen and drag the pictures to the correct month on the calendar.'], 80, 200);
       btnrepeat = new Button('btnRepeat', this.preload.getResult('btnRepeat'), 0, 1196, 490);
       btnfinished = new Button('btnFinished', this.preload.getResult('btnFinished'), 0, 1196, 584);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 16, 0));
@@ -430,7 +430,7 @@
           }
         }
         shape = new createjs.Shape();
-        shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(-50 - c.x, -50 - c.y, stageSize.w, stageSize.h);
+        shape.graphics.beginFill('rgba(255,255,255,0.001)').drawRect(-50 - c.x, -50 - c.y, stageSize.w, stageSize.h);
         c.addChild(shape);
         cal.addChild(c);
         this.addToLibrary(c, hit);
@@ -504,7 +504,6 @@
           v.hitter = this.answer;
           this.setReg(v, v.width / 2, v.height / 2);
           this.library[drop.tgt].respuesta = this.answer.name;
-          console.log(this.library[drop.tgt]);
           this.library[drop.tgt].parent.addChild(v);
         }
       }
