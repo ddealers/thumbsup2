@@ -130,7 +130,7 @@ class U3A6 extends Oda
 		super
 		@answers = @shuffleNoRepeat @game.answers, 10
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Click on the letters and guess the word before George is complete.', 80, 200
+		@insertInstructions 'instructions', ['Click on the letters and guess the word before George is complete.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 10, 0
 		@setChango().createAlphabet().introEvaluation()
 	setChango: ->

@@ -298,7 +298,7 @@
     U3A4.prototype.setStage = function() {
       U3A4.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Look at the chart and drag the words to build sentences.', 80, 200);
+      this.insertInstructions('instructions', ['Look at the chart and drag the words to build sentences.'], 80, 200);
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 12, 0));
       this.setDropper().setTable(1).setClouds().introEvaluation();
       return this.intento = 0;

@@ -93,7 +93,7 @@ class U3A4 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Look at the chart and drag the words to build sentences.', 80, 200
+		@insertInstructions 'instructions', ['Look at the chart and drag the words to build sentences.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 12, 0
 		@setDropper().setTable(1).setClouds().introEvaluation()
 		@intento = 0

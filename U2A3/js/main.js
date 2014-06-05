@@ -698,6 +698,7 @@
         predpp = this.preload.getResult("p" + num + "p" + i);
         dpp = new Draggable("dp" + num + "p" + i, this.preload.getResult("p" + num + "p" + i), "p" + num + "p" + i, index * 176, 0);
         dpp.y = dpp.y - predpp.height / 2;
+        dpp.pos.y = dpp.y;
         dpp.addEventListener('drop', this.evaluateAnswer);
         this.observer.subscribe('init_drag', dpp.onInitEvaluation);
         this.observer.subscribe('stop_drag', dpp.onStopEvaluation);
