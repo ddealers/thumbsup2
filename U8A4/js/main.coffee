@@ -58,7 +58,7 @@ class U8A4 extends Oda
 		super
 		@steps = @shuffle @game.steps
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Listen and drag the name to the corresponding person.', 80, 200
+		@insertInstructions 'instructions', ['Listen and drag the name to the corresponding person.'], 80, 200
 	
 		repeat = new Button 'repeat', (@preload.getResult 'repeat'), 0, 774, 1082
 		finish = new Button 'finish', (@preload.getResult 'finish'), 0, 528, 1082
@@ -69,11 +69,7 @@ class U8A4 extends Oda
 		@setKids().introEvaluation()
 	setKids: ->
 		caras = new createjs.Container()
-		imgs = new createjs.Container()
-		imgs.x = caras.x = 180
-		imgs.y = caras.y = 300
-		caras.name = 'caras'
-		imgs.name = 'imgs'
+		caras.set {x: 180, y: 300, name: 'caras'}
 		
 		shape = new createjs.Shape()
 		shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect( -caras.x, - caras.y, stageSize.w, stageSize.h)
@@ -81,47 +77,30 @@ class U8A4 extends Oda
 
 		@targets = new Array()
 		for i in [1..8]
-			c = new createjs.Container()
-			c.name = "image#{i}"
-			
-			
-			hit = new createjs.Shape()
-			hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, 266, 368)
-			
-			c.addChild  hit
-
 			if i < 5
-				c.x = (290 * i) - 290
-				c.y = 0
+				bmp = @createBitmap "image#{i}bmp", "image#{i}", 290 * i - 290, 0
 			else
-				c.x = (290 * i) - 290 * 5
-				c.y = 380
-
+				bmp = @createBitmap "image#{i}bmp", "image#{i}", 290 * i - 290 * 5, 380
+			bmp.mouseEnabled = false
+			caras.addChild bmp
+		for i in [1..8]
+			c = new createjs.Container()
+			if i < 5
+				c.set {name: "image#{i}", x: 290 * i - 290, y: 0}
+			else
+				c.set {name: "image#{i}", x: 290 * i - 290 * 5, y: 380}
+			hit = new createjs.Shape()
+			hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, 266, 335)
+			c.addChild  hit
 			@targets.push c
 			@addToLibrary c
 			caras.addChild c
-
-		for i in [1..8]
-			c = new createjs.Container()
-			bmp = @createBitmap "image#{i}bmp", "image#{i}", 0 , 0
-			bmp.mouseEnabled = false
-			c.addChild bmp
-
-			if i < 5
-				c.x = (290 * i) - 290
-				c.y = 0
-			else
-				c.x = (290 * i) - 290 * 5
-				c.y = 380
-
-			imgs.addChild c
-		
 		for i in [1..8] by 1
 			d = new Droppable "dragble#{i}", (@preload.getResult "dragble#{i}"), i, 1260, i * 74, @stage
 			@setReg d, d.width / 2, d.height / 2
 			@addToLibrary d
 			caras.addChild d
-		@addToMain imgs, caras 
+		@addToMain caras
 		@
 	introEvaluation: ->
 		super
@@ -129,7 +108,6 @@ class U8A4 extends Oda
 		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5}
 		TweenLite.from @library.finish, 1, {alpha :0, y: @library.finish.y + 20, delay: 0.7}
 		TweenLite.from @library.repeat, 1, {alpha :0, y: @library.repeat.y + 20, delay: 0.7}
-		TweenLite.from @library.imgs, 1, {alpha :0, y: @library.caras.y + 40, delay: 1}
 		TweenLite.from @library.caras, 1, {alpha: 0, y: @library.caras.y + 40, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
@@ -144,7 +122,7 @@ class U8A4 extends Oda
 		@answer = e.target
 		@drop = e.drop
 		console.log 'drop', @drop
-		@answer.putInPlace x:@drop.x + 500, y:@drop.y + 300
+		@answer.putInPlace x:@drop.x + 130, y:@drop.y + 300
 		setTimeout @finishEvaluation, 1 * 1000
 	evaluateAnswer: (e) =>
 		@library.repeat.removeEventListener 'click', @playSound
@@ -171,7 +149,6 @@ class U8A4 extends Oda
 	finish: =>
 		TweenLite.to @library.finish, 1, {alpha :0, y: @library.finish.y + 20}
 		TweenLite.to @library.repeat, 1, {alpha :0, y: @library.repeat.y + 20}
-		TweenLite.to @library.imgs, 1, {alpha: 0, y: @library.caras.y + 40}
 		TweenLite.to @library.caras, 1, {alpha: 0, y: @library.caras.y + 40}
 		super
 	window.U8A4 = U8A4
