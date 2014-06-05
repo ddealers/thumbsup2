@@ -28,7 +28,7 @@ class U1A3 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Look at the schedule and click on the phrases to make sentences.', 80, 200
+		@insertInstructions 'instructions', ['Look at the schedule and click on the phrases to make sentences.'], 80, 200
 		@insertBitmap 'calendar', 'cal', 0, 260
 		@insertBitmap 'iconGym', 'gym', 736, 428
 		@insertBitmap 'iconArt', 'art', 388, 410
@@ -40,7 +40,7 @@ class U1A3 extends Oda
 		@setGrupo1().setGrupo2().setGrupo3().setDropper().introEvaluation()
 	setGrupo1: ->
 		group1 = new createjs.Container()
-		group1.x = 1300
+		group1.x = 1100
 		group1.y = 200
 		group1.name = 'group1'
 		word1 = new ClickableText 'w11', 'We read books', 1, 0, 0
@@ -55,7 +55,7 @@ class U1A3 extends Oda
 		@
 	setGrupo2: ->
 		group2 = new createjs.Container()
-		group2.x = 1300
+		group2.x = 1100
 		group2.y = 480
 		group2.name = 'group2'
 		word1 = new ClickableText 'w21', 'in the gym', 1, 0, 0
@@ -70,7 +70,7 @@ class U1A3 extends Oda
 		@
 	setGrupo3: ->
 		group3 = new createjs.Container()
-		group3.x = 1300
+		group3.x = 1100
 		group3.y = 760
 		group3.name = 'group3'
 		word1 = new ClickableText 'w31', 'on Monday and Friday.', 1, 0, 0

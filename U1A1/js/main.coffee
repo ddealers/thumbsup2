@@ -36,7 +36,7 @@ class U1A1 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Look and drag the parts of the sentences to the speech bubbles.', 80, 200
+		@insertInstructions 'instructions', ['Look and drag the parts of the sentences to the speech bubbles.'], 80, 200
 		@insertSprite 'characters', ['p1','p2','p3','p4','p5'], null, stageSize.w / 2, 470, 'mc'
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 5, 0
 		@intento = 0

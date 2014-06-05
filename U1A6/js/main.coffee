@@ -134,7 +134,7 @@ class U1A6 extends Oda
 		super
 		@answers = @clone @game.answers
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Look and drag the letters to complete the crossword puzzle.', 60, 200
+		@insertInstructions 'instructions', ['Look and drag the letters to complete the crossword puzzle.'], 60, 200
 		@insertBitmap 'saxophone', 'sax', 682, 246
 		@insertBitmap 'saxophoneNo', 'sax_number', 692, 270
 		@insertBitmap 'drum', 'drum', 198, 250

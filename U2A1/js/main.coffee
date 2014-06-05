@@ -35,7 +35,7 @@ class U2A1 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Read, look and drag the phrases to complete the sentences.', 60, 200
+		@insertInstructions 'instructions', ['Read, look and drag the phrases to complete the sentences.'], 60, 200
 		@insertBitmap 'casa', 'casa', 168, 274
 		@intento = 0
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 12, 0

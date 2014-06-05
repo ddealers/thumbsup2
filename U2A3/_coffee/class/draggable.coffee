@@ -15,7 +15,7 @@ class Draggable
 		@height = image.height
 		@pos = x:x, y:y
 		hit = new createjs.Shape()
-		hit.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, image.width, image.height)
+		hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, image.width, image.height)
 		@addChild @bitmap, hit
 		@inPlace = off
 	onInitEvaluation: =>
