@@ -91,7 +91,7 @@
           src: 'sounds/wrong.mp3',
           id: 'wrong'
         }, {
-          src: 'sounds/TU2_U6_A3_Instructions.mp3',
+          src: 'sounds/TU2_U6_A3_instructions.mp3',
           id: 'instructions'
         }
       ];

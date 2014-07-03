@@ -27,7 +27,7 @@ class U6A3 extends Oda
 			{src:'sounds/boing.mp3', id:'boing'}
 			{src:'sounds/good.mp3', id:'good'}
 			{src:'sounds/wrong.mp3', id:'wrong'}
-		    {src:'sounds/TU2_U6_A3_Instructions.mp3', id:'instructions'}
+		    {src:'sounds/TU2_U6_A3_instructions.mp3', id:'instructions'}
 		]
 		@game =
 			steps : [ ##no se como tengan que organizarse cada imagen tiene una frase que debe mostrar. Falta completar aqui las frases
