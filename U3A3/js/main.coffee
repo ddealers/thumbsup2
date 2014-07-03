@@ -68,8 +68,8 @@ class U3A3 extends Oda
 			{id:'saladStart3Final1', src: 'salad/final_WashHands.png'}
 			{id:'saladlabel', src: 'salad/label_fruit.png'}
 
-			{id:'sandwichStart4Final4', src: 'sandwich/final_Bread.png'}
-			{id:'sandwichStart3Final5', src: 'sandwich/final_Eat.png'}
+			{id:'sandwichStart4Final4', src: 'sandwich/final_bread.png'}
+			{id:'sandwichStart3Final5', src: 'sandwich/final_eat.png'}
 			{id:'sandwichStart5Final2', src: 'sandwich/final_Spread.png'}
 			{id:'sandwichStart1Final3', src: 'sandwich/final_Turkey.png'}
 			{id:'sandwichStart2Final1', src: 'sandwich/final_Wash.png'}

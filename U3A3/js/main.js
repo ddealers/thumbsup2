@@ -202,10 +202,10 @@
           src: 'salad/label_fruit.png'
         }, {
           id: 'sandwichStart4Final4',
-          src: 'sandwich/final_Bread.png'
+          src: 'sandwich/final_bread.png'
         }, {
           id: 'sandwichStart3Final5',
-          src: 'sandwich/final_Eat.png'
+          src: 'sandwich/final_eat.png'
         }, {
           id: 'sandwichStart5Final2',
           src: 'sandwich/final_Spread.png'
