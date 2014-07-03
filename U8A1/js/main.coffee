@@ -187,16 +187,16 @@ class U8A1 extends Oda
 		@library.game1btn.blink()
 		@library.game2btn.blink()
 		@library.game3btn.blink()
-		@library.game1btn.addEventListener 'click', @setCards
-		@library.game2btn.addEventListener 'click', @setCards
-		@library.game3btn.addEventListener 'click', @setCards
+		@library.game1_btn.addEventListener 'click', @setCards
+		@library.game2_btn.addEventListener 'click', @setCards
+		@library.game3_btn.addEventListener 'click', @setCards
 	clearButtons: ->
 		@library.game1btn.blink off
 		@library.game2btn.blink off
 		@library.game3btn.blink off
-		@library.game1btn.removeEventListener 'click', @setCards
-		@library.game2btn.removeEventListener 'click', @setCards
-		@library.game3btn.removeEventListener 'click', @setCards
+		@library.game1_btn.removeEventListener 'click', @setCards
+		@library.game2_btn.removeEventListener 'click', @setCards
+		@library.game3_btn.removeEventListener 'click', @setCards
 	evaluateAnswer: (e) =>
 		@clicked = 1
 		if @selected.length < 2
@@ -223,7 +223,7 @@ class U8A1 extends Oda
 	finish: ->
 		clearInterval @timer
 
-		TweenLite.to [@library.game1_btn, @library.game2_btn, @library.game3_btn], 1, {alpha: 0}
+		TweenLite.to [@library.game1btn, @library.game2btn, @library.game3btn], 1, {alpha: 0}
 		TweenLite.to @library.juego, 1, {alpha:0, y:@library.juego.y - 40}
 		super
 	window.U8A1 = U8A1

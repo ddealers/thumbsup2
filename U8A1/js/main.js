@@ -452,18 +452,18 @@
       this.library.game1btn.blink();
       this.library.game2btn.blink();
       this.library.game3btn.blink();
-      this.library.game1btn.addEventListener('click', this.setCards);
-      this.library.game2btn.addEventListener('click', this.setCards);
-      return this.library.game3btn.addEventListener('click', this.setCards);
+      this.library.game1_btn.addEventListener('click', this.setCards);
+      this.library.game2_btn.addEventListener('click', this.setCards);
+      return this.library.game3_btn.addEventListener('click', this.setCards);
     };
 
     U8A1.prototype.clearButtons = function() {
       this.library.game1btn.blink(false);
       this.library.game2btn.blink(false);
       this.library.game3btn.blink(false);
-      this.library.game1btn.removeEventListener('click', this.setCards);
-      this.library.game2btn.removeEventListener('click', this.setCards);
-      return this.library.game3btn.removeEventListener('click', this.setCards);
+      this.library.game1_btn.removeEventListener('click', this.setCards);
+      this.library.game2_btn.removeEventListener('click', this.setCards);
+      return this.library.game3_btn.removeEventListener('click', this.setCards);
     };
 
     U8A1.prototype.evaluateAnswer = function(e) {
@@ -506,7 +506,7 @@
 
     U8A1.prototype.finish = function() {
       clearInterval(this.timer);
-      TweenLite.to([this.library.game1_btn, this.library.game2_btn, this.library.game3_btn], 1, {
+      TweenLite.to([this.library.game1btn, this.library.game2btn, this.library.game3btn], 1, {
         alpha: 0
       });
       TweenLite.to(this.library.juego, 1, {
