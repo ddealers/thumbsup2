@@ -26,7 +26,7 @@ class U8A1 extends Oda
 			{id:'game1Fourtunecookie', src:'game1/cookie2.png'}
 			{id:'game1Mask', src:'game1/mask.png'}
 			{id:'game1Mask2', src:'game1/mask2.png'}
-			{id:'game1Necklace2', src:'game1/necklace2.png'}
+			{id:'game1Necklace2', src:'game1/Necklace2.png'}
 			{id:'game1Puppet', src:'game1/puppet.png'}
 			{id:'game1Box2', src:'game1/treasure-box.png'}
 			{id:'game1Puppet2', src:'game1/wooden-puppet.png'}
@@ -184,19 +184,19 @@ class U8A1 extends Oda
 		TweenLite.from [@library.game1btn, @library.game2btn, @library.game3btn], 1, {alpha: 0, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
-		@library.game1_btn.blink()
-		@library.game2_btn.blink()
-		@library.game3_btn.blink()
-		@library.game1_btn.addEventListener 'click', @setCards
-		@library.game2_btn.addEventListener 'click', @setCards
-		@library.game3_btn.addEventListener 'click', @setCards
+		@library.game1btn.blink()
+		@library.game2btn.blink()
+		@library.game3btn.blink()
+		@library.game1btn.addEventListener 'click', @setCards
+		@library.game2btn.addEventListener 'click', @setCards
+		@library.game3btn.addEventListener 'click', @setCards
 	clearButtons: ->
-		@library.game1_btn.blink off
-		@library.game2_btn.blink off
-		@library.game3_btn.blink off
-		@library.game1_btn.removeEventListener 'click', @setCards
-		@library.game2_btn.removeEventListener 'click', @setCards
-		@library.game3_btn.removeEventListener 'click', @setCards
+		@library.game1btn.blink off
+		@library.game2btn.blink off
+		@library.game3btn.blink off
+		@library.game1btn.removeEventListener 'click', @setCards
+		@library.game2btn.removeEventListener 'click', @setCards
+		@library.game3btn.removeEventListener 'click', @setCards
 	evaluateAnswer: (e) =>
 		@clicked = 1
 		if @selected.length < 2

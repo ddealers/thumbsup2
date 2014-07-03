@@ -90,7 +90,7 @@
           src: 'game1/mask2.png'
         }, {
           id: 'game1Necklace2',
-          src: 'game1/necklace2.png'
+          src: 'game1/Necklace2.png'
         }, {
           id: 'game1Puppet',
           src: 'game1/puppet.png'
@@ -449,21 +449,21 @@
 
     U8A1.prototype.initEvaluation = function(e) {
       U8A1.__super__.initEvaluation.apply(this, arguments);
-      this.library.game1_btn.blink();
-      this.library.game2_btn.blink();
-      this.library.game3_btn.blink();
-      this.library.game1_btn.addEventListener('click', this.setCards);
-      this.library.game2_btn.addEventListener('click', this.setCards);
-      return this.library.game3_btn.addEventListener('click', this.setCards);
+      this.library.game1btn.blink();
+      this.library.game2btn.blink();
+      this.library.game3btn.blink();
+      this.library.game1btn.addEventListener('click', this.setCards);
+      this.library.game2btn.addEventListener('click', this.setCards);
+      return this.library.game3btn.addEventListener('click', this.setCards);
     };
 
     U8A1.prototype.clearButtons = function() {
-      this.library.game1_btn.blink(false);
-      this.library.game2_btn.blink(false);
-      this.library.game3_btn.blink(false);
-      this.library.game1_btn.removeEventListener('click', this.setCards);
-      this.library.game2_btn.removeEventListener('click', this.setCards);
-      return this.library.game3_btn.removeEventListener('click', this.setCards);
+      this.library.game1btn.blink(false);
+      this.library.game2btn.blink(false);
+      this.library.game3btn.blink(false);
+      this.library.game1btn.removeEventListener('click', this.setCards);
+      this.library.game2btn.removeEventListener('click', this.setCards);
+      return this.library.game3btn.removeEventListener('click', this.setCards);
     };
 
     U8A1.prototype.evaluateAnswer = function(e) {
