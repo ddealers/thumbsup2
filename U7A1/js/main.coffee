@@ -59,7 +59,7 @@ class U7A1 extends Oda
 		]
 		sounds = [
 			{src:'sounds/good.mp3', id:'good'}
-		    {src:'sounds/TU2_U7_A1_Instructions.mp3', id:'instructions'}
+		    {src:'sounds/TU2_U7_A1_instructions.mp3', id:'instructions'}
 			{src:'sounds/wrong.mp3', id:'wrong'}
 		]
 
