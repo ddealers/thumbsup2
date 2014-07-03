@@ -26,11 +26,11 @@ class U8A1 extends Oda
 			{id:'game1Fourtunecookie', src:'game1/cookie2.png'}
 			{id:'game1Mask', src:'game1/mask.png'}
 			{id:'game1Mask2', src:'game1/mask2.png'}
-			{id:'game1Necklace2', src:'game1/Necklace2.png'}
+			{id:'game1Necklace2', src:'game1/necklace2.png'}
 			{id:'game1Puppet', src:'game1/puppet.png'}
 			{id:'game1Box2', src:'game1/treasure-box.png'}
 			{id:'game1Puppet2', src:'game1/wooden-puppet.png'}
-			{id:'game1Necklace', src:'game1/Necklace.png'}
+			{id:'game1Necklace', src:'game1/necklace.png'}
 			
 			{id:'game2Australia2', src:'game2/australia2.png'}
 			{id:'game2Australia', src:'game2/australia.png'}

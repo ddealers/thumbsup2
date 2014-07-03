@@ -90,7 +90,7 @@
           src: 'game1/mask2.png'
         }, {
           id: 'game1Necklace2',
-          src: 'game1/Necklace2.png'
+          src: 'game1/necklace2.png'
         }, {
           id: 'game1Puppet',
           src: 'game1/puppet.png'
@@ -102,7 +102,7 @@
           src: 'game1/wooden-puppet.png'
         }, {
           id: 'game1Necklace',
-          src: 'game1/Necklace.png'
+          src: 'game1/necklace.png'
         }, {
           id: 'game2Australia2',
           src: 'game2/australia2.png'
