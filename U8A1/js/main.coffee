@@ -131,7 +131,7 @@ class U8A1 extends Oda
 	setStage: ->
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Click on two cards and see if they match.', 80, 200
+		@insertInstructions 'instructions', ['Click on two cards and see if they match.'], 80, 200
 		b1 = new Button 'game1btn', (@preload.getResult 'game1btn'), 1, 1506, 920
 		b2 = new Button 'game2btn', (@preload.getResult 'game2btn'), 2, 1506, 1010
 		b3 = new Button 'game3btn', (@preload.getResult 'game3btn'), 3, 1506, 1100	
