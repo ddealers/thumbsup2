@@ -184,16 +184,16 @@ class U8A1 extends Oda
 		TweenLite.from [@library.game1btn, @library.game2btn, @library.game3btn], 1, {alpha: 0, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
-		@library.game1btn.blink()
-		@library.game2btn.blink()
-		@library.game3btn.blink()
+		@library.game1_btn.blink()
+		@library.game2_btn.blink()
+		@library.game3_btn.blink()
 		@library.game1_btn.addEventListener 'click', @setCards
 		@library.game2_btn.addEventListener 'click', @setCards
 		@library.game3_btn.addEventListener 'click', @setCards
 	clearButtons: ->
-		@library.game1btn.blink off
-		@library.game2btn.blink off
-		@library.game3btn.blink off
+		@library.game1_btn.blink off
+		@library.game2_btn.blink off
+		@library.game3_btn.blink off
 		@library.game1_btn.removeEventListener 'click', @setCards
 		@library.game2_btn.removeEventListener 'click', @setCards
 		@library.game3_btn.removeEventListener 'click', @setCards

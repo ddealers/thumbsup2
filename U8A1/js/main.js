@@ -449,18 +449,18 @@
 
     U8A1.prototype.initEvaluation = function(e) {
       U8A1.__super__.initEvaluation.apply(this, arguments);
-      this.library.game1btn.blink();
-      this.library.game2btn.blink();
-      this.library.game3btn.blink();
+      this.library.game1_btn.blink();
+      this.library.game2_btn.blink();
+      this.library.game3_btn.blink();
       this.library.game1_btn.addEventListener('click', this.setCards);
       this.library.game2_btn.addEventListener('click', this.setCards);
       return this.library.game3_btn.addEventListener('click', this.setCards);
     };
 
     U8A1.prototype.clearButtons = function() {
-      this.library.game1btn.blink(false);
-      this.library.game2btn.blink(false);
-      this.library.game3btn.blink(false);
+      this.library.game1_btn.blink(false);
+      this.library.game2_btn.blink(false);
+      this.library.game3_btn.blink(false);
       this.library.game1_btn.removeEventListener('click', this.setCards);
       this.library.game2_btn.removeEventListener('click', this.setCards);
       return this.library.game3_btn.removeEventListener('click', this.setCards);
