@@ -217,7 +217,7 @@
       this.insertInstructions('instructions', ['Read and drag the names to complete the story.'], 80, 200);
       ti = this.createBitmap('title', 'title1', 700, 270, 'tc');
       this.addToMain(ti);
-      btnnext = new Button('btnnext', this.preload.getResult('btn'), 0, 1520, 1178);
+      btnnext = new Button('btnnext', this.preload.getResult('btn'), 0, 1280, 1200);
       this.addToMain(btnnext);
       this.library['btnnext'].visible = false;
       this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));

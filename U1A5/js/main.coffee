@@ -76,7 +76,7 @@ class U1A5 extends Oda
 		ti = @createBitmap 'title', 'title1', 700, 270, 'tc'
 		#ti.scaleX = ti.scaleY = 0.72
 		@addToMain ti
-		btnnext = new Button 'btnnext', (@preload.getResult 'btn'), 0, 1520, 1178
+		btnnext = new Button 'btnnext', (@preload.getResult 'btn'), 0, 1280, 1200
 		@addToMain btnnext
 		@library['btnnext'].visible = off
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
