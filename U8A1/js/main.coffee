@@ -132,9 +132,9 @@ class U8A1 extends Oda
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', ['Click on two cards and see if they match.'], 80, 200
-		b1 = new Button 'game1btn', (@preload.getResult 'game1btn'), 1, 1506, 920
-		b2 = new Button 'game2btn', (@preload.getResult 'game2btn'), 2, 1506, 1010
-		b3 = new Button 'game3btn', (@preload.getResult 'game3btn'), 3, 1506, 1100	
+		b1 = new Button 'game1btn', (@preload.getResult 'game1_btn'), 1, 1506, 920
+		b2 = new Button 'game2btn', (@preload.getResult 'game2_btn'), 2, 1506, 1010
+		b3 = new Button 'game3btn', (@preload.getResult 'game3_btn'), 3, 1506, 1100	
 		@addToMain b1, b2, b3
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 100, 0
 		@clicked = 0
