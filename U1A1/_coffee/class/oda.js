@@ -189,26 +189,23 @@
     };
 
     Oda.prototype.playInstructions = function(oda) {
-      var bmp, inst, shape;
+      var inst;
       if (dealersjs.mobile.isIOS() || dealersjs.mobile.isAndroid()) {
-        this.start = new createjs.Container();
-        this.start.set({
-          name: 'start',
-          x: stageSize.w / 2,
-          y: stageSize.h / 2
-        });
-        bmp = oda.createBitmap('start', 'sg', 0, 0);
-        bmp.mouseEnabled = false;
-        shape = new createjs.Shape();
-        shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
-        this.setReg(this.start, bmp.width / 2, bmp.height / 2);
-        this.start.addChild(bmp, shape);
+        /*
+        			@start = new createjs.Container()
+        			@start.set {name: 'start', x: stageSize.w / 2, y: stageSize.h / 2}
+        			bmp = oda.createBitmap 'start', 'sg', 0, 0
+        			bmp.mouseEnabled = false
+        			shape = new createjs.Shape()
+        			shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
+        			@setReg @start, bmp.width / 2, bmp.height / 2
+        			@start.addChild bmp, shape
+        */
+
+        this.start = oda.createBitmap('start', 'sg', stageSize.w / 2, stageSize.h / 2);
+        oda.setReg(this.start, this.start.width / 2, this.start.height / 2);
         oda.addToMain(this.start);
-        oda.library['start'].addEventListener('click', oda.initMobileInstructions);
-        return TweenLite.from(oda.library['start'], 0.3, {
-          alpha: 0,
-          y: oda.library['start'].y + 20
-        });
+        return oda.library['start'].addEventListener('click', oda.initMobileInstructions);
       } else {
         inst = createjs.Sound.play('instructions');
         return inst.addEventListener('complete', oda.initEvaluation);
