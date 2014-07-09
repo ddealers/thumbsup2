@@ -164,25 +164,25 @@
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenLite.from(this.library['casa'], 1, {
         alpha: 0,
         y: this.library['casa'].y + 100,
-        delay: 1
+        delay: 2
       });
       TweenLite.from(this.library['dropper'], 1, {
         alpha: 0,
         x: this.library['dropper'].x + 100,
         ease: Quart.easeOut,
-        delay: 3,
+        delay: 4,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
       return TweenMax.allFrom([this.library['nube1'], this.library['nube2'], this.library['nube3'], this.library['nube4']], 1, {
         alpha: 0,
         y: stageSize.h,
-        delay: 2
+        delay: 3
       });
     };
 
