@@ -438,7 +438,7 @@
       return TweenMax.from(this.library['alphabet'], 1, {
         alpha: 0,
         y: stageSize.h,
-        delay: 3,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

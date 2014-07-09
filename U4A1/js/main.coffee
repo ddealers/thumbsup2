@@ -253,8 +253,8 @@ class U4A1 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0.5}
-		TweenLite.from @library['cartas'], 1, {alpha: 0, y: @library['cartas'].y - 100, delay: 1}
+		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 1}
+		TweenLite.from @library['cartas'], 1, {alpha: 0, y: @library['cartas'].y - 100, delay: 2}
 		if @round is 0
 			TweenLite.from @library['cartaspc'], 1, {alpha: 0, y: @library['cartaspc'].y - 100, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
 		else

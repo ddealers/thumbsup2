@@ -527,12 +527,12 @@
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenLite.from(this.library['cartas'], 1, {
         alpha: 0,
         y: this.library['cartas'].y - 100,
-        delay: 1
+        delay: 2
       });
       if (this.round === 0) {
         return TweenLite.from(this.library['cartaspc'], 1, {
