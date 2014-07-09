@@ -98,12 +98,12 @@ class U1A3 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0.5}
-		TweenMax.allFrom [@library['calendar'], @library['iconGym'], @library['iconArt'], @library['iconWatch'], @library['iconRead'], @library['iconLunch']], 1, {alpha: 0, delay: 0.5}
-		TweenLite.from @library['group1'], 1, {alpha: 0, y: @library['group1'].y + 100, delay: 1}
-		TweenLite.from @library['group2'], 1, {alpha: 0, y: @library['group2'].y + 100, delay: 1.1}
-		TweenLite.from @library['group3'], 1, {alpha: 0, y: @library['group3'].y + 100, delay: 1.2}
-		TweenLite.from @library['words'], 1, {alpha: 0, y: @library['words'].y + 40, delay: 1.5, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0}
+		TweenMax.allFrom [@library['calendar'], @library['iconGym'], @library['iconArt'], @library['iconWatch'], @library['iconRead'], @library['iconLunch']], 1, {alpha: 0, delay: 1}
+		TweenLite.from @library['group1'], 1, {alpha: 0, y: @library['group1'].y + 100, delay: 2}
+		TweenLite.from @library['group2'], 1, {alpha: 0, y: @library['group2'].y + 100, delay: 2}
+		TweenLite.from @library['group3'], 1, {alpha: 0, y: @library['group3'].y + 100, delay: 2}
+		TweenLite.from @library['words'], 1, {alpha: 0, y: @library['words'].y + 40, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		@blink @library[@answers[@index].id]
