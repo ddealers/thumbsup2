@@ -106,7 +106,7 @@ class U4A2 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
-		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
 		TweenMax.allFrom [
 			@library.bluewhale
 			@library.dolphin
