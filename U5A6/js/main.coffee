@@ -180,8 +180,8 @@ class U5A6 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
-		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5}
-		TweenLite.from [@library.game1btn, @library.game2btn, @library.game3btn], 1, {alpha: 0, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 1}
+		TweenLite.from [@library.game1btn, @library.game2btn, @library.game3btn], 1, {alpha: 0, delay: 2, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		@library.game1btn.blink()

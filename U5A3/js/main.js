@@ -289,12 +289,12 @@
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       return TweenLite.from(this.library['seasons'], 0.5, {
         alpha: 0,
         y: this.library['seasons'].y + 40,
-        delay: 1,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

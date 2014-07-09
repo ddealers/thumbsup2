@@ -227,12 +227,12 @@
       TweenLite.from(this.library.repeatbtn, 1, {
         alpha: 0,
         y: this.library.repeatbtn.y + 40,
-        delay: 0.5
+        delay: 1
       });
       return TweenLite.from(this.library.instructions, 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

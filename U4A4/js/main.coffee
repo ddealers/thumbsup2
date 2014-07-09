@@ -150,9 +150,9 @@ class U4A4 extends Oda
 		TweenLite.from @library.instructions, 1, {alpha :0, x: 0}
 		TweenLite.from @library.btnfalse, 1, {alpha: 0, y: @library.btnfalse.y - 20, ease: Quart.easeOut}
 		TweenLite.from @library.btntrue, 1, {alpha: 0, y: @library.btntrue.y - 20, ease: Quart.easeOut}
-		TweenLite.from @library.frameocean, 1, {alpha: 0, y: @library.frameocean.y - 20, ease: Quart.easeOut, delay:0.4}
-		TweenLite.from @library.framejungle, 1, {alpha: 0, y: @library.framejungle.y - 20, ease: Quart.easeOut, delay:0.6}
-		TweenLite.from @library.framegrasslands, 1, {alpha: 0, y: @library.framegrasslands.y - 20, ease: Quart.easeOut, delay:0.8}
+		TweenLite.from @library.frameocean, 1, {alpha: 0, y: @library.frameocean.y - 20, ease: Quart.easeOut, delay:1}
+		TweenLite.from @library.framejungle, 1, {alpha: 0, y: @library.framejungle.y - 20, ease: Quart.easeOut, delay:1}
+		TweenLite.from @library.framegrasslands, 1, {alpha: 0, y: @library.framegrasslands.y - 20, ease: Quart.easeOut, delay:1}
 		TweenLite.from @library.framedesert, 1, {alpha: 0, y: @library.framedesert.y - 20, ease: Quart.easeOut, delay:1, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super

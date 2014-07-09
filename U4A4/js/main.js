@@ -422,19 +422,19 @@
         alpha: 0,
         y: this.library.frameocean.y - 20,
         ease: Quart.easeOut,
-        delay: 0.4
+        delay: 1
       });
       TweenLite.from(this.library.framejungle, 1, {
         alpha: 0,
         y: this.library.framejungle.y - 20,
         ease: Quart.easeOut,
-        delay: 0.6
+        delay: 1
       });
       TweenLite.from(this.library.framegrasslands, 1, {
         alpha: 0,
         y: this.library.framegrasslands.y - 20,
         ease: Quart.easeOut,
-        delay: 0.8
+        delay: 1
       });
       return TweenLite.from(this.library.framedesert, 1, {
         alpha: 0,

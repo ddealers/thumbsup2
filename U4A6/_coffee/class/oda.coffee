@@ -106,7 +106,7 @@ class Oda
 			bmp.mouseEnabled = false
 			shape = new createjs.Shape()
 			shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
-			@setReg @start, bmp.width / 2, bmp.height / 2
+			oda.setReg @start, bmp.width / 2, bmp.height / 2
 			@start.addChild bmp, shape
 			oda.addToMain @start
 			oda.library['start'].addEventListener 'click', oda.initMobileInstructions

@@ -256,10 +256,10 @@ class U5A4 extends Oda
 			@blink @library[kid[0]].parent
 			true
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
-		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5}
-		TweenLite.from @library.bg, 1, {alpha: 0, y: @library.bg.y + 40, delay: 1}
-		TweenLite.from @library.kids, 1, {alpha: 0, y: @library.kids.y + 40, delay: 1}
-		TweenLite.from @library.ropas, 1, {alpha: 0, y: @library.ropas.y + 40, delay: 1.5, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 1}
+		TweenLite.from @library.bg, 1, {alpha: 0, y: @library.bg.y + 40, delay:2}
+		TweenLite.from @library.kids, 1, {alpha: 0, y: @library.kids.y + 40, delay:2}
+		TweenLite.from @library.ropas, 1, {alpha: 0, y: @library.ropas.y + 40, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		for kid in @game[@station].kids

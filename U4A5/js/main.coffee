@@ -120,9 +120,9 @@ class U4A5 extends Oda
 		for i in [1..@game[@scene - 1].texts.length] by 1
 			@observer.subscribe 'init_evaluation', @library["t#{i}"].onInitEvaluation
 		TweenLite.from @library['header'], 1, {y: -@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha: 0, x: 0, delay: 0.5}
-		TweenLite.from @library['title'], 1, {alpha: 0, y: @library['title'].y + 40, delay: 1}
-		TweenLite.from @library['cuento'], 1, {alpha: 0, y: @library['cuento'].y + 40, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library['instructions'], 1, {alpha: 0, x: 0, delay: 1}
+		TweenLite.from @library['title'], 1, {alpha: 0, y: @library['title'].y + 40, delay: 2}
+		TweenLite.from @library['cuento'], 1, {alpha: 0, y: @library['cuento'].y + 40, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		for i in [1..@game[@scene - 1].texts.length] by 1
