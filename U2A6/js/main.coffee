@@ -115,9 +115,9 @@ class U2A6 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0.5}
-		TweenLite.from @library['box'], 1, {alpha:0, y:stageSize.h, delay:1, onComplete: @playInstructions, onCompleteParams: [@]}
-		TweenMax.from [@library['l1'], @library['l2'], @library['l3']], 1, {alpha:0, y:stageSize.h, delay:1}
+		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 1}
+		TweenLite.from @library['box'], 1, {alpha:0, y:stageSize.h, delay:2, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenMax.from [@library['l1'], @library['l2'], @library['l3']], 1, {alpha:0, y:stageSize.h, delay:3}
 	initEvaluation: (e) =>
 		super
 		for i in [1..3] by 1
