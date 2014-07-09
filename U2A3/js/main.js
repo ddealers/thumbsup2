@@ -322,14 +322,14 @@
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5,
+        delay: 1,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
       return TweenMax.from([this.library['p1'], this.library['p2'], this.library['p3']], 1, {
         alpha: 0,
         y: stageSize.h,
-        delay: 1
+        delay: 2
       });
     };
 
