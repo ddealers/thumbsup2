@@ -163,9 +163,9 @@ class U3A6 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0.5}
-		TweenLite.from @library['chango'], 1, {alpha: 0, x: @library['chango'].x + 100, ease: Quart.easeOut, delay: 1.5}
-		TweenMax.from @library['alphabet'], 1, {alpha: 0, y: stageSize.h, delay: 2, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 1}
+		TweenLite.from @library['chango'], 1, {alpha: 0, x: @library['chango'].x + 100, ease: Quart.easeOut, delay: 2}
+		TweenMax.from @library['alphabet'], 1, {alpha: 0, y: stageSize.h, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		word = @answers[@index].t

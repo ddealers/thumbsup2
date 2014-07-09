@@ -427,18 +427,18 @@
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenLite.from(this.library['chango'], 1, {
         alpha: 0,
         x: this.library['chango'].x + 100,
         ease: Quart.easeOut,
-        delay: 1.5
+        delay: 2
       });
       return TweenMax.from(this.library['alphabet'], 1, {
         alpha: 0,
         y: stageSize.h,
-        delay: 2,
+        delay: 3,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
