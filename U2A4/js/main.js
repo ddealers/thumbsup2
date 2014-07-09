@@ -317,12 +317,12 @@
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       return TweenMax.from(this.library['meg'], 1, {
         alpha: 0,
         x: this.library['meg'].x + 100,
-        delay: 1,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
