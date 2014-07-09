@@ -151,7 +151,7 @@
       h1.y = -14 + stageSize.h - 140;
       h1.name = 'h1';
       shape = new createjs.Shape();
-      shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, stageSize.w, stageSize.h);
+      shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, stageSize.w, stageSize.h);
       myname.addChild(question, shape, h1);
       this.addToLibrary(h1);
       this.addToMain(myname);
@@ -198,8 +198,7 @@
       });
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
-        x: 0,
-        delay: 0.5
+        x: 0
       });
       TweenLite.from(this.library['names'], 1, {
         alpha: 0,
@@ -209,12 +208,12 @@
       TweenLite.from(this.library['dropname'], 1, {
         alpha: 0,
         y: this.library['dropname'].y + 100,
-        delay: 1
+        delay: 2
       });
       return TweenLite.from(this.library['characters'], 1, {
         alpha: 0,
         y: this.library['characters'].y + 20,
-        delay: 1.5,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

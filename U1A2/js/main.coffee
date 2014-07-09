@@ -66,7 +66,7 @@ class U1A2 extends Oda
 		h1.name = 'h1'
 
 		shape = new createjs.Shape()
-		shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, stageSize.w, stageSize.h)
+		shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, stageSize.w, stageSize.h)
 
 		myname.addChild question, shape, h1 
 		@addToLibrary h1
@@ -108,10 +108,10 @@ class U1A2 extends Oda
 		@library['characters'].gotoAndStop @answers[@index].id - 1
 
 		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0.5}
+		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0}
 		TweenLite.from @library['names'], 1, {alpha: 0, y: @library['names'].y + 100, delay: 1}
-		TweenLite.from @library['dropname'], 1, {alpha: 0, y: @library['dropname'].y + 100, delay: 1}
-		TweenLite.from @library['characters'], 1, {alpha: 0, y: @library['characters'].y + 20, delay: 1.5, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library['dropname'], 1, {alpha: 0, y: @library['dropname'].y + 100, delay: 2}
+		TweenLite.from @library['characters'], 1, {alpha: 0, y: @library['characters'].y + 20, delay: 2, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		@library['characters'].gotoAndStop @answers[@index].id - 1
