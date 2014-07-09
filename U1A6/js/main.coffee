@@ -222,11 +222,11 @@ class U1A6 extends Oda
 			else
 				@library['h'+i].changeText ''
 		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0.5}
+		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 1}
 		TweenMax.allFrom [@library['saxophone'], @library['drum'], @library['guitar'], @library['tambourine'], @library['trumpet'], @library['flute'], @library['bass'], @library['piano']], 1, {alpha:0, delay:1.5}, 0.2
-		TweenMax.allFrom [@library['saxophoneNo'], @library['drumNo'], @library['guitarNo'], @library['tambourineNo'], @library['trumpetNo'], @library['fluteNo'], @library['bassNo'], @library['pianoNo']], 1, {alpha:0, delay:1.5}, 0.2
-		TweenLite.from @library['alphabet'], 1, {alpha: 0, y: @library['alphabet'].y + 100, delay: 1.5}
-		TweenLite.from @library['crosswords'], 1, {alpha: 0, y: @library['crosswords'].y + 100, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenMax.allFrom [@library['saxophoneNo'], @library['drumNo'], @library['guitarNo'], @library['tambourineNo'], @library['trumpetNo'], @library['fluteNo'], @library['bassNo'], @library['pianoNo']], 1, {alpha:0, delay:2}, 0.2
+		TweenLite.from @library['alphabet'], 1, {alpha: 0, y: @library['alphabet'].y + 100, delay: 3}
+		TweenLite.from @library['crosswords'], 1, {alpha: 0, y: @library['crosswords'].y + 100, delay: 4, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		@library.crosswords.updateCache()

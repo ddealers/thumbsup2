@@ -563,7 +563,7 @@
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenMax.allFrom([this.library['saxophone'], this.library['drum'], this.library['guitar'], this.library['tambourine'], this.library['trumpet'], this.library['flute'], this.library['bass'], this.library['piano']], 1, {
         alpha: 0,
@@ -571,17 +571,17 @@
       }, 0.2);
       TweenMax.allFrom([this.library['saxophoneNo'], this.library['drumNo'], this.library['guitarNo'], this.library['tambourineNo'], this.library['trumpetNo'], this.library['fluteNo'], this.library['bassNo'], this.library['pianoNo']], 1, {
         alpha: 0,
-        delay: 1.5
+        delay: 2
       }, 0.2);
       TweenLite.from(this.library['alphabet'], 1, {
         alpha: 0,
         y: this.library['alphabet'].y + 100,
-        delay: 1.5
+        delay: 3
       });
       return TweenLite.from(this.library['crosswords'], 1, {
         alpha: 0,
         y: this.library['crosswords'].y + 100,
-        delay: 1,
+        delay: 4,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
