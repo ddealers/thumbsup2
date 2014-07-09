@@ -397,17 +397,17 @@
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenLite.from(this.library['common'], 1, {
         alpha: 0,
         y: this.library['common'].y - 40,
-        delay: 1
+        delay: 2
       });
       return TweenLite.from(this.library['menu'], 1, {
         alpha: 0,
         y: this.library['menu'].y - 40,
-        delay: 1.2,
+        delay: 3,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
