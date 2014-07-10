@@ -648,30 +648,30 @@
       TweenLite.from(this.library.instructions, 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenMax.allFrom([this.library.persondoctor, this.library.personfirefighter, this.library.personvet, this.library.personpolice, this.library.personwaiter, this.library.personsalesclerk, this.library.personchef, this.library.personmechanic], 1, {
         alpha: 0,
-        delay: 1.5
+        delay: 2
       }, 0.2);
       TweenMax.allFrom([this.library.numberdoctor, this.library.numberfirefighter, this.library.numbervet, this.library.numberpolice, this.library.numberwaiter, this.library.numbersalesclerk, this.library.numberchef, this.library.numbermechanic], 1, {
         alpha: 0,
-        delay: 1.5
+        delay: 2
       }, 0.2);
       TweenLite.from(this.library.alphabet, 1, {
         alpha: 0,
         y: this.library.alphabet.y + 40,
-        delay: 1.5
+        delay: 3
       });
       TweenLite.from(this.library.helper, 1, {
         alpha: 0,
         y: this.library.helper.y + 40,
-        delay: 1.5
+        delay: 3
       });
       TweenLite.from(this.library.crosswords, 1, {
         alpha: 0,
         y: this.library.crosswords.y + 40,
-        delay: 1,
+        delay: 3,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

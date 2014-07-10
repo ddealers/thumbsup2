@@ -250,22 +250,22 @@
       TweenLite.from(this.library.instructions, 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenLite.from(this.library.finish, 1, {
         alpha: 0,
         y: this.library.finish.y + 20,
-        delay: 0.7
+        delay: 2
       });
       TweenLite.from(this.library.repeat, 1, {
         alpha: 0,
         y: this.library.repeat.y + 20,
-        delay: 0.7
+        delay: 2
       });
       return TweenLite.from(this.library.caras, 1, {
         alpha: 0,
         y: this.library.caras.y + 40,
-        delay: 1,
+        delay: 3,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

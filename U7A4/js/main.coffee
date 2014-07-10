@@ -71,7 +71,7 @@ class U7A4 extends Oda
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
 		TweenLite.from @library.instructions, 1, {alpha :0, x: 0}
 		TweenLite.from @library.boy, 1, {alpha: 0, y: @library.boy.y - 20, ease: Quart.easeOut}
-		TweenLite.from @library.btnFalse, 1, {alpha: 0, y: @library.btnFalse.y - 20, ease: Quart.easeOut, delay: 0.5}
+		TweenLite.from @library.btnFalse, 1, {alpha: 0, y: @library.btnFalse.y - 20, ease: Quart.easeOut, delay: 1}
 		TweenLite.from @library.btnTrue, 1, {alpha: 0, y: @library.btnTrue.y - 20, ease: Quart.easeOut, delay:0.5, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super

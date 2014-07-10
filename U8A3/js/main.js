@@ -212,16 +212,16 @@
       TweenLite.from(this.library.instructions, 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenLite.from([this.library.pass1, this.library.pass2, this.library.pass3, this.library.pass4], 1, {
         alpha: 0,
-        delay: 1
+        delay: 2
       });
       return TweenLite.from(this.library.dropper, 1, {
         alpha: 0,
         y: this.library.dropper.y + 40,
-        delay: 1,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

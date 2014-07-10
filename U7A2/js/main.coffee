@@ -135,10 +135,10 @@ class U7A2 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
-		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5}
-		TweenLite.from @library.btnRepeat, 1, {alpha :0, y: @library.btnRepeat.y - 5, delay: 0.5}
-		TweenLite.from @library.btnFinished, 1, {alpha :0, y: @library.btnFinished.y - 5, delay: 0.5}
-		TweenLite.from @library.pizarra, 1, {alpha: 0, y: @library.pizarra.y + 40, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 1}
+		TweenLite.from @library.btnRepeat, 1, {alpha :0, y: @library.btnRepeat.y - 5, delay: 2}
+		TweenLite.from @library.btnFinished, 1, {alpha :0, y: @library.btnFinished.y - 5, delay: 2}
+		TweenLite.from @library.pizarra, 1, {alpha: 0, y: @library.pizarra.y + 40, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		for i in [0..@drags.length - 1]

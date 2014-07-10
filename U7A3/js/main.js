@@ -378,17 +378,17 @@
       TweenLite.from(this.library.instructions, 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenLite.from(this.library.label, 1, {
         alpha: 0,
         y: this.library.label.y + 20,
-        delay: 1
+        delay: 2
       });
       return TweenLite.from(this.library.escena, 1, {
         alpha: 0,
         y: this.library.escena.y + 40,
-        delay: 1,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

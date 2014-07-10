@@ -1516,7 +1516,7 @@
       bmp.mouseEnabled = false;
       shape = new createjs.Shape();
       shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height);
-      this.setReg(this.play_again, bmp.width / 2, bmp.height / 2);
+      oda.setReg(this.play_again, bmp.width / 2, bmp.height / 2);
       this.play_again.addChild(bmp, shape);
       this.addToMain(this.play_again);
       this.library['play_again'].addEventListener('click', this.handlePlayAgain);

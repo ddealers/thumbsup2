@@ -120,7 +120,7 @@ class U7A1 extends Oda
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
 		TweenLite.from @library.instructions, 1, {alpha :0, x: 0}
 		TweenLite.from @library.scene, 1, {alpha :0, y: @library.scene.y - 20}
-		TweenLite.from @library.nube1, 1, {alpha: 0, y: @library.nube1.y - 20, ease: Quart.easeOut, delay:0.5, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.nube1, 1, {alpha: 0, y: @library.nube1.y - 20, ease: Quart.easeOut, delay:1, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		for i in [1..9] by 1

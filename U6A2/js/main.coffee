@@ -116,9 +116,9 @@ class U6A2 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
-		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5}
-		TweenLite.from @library.btnRepeat, 1, {alpha :0, y: @library.btnRepeat.y + 20, delay: 1}
-		TweenLite.from @library.mapa, 1, {alpha: 0, y: @library.mapa.y + 40, delay: 1.5, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 1}
+		TweenLite.from @library.btnRepeat, 1, {alpha :0, y: @library.btnRepeat.y + 20, delay: 2}
+		TweenLite.from @library.mapa, 1, {alpha: 0, y: @library.mapa.y + 40, delay: 2, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		@mindex = 0

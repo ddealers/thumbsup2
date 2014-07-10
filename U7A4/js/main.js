@@ -162,7 +162,7 @@
         alpha: 0,
         y: this.library.btnFalse.y - 20,
         ease: Quart.easeOut,
-        delay: 0.5
+        delay: 1
       });
       return TweenLite.from(this.library.btnTrue, 1, {
         alpha: 0,

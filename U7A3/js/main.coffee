@@ -176,9 +176,9 @@ class U7A3 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
-		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5}
-		TweenLite.from @library.label, 1, {alpha :0, y: @library.label.y + 20, delay: 1}
-		TweenLite.from @library.escena, 1, {alpha: 0, y: @library.escena.y + 40, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 1}
+		TweenLite.from @library.label, 1, {alpha :0, y: @library.label.y + 20, delay: 2}
+		TweenLite.from @library.escena, 1, {alpha: 0, y: @library.escena.y + 40, delay: 2, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		for i in [0..@letras.length - 1]

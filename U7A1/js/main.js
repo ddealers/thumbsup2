@@ -233,7 +233,7 @@
         alpha: 0,
         y: this.library.nube1.y - 20,
         ease: Quart.easeOut,
-        delay: 0.5,
+        delay: 1,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

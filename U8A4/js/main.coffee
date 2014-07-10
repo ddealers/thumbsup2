@@ -105,10 +105,10 @@ class U8A4 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
-		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0.5}
-		TweenLite.from @library.finish, 1, {alpha :0, y: @library.finish.y + 20, delay: 0.7}
-		TweenLite.from @library.repeat, 1, {alpha :0, y: @library.repeat.y + 20, delay: 0.7}
-		TweenLite.from @library.caras, 1, {alpha: 0, y: @library.caras.y + 40, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 1}
+		TweenLite.from @library.finish, 1, {alpha :0, y: @library.finish.y + 20, delay: 2}
+		TweenLite.from @library.repeat, 1, {alpha :0, y: @library.repeat.y + 20, delay: 2}
+		TweenLite.from @library.caras, 1, {alpha: 0, y: @library.caras.y + 40, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		createjs.Sound.play @steps[@index].sound

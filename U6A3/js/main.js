@@ -373,27 +373,27 @@
       TweenLite.from(this.library.instructions, 1, {
         alpha: 0,
         x: 0,
-        delay: 0.5
+        delay: 1
       });
       TweenLite.from(this.library.dropper, 1, {
         alpha: 0,
         y: this.library.dropper.y + 40,
-        delay: 0.7
+        delay: 2
       });
       TweenLite.from(this.library.images, 1, {
         alpha: 0,
         y: this.library.images.y + 40,
-        delay: 0.7
+        delay: 2
       });
       TweenLite.from(this.library.nube1, 1, {
         alpha: 0,
         y: this.library.nube1.y + 40,
-        delay: 0.9
+        delay: 3
       });
       return TweenLite.from(this.library.nube2, 1, {
         alpha: 0,
         y: this.library.nube2.y + 40,
-        delay: 1.1,
+        delay: 4,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });

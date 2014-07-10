@@ -171,11 +171,11 @@ class U8A2 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
-		TweenLite.from @library.instructions, 1, {alpha: 0, x: 0, delay: 0.5}
-		TweenLite.from @library.scene, 1, {alpha: 0, y: @library.scene.y + 40, delay: 1}
-		TweenLite.from @library.dropper, 1, {alpha: 0, y: @library.dropper.y + 40, delay: 1}
-		TweenLite.from @library.nube1, 1, {alpha: 0, y: @library.nube1.y + 40, delay: 1.5}
-		TweenLite.from @library.nube2, 1, {alpha: 0, y: @library.nube2.y + 40, delay: 1.5, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.instructions, 1, {alpha: 0, x: 0, delay: 1}
+		TweenLite.from @library.scene, 1, {alpha: 0, y: @library.scene.y + 40, delay: 2}
+		TweenLite.from @library.dropper, 1, {alpha: 0, y: @library.dropper.y + 40, delay: 2}
+		TweenLite.from @library.nube1, 1, {alpha: 0, y: @library.nube1.y + 40, delay: 3}
+		TweenLite.from @library.nube2, 1, {alpha: 0, y: @library.nube2.y + 40, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		for opt in @scene.opt1
