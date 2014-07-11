@@ -227,13 +227,14 @@
       });
       TweenLite.from(this.library.scene, 1, {
         alpha: 0,
-        y: this.library.scene.y - 20
+        y: this.library.scene.y - 20,
+        delay: 1
       });
       return TweenLite.from(this.library.nube1, 1, {
         alpha: 0,
         y: this.library.nube1.y - 20,
         ease: Quart.easeOut,
-        delay: 1,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
