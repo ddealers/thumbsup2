@@ -373,7 +373,7 @@
       var b1, b2, b3;
       U5A6.__super__.setStage.apply(this, arguments);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Click on two cards and see if they match.', 80, 200);
+      this.insertInstructions('instructions', ['Click on two cards and see if they match.'], 80, 200);
       b1 = new Button('game1btn', this.preload.getResult('game1btn'), 1, 1506, 920);
       b2 = new Button('game2btn', this.preload.getResult('game2btn'), 2, 1506, 1010);
       b3 = new Button('game3btn', this.preload.getResult('game3btn'), 3, 1506, 1100);
