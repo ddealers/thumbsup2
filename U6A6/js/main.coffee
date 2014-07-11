@@ -284,12 +284,12 @@ class U6A6 extends Oda
 			else
 				@library["h#{i}"].changeText ''
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
-		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 1}
-		TweenMax.allFrom [@library.persondoctor, @library.personfirefighter, @library.personvet, @library.personpolice, @library.personwaiter, @library.personsalesclerk, @library.personchef, @library.personmechanic], 1, {alpha:0, delay:2}, 0.2
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0}
+		TweenMax.allFrom [@library.persondoctor, @library.personfirefighter, @library.personvet, @library.personpolice, @library.personwaiter, @library.personsalesclerk, @library.personchef, @library.personmechanic], 1, {alpha:0, delay:1}, 0.2
 		TweenMax.allFrom [@library.numberdoctor, @library.numberfirefighter, @library.numbervet, @library.numberpolice, @library.numberwaiter, @library.numbersalesclerk, @library.numberchef, @library.numbermechanic], 1, {alpha:0, delay:2}, 0.2
 		TweenLite.from @library.alphabet, 1, {alpha: 0, y: @library.alphabet.y + 40, delay: 3}
 		TweenLite.from @library.helper, 1, {alpha: 0, y: @library.helper.y + 40, delay: 3}
-		TweenLite.from @library.crosswords, 1, {alpha: 0, y: @library.crosswords.y + 40, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.crosswords, 1, {alpha: 0, y: @library.crosswords.y + 40, delay: 4, onComplete: @playInstructions, onCompleteParams: [@]}
  	initEvaluation: (e) =>
 		super
 		for letter in @abc
