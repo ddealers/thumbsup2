@@ -159,7 +159,7 @@ class U6A6 extends Oda
 		super
 		@answers = @clone @game.answers
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Look and drag the letters to complete the crossword puzzle.', 80, 200
+		@insertInstructions 'instructions', ['Look and drag the letters to complete the crossword puzzle.'], 80, 200
 		doc = @createBitmap 'persondoctor', 'persondoctor', 154, 242
 		mec = @createBitmap 'personmechanic', 'personmechanic', 274, 388
 		chef = @createBitmap 'personchef', 'personchef', 54, 416

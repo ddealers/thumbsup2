@@ -508,7 +508,7 @@
       U6A6.__super__.setStage.apply(this, arguments);
       this.answers = this.clone(this.game.answers);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
-      this.insertInstructions('instructions', 'Look and drag the letters to complete the crossword puzzle.', 80, 200);
+      this.insertInstructions('instructions', ['Look and drag the letters to complete the crossword puzzle.'], 80, 200);
       doc = this.createBitmap('persondoctor', 'persondoctor', 154, 242);
       mec = this.createBitmap('personmechanic', 'personmechanic', 274, 388);
       chef = this.createBitmap('personchef', 'personchef', 54, 416);
