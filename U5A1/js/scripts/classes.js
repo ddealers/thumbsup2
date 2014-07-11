@@ -1917,6 +1917,7 @@
       }
       TweenMax.killTweensOf(obj);
       obj.alpha = 1;
+		obj.cache(0,0,obj.getBounds().width, obj.getBounds().height)
       if (state) {
         return TweenMax.to(obj, 0.5, {
           alpha: .2,

@@ -443,15 +443,12 @@
       }
       this.addToMain(cal);
       this.addToLibrary(cal);
-      TweenLite.to(cal, 1, {
-        alpha: 1,
-        y: 0
-      });
       return this;
     };
 
     U5A1.prototype.introEvaluation = function() {
       U5A1.__super__.introEvaluation.apply(this, arguments);
+      this.library.calendar.cache(0, 0, this.library.calendar.getBounds().width + 200, this.library.calendar.getBounds().height + 1000);
       TweenLite.from(this.library.header, 1, {
         y: -this.library.header.height
       });
@@ -465,9 +462,14 @@
         y: this.library.btnRepeat.y + 40,
         delay: 1
       });
-      return TweenLite.from(this.library.btnFinished, 1, {
+      TweenLite.from(this.library.btnFinished, 1, {
         alpha: 0,
         y: this.library.btnFinished.y + 40,
+        delay: 2
+      });
+      return TweenLite.to(this.library.calendar, 1, {
+        alpha: 1,
+        y: 0,
         delay: 3,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
@@ -477,6 +479,7 @@
     U5A1.prototype.initEvaluation = function(e) {
       var i, _i;
       U5A1.__super__.initEvaluation.apply(this, arguments);
+      this.library.calendar.uncache();
       for (i = _i = 1; _i <= 8; i = ++_i) {
         this.library["cal" + this.calendar + "Dragble" + i].addEventListener('drop', this.evaluateDrop);
       }
@@ -531,13 +534,16 @@
     };
 
     U5A1.prototype.finishEvaluation = function() {
+      this.library.calendar.cache(0, 0, this.library.calendar.getBounds().width + 200, this.library.calendar.getBounds().height + 1000);
       TweenLite.to(this.library.calendar, 1, {
         alpha: 0,
-        y: this.library.calendar.y - 40
+        y: this.library.calendar.y - 40,
+        delay: 2
       });
       return TweenLite.to(this.library.propCalendar, 1, {
         alpha: 0,
         y: this.library.propCalendar.y - 40,
+        delay: 3,
         onComplete: this.nextEvaluation
       });
     };

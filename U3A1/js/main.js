@@ -1120,6 +1120,7 @@
 
     U3A1.prototype.introEvaluation = function() {
       U3A1.__super__.introEvaluation.apply(this, arguments);
+      this.library['common'].cache(300, 230, this.library['common'].getBounds().width, this.library['common'].getBounds().height);
       TweenLite.from(this.library['header'], 1, {
         y: -this.library['header'].height
       });

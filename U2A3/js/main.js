@@ -622,26 +622,27 @@
       });
       TweenLite.from(this.library['in'], 1, {
         alpha: 0,
-        y: this.library['in'].y - 40
+        y: this.library['in'].y - 40,
+        delay: 0.2
       });
       TweenLite.from(this.library['under'], 1, {
         alpha: 0,
-        y: this.library['under'].y - 40
+        y: this.library['under'].y - 40,
+        delay: 0.4
       });
       TweenLite.from(this.library['next'], 1, {
         alpha: 0,
-        y: this.library['next'].y - 40,
-        delay: 1
+        y: this.library['next'].y - 40
       });
       TweenLite.from(this.library['on'], 1, {
         alpha: 0,
         y: this.library['on'].y - 40,
-        delay: 1
+        delay: 0.2
       });
       return TweenLite.from(this.library['above'], 1, {
         alpha: 0,
         y: this.library['above'].y - 40,
-        delay: 1
+        delay: 0.4
       });
     };
 
@@ -714,20 +715,29 @@
       console.log(this.drops);
       this.addToMain(puzzle);
       this.addToMain(dragpieces);
+      puzzle.cache(0, 0, puzzle.getBounds().width, puzzle.getBounds().height);
+      dragpieces.cache(0, -100, dragpieces.getBounds().width, dragpieces.getBounds().height);
       TweenLite.from(puzzle, 1, {
         alpha: 0,
         y: puzzle.y - 40,
-        delay: 2
+        delay: 0.6
       });
       return TweenLite.from(dragpieces, 1, {
         alpha: 0,
         y: puzzle.y - 40,
-        delay: 3,
-        onComplete: this.initDrag
+        delay: 0.6,
+        onComplete: this.initDrag,
+        onCompleteParams: [puzzle, dragpieces]
       });
     };
 
-    U2A3.prototype.initDrag = function() {
+    U2A3.prototype.initDrag = function(puzzle, dragpieces) {
+      if (puzzle) {
+        puzzle.uncache();
+      }
+      if (dragpieces) {
+        dragpieces.uncache();
+      }
       return this.observer.notify('init_drag');
     };
 
@@ -771,7 +781,6 @@
         }
         this.addToMain(this.wordcompleter);
         this.answer.complete = true;
-        this.answer.putInPlace(htt);
         for (i = _i = 1; _i <= 12; i = _i += 1) {
           ficha = this.library["dp" + this.num + "p" + i];
           ficha.removeAllEventListeners();

@@ -192,16 +192,18 @@ class U5A1 extends Oda
 			@addToLibrary v
 		@addToMain cal
 		@addToLibrary cal
-		TweenLite.to cal, 1, {alpha:1, y:0}
 		@
 	introEvaluation: ->
 		super
+		@library.calendar.cache 0,0, @library.calendar.getBounds().width+200, @library.calendar.getBounds().height+1000
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
 		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0}
 		TweenLite.from @library.btnRepeat, 1, {alpha :0, y: @library.btnRepeat.y + 40, delay: 1}
-		TweenLite.from @library.btnFinished, 1, {alpha: 0, y: @library.btnFinished.y + 40, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.btnFinished, 1, {alpha: 0, y: @library.btnFinished.y + 40, delay: 2}
+		TweenLite.to @library.calendar, 1, {alpha:1, y:0, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
+		@library.calendar.uncache()
 		for i in [1..8]
 			@library["cal#{@calendar}Dragble#{i}"].addEventListener 'drop', @evaluateDrop
 		@library.btnRepeat.addEventListener 'click', @repeatSound
@@ -236,8 +238,9 @@ class U5A1 extends Oda
 					createjs.Sound.play 'good'
 		setTimeout @finishEvaluation, 4 * 1000
 	finishEvaluation: =>
-		TweenLite.to @library.calendar, 1, {alpha:0, y:@library.calendar.y - 40}
-		TweenLite.to @library.propCalendar, 1, {alpha:0, y:@library.propCalendar.y - 40, onComplete: @nextEvaluation}
+		@library.calendar.cache 0,0, @library.calendar.getBounds().width+200, @library.calendar.getBounds().height+1000
+		TweenLite.to @library.calendar, 1, {alpha:0, y:@library.calendar.y - 40, delay: 2}
+		TweenLite.to @library.propCalendar, 1, {alpha:0, y:@library.propCalendar.y - 40, delay:3, onComplete: @nextEvaluation}
 	nextEvaluation: =>
 		@index++
 		if @index < @game.length

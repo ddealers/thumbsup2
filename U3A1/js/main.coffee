@@ -443,6 +443,7 @@ class U3A1 extends Oda
 		@
 	introEvaluation: ->
 		super
+		@library['common'].cache 300,230, @library['common'].getBounds().width,@library['common'].getBounds().height
 		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
 		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0}
 		TweenLite.from @library['common'], 1, {alpha :0, x: 0, delay: 1}

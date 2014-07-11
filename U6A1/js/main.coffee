@@ -237,10 +237,13 @@ class U6A1 extends Oda
 		console.log @drops
 		@addToMain puzzle
 		@addToMain dragpieces
-
+		puzzle.cache 0,0,puzzle.getBounds().width+300,puzzle.getBounds().height+200
+		dragpieces.cache 0,-100,dragpieces.getBounds().width,dragpieces.getBounds().height+100
 		TweenLite.from puzzle, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6}
 		TweenLite.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6, onComplete: @initDrag}
 	initDrag: =>
+		if puzzle then puzzle.uncache()
+		if dragpieces then dragpieces.uncache()
 		@observer.notify 'init_drag'
 	initListeners: ->
 		@library.btntrue.addEventListener 'click', @evaluateLocation

@@ -525,6 +525,8 @@
       console.log(this.drops);
       this.addToMain(puzzle);
       this.addToMain(dragpieces);
+      puzzle.cache(0, 0, puzzle.getBounds().width + 300, puzzle.getBounds().height + 200);
+      dragpieces.cache(0, -100, dragpieces.getBounds().width, dragpieces.getBounds().height + 100);
       TweenLite.from(puzzle, 1, {
         alpha: 0,
         y: puzzle.y - 40,
@@ -539,6 +541,12 @@
     };
 
     U6A1.prototype.initDrag = function() {
+      if (puzzle) {
+        puzzle.uncache();
+      }
+      if (dragpieces) {
+        dragpieces.uncache();
+      }
       return this.observer.notify('init_drag');
     };
 

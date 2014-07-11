@@ -180,11 +180,11 @@ class U2A3 extends Oda
 				@setPuzzle 3
 
 		TweenLite.from @library['behind'], 1, {alpha:0, y:@library['behind'].y - 40}
-		TweenLite.from @library['in'], 1, {alpha:0, y:@library['in'].y - 40}
-		TweenLite.from @library['under'], 1, {alpha:0, y:@library['under'].y - 40}
-		TweenLite.from @library['next'], 1, {alpha:0, y:@library['next'].y - 40, delay:1}
-		TweenLite.from @library['on'], 1, {alpha:0, y:@library['on'].y - 40, delay: 1}
-		TweenLite.from @library['above'], 1, {alpha:0, y:@library['above'].y - 40, delay: 1}
+		TweenLite.from @library['in'], 1, {alpha:0, y:@library['in'].y - 40, delay: 0.2}
+		TweenLite.from @library['under'], 1, {alpha:0, y:@library['under'].y - 40, delay: 0.4}
+		TweenLite.from @library['next'], 1, {alpha:0, y:@library['next'].y - 40}
+		TweenLite.from @library['on'], 1, {alpha:0, y:@library['on'].y - 40, delay: 0.2}
+		TweenLite.from @library['above'], 1, {alpha:0, y:@library['above'].y - 40, delay: 0.4}
 	setPuzzle: (num) ->
 		@num = num
 		puzzle = new createjs.Container()
@@ -248,10 +248,13 @@ class U2A3 extends Oda
 		console.log @drops
 		@addToMain puzzle
 		@addToMain dragpieces
-
-		TweenLite.from puzzle, 1, {alpha:0, y:puzzle.y - 40, delay: 2}
-		TweenLite.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, delay: 3, onComplete: @initDrag}
-	initDrag: =>
+		puzzle.cache 0,0,puzzle.getBounds().width,puzzle.getBounds().height
+		dragpieces.cache 0,-100,dragpieces.getBounds().width,dragpieces.getBounds().height
+		TweenLite.from puzzle, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6}
+		TweenLite.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6, onComplete: @initDrag, onCompleteParams:[puzzle,dragpieces]}
+	initDrag:(puzzle,dragpieces) =>
+		if puzzle then puzzle.uncache()
+		if dragpieces then dragpieces.uncache()
 		@observer.notify 'init_drag'
 	initListeners: ->
 		@library['behind'].addEventListener 'click', @evaluateLocation
@@ -292,7 +295,7 @@ class U2A3 extends Oda
 			@addToMain @wordcompleter
 			
 			@answer.complete = true
-			@answer.putInPlace( htt )
+			#@answer.putInPlace( htt )
 			for i in [1..12] by 1
 				ficha = @library["dp#{@num}p#{i}"]
 				ficha.removeAllEventListeners() 
