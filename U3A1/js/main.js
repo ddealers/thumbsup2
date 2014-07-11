@@ -1126,12 +1126,12 @@
       TweenLite.from(this.library['instructions'], 1, {
         alpha: 0,
         x: 0,
-        delay: 1
+        delay: 0
       });
       TweenLite.from(this.library['common'], 1, {
         alpha: 0,
         x: 0,
-        delay: 2
+        delay: 1
       });
       TweenLite.from(this.library['repeat'], 1, {
         alpha: 0,

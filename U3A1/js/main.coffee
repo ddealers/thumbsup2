@@ -444,8 +444,8 @@ class U3A1 extends Oda
 	introEvaluation: ->
 		super
 		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 1}
-		TweenLite.from @library['common'], 1, {alpha :0, x: 0, delay: 2}
+		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 0}
+		TweenLite.from @library['common'], 1, {alpha :0, x: 0, delay: 1}
 		TweenLite.from @library['repeat'], 1, {alpha :0, y: @library['repeat'].y + 40, delay: 2}
 		TweenLite.from @library['menu'], 1, {alpha :0, y: @library['menu'].y + 40, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
