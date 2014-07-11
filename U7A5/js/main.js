@@ -260,15 +260,15 @@
         alpha: 0,
         x: 0
       });
-      TweenLite.from(this.library['title'], 0.5, {
+      TweenLite.from(this.library['title'], 1, {
         alpha: 0,
         y: this.library['title'].y + 40,
-        delay: 0.5
+        delay: 1
       });
-      return TweenLite.from(this.library['cuento'], 0.5, {
+      return TweenLite.from(this.library['cuento'], 1, {
         alpha: 0,
         y: this.library['cuento'].y + 40,
-        delay: 0.5,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
