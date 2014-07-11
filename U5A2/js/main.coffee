@@ -108,7 +108,7 @@ class U5A2 extends Oda
 		super
 		TweenLite.from @library.header, 1, {y:-@library['header'].height}
 		TweenLite.from @library.repeatbtn, 1, {alpha :0, y: @library.repeatbtn.y + 40, delay: 1}
-		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 2, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		@library.chooseImg.initListeners()
