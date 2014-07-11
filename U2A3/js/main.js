@@ -622,27 +622,26 @@
       });
       TweenLite.from(this.library['in'], 1, {
         alpha: 0,
-        y: this.library['in'].y - 40,
-        delay: 0.2
+        y: this.library['in'].y - 40
       });
       TweenLite.from(this.library['under'], 1, {
         alpha: 0,
-        y: this.library['under'].y - 40,
-        delay: 0.4
+        y: this.library['under'].y - 40
       });
       TweenLite.from(this.library['next'], 1, {
         alpha: 0,
-        y: this.library['next'].y - 40
+        y: this.library['next'].y - 40,
+        delay: 1
       });
       TweenLite.from(this.library['on'], 1, {
         alpha: 0,
         y: this.library['on'].y - 40,
-        delay: 0.2
+        delay: 1
       });
       return TweenLite.from(this.library['above'], 1, {
         alpha: 0,
         y: this.library['above'].y - 40,
-        delay: 0.4
+        delay: 1
       });
     };
 

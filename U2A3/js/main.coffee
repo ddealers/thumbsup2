@@ -180,11 +180,11 @@ class U2A3 extends Oda
 				@setPuzzle 3
 
 		TweenLite.from @library['behind'], 1, {alpha:0, y:@library['behind'].y - 40}
-		TweenLite.from @library['in'], 1, {alpha:0, y:@library['in'].y - 40, delay: 0.2}
-		TweenLite.from @library['under'], 1, {alpha:0, y:@library['under'].y - 40, delay: 0.4}
-		TweenLite.from @library['next'], 1, {alpha:0, y:@library['next'].y - 40}
-		TweenLite.from @library['on'], 1, {alpha:0, y:@library['on'].y - 40, delay: 0.2}
-		TweenLite.from @library['above'], 1, {alpha:0, y:@library['above'].y - 40, delay: 0.4}
+		TweenLite.from @library['in'], 1, {alpha:0, y:@library['in'].y - 40}
+		TweenLite.from @library['under'], 1, {alpha:0, y:@library['under'].y - 40}
+		TweenLite.from @library['next'], 1, {alpha:0, y:@library['next'].y - 40, delay:1}
+		TweenLite.from @library['on'], 1, {alpha:0, y:@library['on'].y - 40, delay: 1}
+		TweenLite.from @library['above'], 1, {alpha:0, y:@library['above'].y - 40, delay: 1}
 	setPuzzle: (num) ->
 		@num = num
 		puzzle = new createjs.Container()
