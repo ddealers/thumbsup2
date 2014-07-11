@@ -249,8 +249,8 @@ class U2A3 extends Oda
 		@addToMain puzzle
 		@addToMain dragpieces
 
-		TweenLite.from puzzle, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6}
-		TweenLite.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6, onComplete: @initDrag}
+		TweenLite.from puzzle, 1, {alpha:0, y:puzzle.y - 40, delay: 2}
+		TweenLite.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, delay: 3, onComplete: @initDrag}
 	initDrag: =>
 		@observer.notify 'init_drag'
 	initListeners: ->

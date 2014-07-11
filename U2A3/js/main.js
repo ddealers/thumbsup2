@@ -717,12 +717,12 @@
       TweenLite.from(puzzle, 1, {
         alpha: 0,
         y: puzzle.y - 40,
-        delay: 0.6
+        delay: 2
       });
       return TweenLite.from(dragpieces, 1, {
         alpha: 0,
         y: puzzle.y - 40,
-        delay: 0.6,
+        delay: 3,
         onComplete: this.initDrag
       });
     };
