@@ -220,7 +220,7 @@
         this.addToLibrary(sc);
       }
       for (i = _j = 1, _ref1 = this.game[scene - 1].texts.length; _j <= _ref1; i = _j += 1) {
-        t = new DraggableText("t" + i, this.game[scene - 1].texts[i - 1].t, this.game[scene - 1].texts[i - 1].idx, 1400, i * 120 + 400);
+        t = new DraggableText("t" + i, this.game[scene - 1].texts[i - 1].t, this.game[scene - 1].texts[i - 1].idx, 1400, i * 150 + 400);
         t.text.lineHeight = 40;
         t.text.lineWidth = 420;
         t.text.textAlign = 'center';
