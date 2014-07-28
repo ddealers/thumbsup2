@@ -117,7 +117,7 @@
       this.steps = this.shuffle(this.game.steps);
       this.insertBitmap('header', 'head', stageSize.w / 2, 0, 'tc');
       this.insertInstructions('instructions', ['Look at the pictures and unscramble the words to make sentences.'], 80, 200);
-      this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 8, 0));
+      this.addToMain(new Score('score', this.preload.getResult('c1'), this.preload.getResult('c2'), 40, 1000, 7, 0));
       return this.setScenario(1).introEvaluation();
     };
 

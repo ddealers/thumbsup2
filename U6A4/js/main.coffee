@@ -43,7 +43,7 @@ class U6A4 extends Oda
 		@steps = @shuffle @game.steps
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', ['Look at the pictures and unscramble the words to make sentences.'], 80, 200
-		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
+		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 7, 0
 		@setScenario( 1 ).introEvaluation()
 	setScenario: (sce) ->
 		if @library.scenario
