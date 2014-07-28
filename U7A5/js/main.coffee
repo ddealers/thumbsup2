@@ -94,7 +94,7 @@ class U7A5 extends Oda
 			cuento.addChild sc
 			@addToLibrary sc
 		for i in [1..@game[scene - 1].texts.length] by 1
-			t = new DraggableText "t#{i}", @game[scene - 1].texts[i-1].t, @game[scene - 1].texts[i-1].idx, 1400, i * 120 + 400
+			t = new DraggableText "t#{i}", @game[scene - 1].texts[i-1].t, @game[scene - 1].texts[i-1].idx, 1400, i * 180 + 400
 			t.text.lineHeight = 40
 			t.text.lineWidth = 420
 			t.text.textAlign = 'center'
