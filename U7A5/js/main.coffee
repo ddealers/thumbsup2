@@ -73,7 +73,7 @@ class U7A5 extends Oda
 		ti = @createBitmap 'title', 'title1', 700, 280,  'tc'
 		ti.scaleX = ti.scaleY = 0.8
 		@addToMain ti
-		btnnext = new Button 'btnnext', (@preload.getResult 'btn'), 0, 1300, 1040, 'br'
+		btnnext = new Button 'btnnext', (@preload.getResult 'btn'), 0, 1300, 1840, 'br'
 		@addToMain btnnext
 		@library['btnnext'].visible = off
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
@@ -94,7 +94,7 @@ class U7A5 extends Oda
 			cuento.addChild sc
 			@addToLibrary sc
 		for i in [1..@game[scene - 1].texts.length] by 1
-			t = new DraggableText "t#{i}", @game[scene - 1].texts[i-1].t, @game[scene - 1].texts[i-1].idx, 1000, i * 150 + 400
+			t = new DraggableText "t#{i}", @game[scene - 1].texts[i-1].t, @game[scene - 1].texts[i-1].idx, 1400, i * 150 + 400
 			t.text.lineHeight = 40
 			t.text.lineWidth = 420
 			t.text.textAlign = 'center'
