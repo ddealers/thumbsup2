@@ -329,9 +329,14 @@
       for (i = _i = 0, _ref = answers.length - 1; _i <= _ref; i = _i += 1) {
         if (this.library["cont" + i].children.length > 1) {
           if (this.library["cont" + i].children[1].name === answers[i]) {
-            this.blink(this.library["cont" + i]);
             this.library.score.plusOne();
             createjs.Sound.play('good');
+          } else {
+            if (dealersjs.mobile.isIOS() || dealersjs.mobile.isAndroid()) {
+              this.library["cont" + i].alpha = 0.4;
+            } else {
+              this.blink(this.library["cont" + i]);
+            }
           }
         }
       }

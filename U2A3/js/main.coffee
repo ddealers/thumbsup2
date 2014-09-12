@@ -244,8 +244,6 @@ class U2A3 extends Oda
 				
 		dragpieces.width = index * 176
 		@setReg(dragpieces, dragpieces.width / 2, 0)
-		
-		console.log @drops
 		@addToMain puzzle
 		@addToMain dragpieces
 		puzzle.cache 0,0,puzzle.getBounds().width,puzzle.getBounds().height
@@ -272,18 +270,13 @@ class U2A3 extends Oda
 		@library['above'].removeEventListener 'click', @evaluateLocation
 	evaluateAnswer: (e) =>
 		@answer = e.target
-		console.log 'answer', @answer
 		hit = @library[@answer.index+'shape']
 		hitname = @library[@answer.name]
 		pt = hit.globalToLocal @stage.mouseX, @stage.mouseY
 		if hit.hitTest pt.x, pt.y
-			console.log 'array drops ', @drops
 			currentdrop = @drops.indexOf(@library[@answer.name])
-
-			console.log 'indexof', currentdrop
 			@drops.splice currentdrop, 1 
-			console.log 'array nuevo ', @drops
-
+			
 			hpt = hit.parent.localToGlobal hit.x, hit.y
 			htt = @answer.parent.globalToLocal hpt.x, hpt.y
 			@wordcompleter = new AfterBeforeWord 'dropper', @pieces[@answer.index].texta, '', @pieces[@answer.index].textb, '#FFF', '#E90E2C', 300, 1120, 220, 60
@@ -295,7 +288,7 @@ class U2A3 extends Oda
 			@addToMain @wordcompleter
 			
 			@answer.complete = true
-			#@answer.putInPlace( htt )
+			@answer.putInPlace( htt )
 			for i in [1..12] by 1
 				ficha = @library["dp#{@num}p#{i}"]
 				ficha.removeAllEventListeners() 
@@ -312,17 +305,15 @@ class U2A3 extends Oda
 			@library['score'].plusOne()
 		else
 			@warning()
-		
-		setTimeout @finishEvaluation, 1 * 1000
 		@stopListeners()
 		for i in [1..12] by 1
 			ficha = @library["dp#{@num}p#{i}"]
 			currentficha = @drops.indexOf(@library["dp#{@num}p#{i}"])
-
 			if currentficha != -1
 				ficha.addEventListener 'drop', @evaluateAnswer
 			else
 	 			ficha.onStopEvaluation()
+	 	setTimeout @finishEvaluation, 1 * 1000
 	finishEvaluation: =>
 		TweenLite.to @library['dropper'], 0.5, {alpha: 0, y: stageSize.h, ease:Quart.easeOut, onComplete: @nextEvaluation}
 	nextEvaluation: =>

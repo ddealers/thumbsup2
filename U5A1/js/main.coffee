@@ -195,12 +195,13 @@ class U5A1 extends Oda
 		@
 	introEvaluation: ->
 		super
-		@library.calendar.cache 0,0, @library.calendar.getBounds().width+200, @library.calendar.getBounds().height+1000
+		@library.calendar.cache -100, -100, @library.calendar.getBounds().width + 300, @library.calendar.getBounds().height + 500
+		TweenLite.set @library.calendar, {alpha: 0}
 		TweenLite.from @library.header, 1, {y:-@library.header.height}
 		TweenLite.from @library.instructions, 1, {alpha :0, x: 0, delay: 0}
 		TweenLite.from @library.btnRepeat, 1, {alpha :0, y: @library.btnRepeat.y + 40, delay: 1}
-		TweenLite.from @library.btnFinished, 1, {alpha: 0, y: @library.btnFinished.y + 40, delay: 2}
-		TweenLite.to @library.calendar, 1, {alpha:1, y:0, delay: 3, onComplete: @playInstructions, onCompleteParams: [@]}
+		TweenLite.from @library.btnFinished, 1, {alpha: 0, y: @library.btnFinished.y + 40, delay: 1}
+		TweenLite.to @library.calendar, 1, {alpha:1, y:0, delay: 2, onComplete: @playInstructions, onCompleteParams: [@]}
 	initEvaluation: (e) =>
 		super
 		@library.calendar.uncache()
@@ -221,6 +222,16 @@ class U5A1 extends Oda
 				relation = @game[@calendar - 1].drops.where id:@answer.name
 				v = @createBitmap relation[0].id, relation[0].tgt, 45, 25
 				v.hitter = @answer
+				v.addEventListener 'mousedown', (e) ->
+					cv = e.currentTarget
+					cv.addEventListener 'pressmove', (ev) ->
+						if cv.hitter
+							cv.removeAllEventListeners()
+							parent = cv.parent 
+							while parent.children.length > 1
+								parent.removeChildAt parent.children.length - 1
+							cv.hitter.visible = on
+							cv.hitter.returnToPlace()
 				@setReg v, v.width / 2, v.height / 2
 				@library[drop.tgt].respuesta = @answer.name
 				@library[drop.tgt].parent.addChild v
@@ -233,16 +244,21 @@ class U5A1 extends Oda
 		for i in [1..answers.length] by 1
 			if @library[answers[i - 1].tgt].parent.children.length > 2
 				if @library[answers[i - 1].tgt].parent.children[2].name is answers[i - 1].id
-					@blink @library[answers[i - 1].tgt].parent
 					@library.score.plusOne()
 					createjs.Sound.play 'good'
+				else
+					if dealersjs.mobile.isIOS() or dealersjs.mobile.isAndroid()
+						@library[answers[i - 1].tgt].parent.alpha = 0.4
+					else
+						@blink @library[answers[i - 1].tgt].parent
 		setTimeout @finishEvaluation, 4 * 1000
 	finishEvaluation: =>
-		@library.calendar.cache 0,0, @library.calendar.getBounds().width+200, @library.calendar.getBounds().height+1000
-		TweenLite.to @library.calendar, 1, {alpha:0, y:@library.calendar.y - 40, delay: 2}
-		TweenLite.to @library.propCalendar, 1, {alpha:0, y:@library.propCalendar.y - 40, delay:3, onComplete: @nextEvaluation}
+		@library.calendar.cache 0,0, @library.calendar.getBounds().width+400, @library.calendar.getBounds().height+1000
+		TweenLite.to @library.calendar, 1, {alpha:0, y:@library.calendar.y - 40}
+		TweenLite.to @library.propCalendar, 1, {alpha:0, y:@library.propCalendar.y - 40, delay:1, onComplete: @nextEvaluation}
 	nextEvaluation: =>
 		@index++
+		@library.calendar.uncache()
 		if @index < @game.length
 			@setCalendar @index + 1
 			for i in [1..8]

@@ -448,7 +448,10 @@
 
     U5A1.prototype.introEvaluation = function() {
       U5A1.__super__.introEvaluation.apply(this, arguments);
-      this.library.calendar.cache(0, 0, this.library.calendar.getBounds().width + 200, this.library.calendar.getBounds().height + 1000);
+      this.library.calendar.cache(-100, -100, this.library.calendar.getBounds().width + 300, this.library.calendar.getBounds().height + 500);
+      TweenLite.set(this.library.calendar, {
+        alpha: 0
+      });
       TweenLite.from(this.library.header, 1, {
         y: -this.library.header.height
       });
@@ -465,12 +468,12 @@
       TweenLite.from(this.library.btnFinished, 1, {
         alpha: 0,
         y: this.library.btnFinished.y + 40,
-        delay: 2
+        delay: 1
       });
       return TweenLite.to(this.library.calendar, 1, {
         alpha: 1,
         y: 0,
-        delay: 3,
+        delay: 2,
         onComplete: this.playInstructions,
         onCompleteParams: [this]
       });
@@ -505,6 +508,22 @@
           });
           v = this.createBitmap(relation[0].id, relation[0].tgt, 45, 25);
           v.hitter = this.answer;
+          v.addEventListener('mousedown', function(e) {
+            var cv;
+            cv = e.currentTarget;
+            return cv.addEventListener('pressmove', function(ev) {
+              var parent;
+              if (cv.hitter) {
+                cv.removeAllEventListeners();
+                parent = cv.parent;
+                while (parent.children.length > 1) {
+                  parent.removeChildAt(parent.children.length - 1);
+                }
+                cv.hitter.visible = true;
+                return cv.hitter.returnToPlace();
+              }
+            });
+          });
           this.setReg(v, v.width / 2, v.height / 2);
           this.library[drop.tgt].respuesta = this.answer.name;
           this.library[drop.tgt].parent.addChild(v);
@@ -524,9 +543,14 @@
       for (i = _i = 1, _ref = answers.length; _i <= _ref; i = _i += 1) {
         if (this.library[answers[i - 1].tgt].parent.children.length > 2) {
           if (this.library[answers[i - 1].tgt].parent.children[2].name === answers[i - 1].id) {
-            this.blink(this.library[answers[i - 1].tgt].parent);
             this.library.score.plusOne();
             createjs.Sound.play('good');
+          } else {
+            if (dealersjs.mobile.isIOS() || dealersjs.mobile.isAndroid()) {
+              this.library[answers[i - 1].tgt].parent.alpha = 0.4;
+            } else {
+              this.blink(this.library[answers[i - 1].tgt].parent);
+            }
           }
         }
       }
@@ -534,16 +558,15 @@
     };
 
     U5A1.prototype.finishEvaluation = function() {
-      this.library.calendar.cache(0, 0, this.library.calendar.getBounds().width + 200, this.library.calendar.getBounds().height + 1000);
+      this.library.calendar.cache(0, 0, this.library.calendar.getBounds().width + 400, this.library.calendar.getBounds().height + 1000);
       TweenLite.to(this.library.calendar, 1, {
         alpha: 0,
-        y: this.library.calendar.y - 40,
-        delay: 2
+        y: this.library.calendar.y - 40
       });
       return TweenLite.to(this.library.propCalendar, 1, {
         alpha: 0,
         y: this.library.propCalendar.y - 40,
-        delay: 3,
+        delay: 1,
         onComplete: this.nextEvaluation
       });
     };
@@ -551,6 +574,7 @@
     U5A1.prototype.nextEvaluation = function() {
       var i, _i;
       this.index++;
+      this.library.calendar.uncache();
       if (this.index < this.game.length) {
         this.setCalendar(this.index + 1);
         for (i = _i = 1; _i <= 8; i = ++_i) {

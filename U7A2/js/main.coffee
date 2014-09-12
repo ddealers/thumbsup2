@@ -190,9 +190,13 @@ class U7A2 extends Oda
 		for i in [0..answers.length - 1] by 1
 			if @library["cont#{i}"].children.length > 1
 				if @library["cont#{i}"].children[1].name is answers[i]
-					@blink @library["cont#{i}"]
 					@library.score.plusOne()
 					createjs.Sound.play 'good'
+				else
+					if dealersjs.mobile.isIOS() or dealersjs.mobile.isAndroid()
+						@library["cont#{i}"].alpha = 0.4
+					else
+						@blink @library["cont#{i}"]
 		setTimeout @finishEvaluation, 4 * 1000
 	finishEvaluation: =>
 		TweenLite.to @library.pizarra, 1, {alpha: 0, y: @library.pizarra.y + 40, onComplete: @nextEvaluation}

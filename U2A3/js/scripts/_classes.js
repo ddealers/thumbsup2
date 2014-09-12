@@ -369,6 +369,7 @@
       this.Container_initialize();
       this.name = name;
       this.bitmap = new createjs.Bitmap(image);
+      this.bitmap.mouseEnabled = false;
       this.index = index;
       this.x = x;
       this.y = y;
@@ -379,13 +380,15 @@
         y: y
       };
       hit = new createjs.Shape();
-      hit.graphics.beginFill('rgba(0,0,0,0.5)').drawRect(0, 0, image.width, image.height);
-      this.hitArea = hit;
-      this.inPlace = false;
-      return this.addChild(this.bitmap);
+      hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, image.width, image.height);
+      this.addChild(this.bitmap, hit);
+      return this.inPlace = false;
     };
 
     Draggable.prototype.onInitEvaluation = function() {
+      if (this.complete) {
+        return;
+      }
       return this.on('mousedown', this.handleMouseDown);
     };
 
@@ -462,25 +465,15 @@
         scaleY = 1;
       }
       this.inPlace = true;
-      if (dealersjs.mobile.isIOS() || dealersjs.mobile.isAndroid()) {
-        return this.set({
-          x: position.x,
-          y: position.y,
-          alpha: alpha,
-          scaleX: scaleX,
-          scaleY: scaleY
-        });
-      } else {
-        return TweenLite.to(this, 1, {
-          ease: Back.easeOut,
-          delay: 0.1,
-          x: position.x,
-          y: position.y,
-          alpha: alpha,
-          scaleX: scaleX,
-          scaleY: scaleY
-        });
-      }
+      return TweenLite.to(this, 1, {
+        ease: Back.easeOut,
+        delay: 0.1,
+        x: position.x,
+        y: position.y,
+        alpha: alpha,
+        scaleX: scaleX,
+        scaleY: scaleY
+      });
     };
 
     Draggable.prototype.returnToPlace = function(alpha, scaleX, scaleY, blink) {
@@ -497,47 +490,26 @@
         blink = false;
       }
       if (!blink) {
-        if (dealersjs.mobile.isIOS() || dealersjs.mobile.isAndroid()) {
-          return this.set({
-            x: this.pos.x,
-            y: this.pos.y,
-            alpha: alpha,
-            scaleX: scaleX,
-            scaleY: scaleY
-          });
-        } else {
-          return TweenLite.to(this, 0.5, {
-            ease: Back.easeOut,
-            delay: 0.1,
-            x: this.pos.x,
-            y: this.pos.y,
-            alpha: alpha,
-            scaleX: scaleX,
-            scaleY: scaleY
-          });
-        }
+        return TweenLite.to(this, 0.5, {
+          ease: Back.easeOut,
+          delay: 0.1,
+          x: this.pos.x,
+          y: this.pos.y,
+          alpha: alpha,
+          scaleX: scaleX,
+          scaleY: scaleY
+        });
       } else {
-        if (dealersjs.mobile.isIOS() || dealersjs.mobile.isAndroid()) {
-          return this.set({
-            x: this.pos.x,
-            y: this.pos.y,
-            alpha: alpha,
-            scaleX: scaleX,
-            scaleY: scaleY,
-            onComplete: this.blinkAgain
-          });
-        } else {
-          return TweenLite.to(this, 0.5, {
-            ease: Back.easeOut,
-            delay: 0.1,
-            x: this.pos.x,
-            y: this.pos.y,
-            alpha: alpha,
-            scaleX: scaleX,
-            scaleY: scaleY,
-            onComplete: this.blinkAgain
-          });
-        }
+        return TweenLite.to(this, 0.5, {
+          ease: Back.easeOut,
+          delay: 0.1,
+          x: this.pos.x,
+          y: this.pos.y,
+          alpha: alpha,
+          scaleX: scaleX,
+          scaleY: scaleY,
+          onComplete: this.blinkAgain
+        });
       }
     };
 
@@ -1620,6 +1592,7 @@
       triangle = new createjs.Shape();
       triangle.graphics.beginFill('#bcd748').moveTo(0, 0).lineTo(16, 10).lineTo(0, 20);
       triangle.y = 10;
+      console.log(text);
       it = 0;
       npos = 24;
       for (_i = 0, _len = text.length; _i < _len; _i++) {
@@ -1632,6 +1605,7 @@
         }
         label.x = npos;
         inst.addChild(label);
+        console.log(label);
         npos = npos + label.getMeasuredWidth() + 5;
       }
       inst.addChild(triangle);
@@ -1906,14 +1880,18 @@
       document.addEventListener('keyup', function(e) {
         switch (e.keyCode) {
           case KEYCODE_UP:
-            return _this.debugged.y -= 10;
+            _this.debugged.y -= 10;
+            break;
           case KEYCODE_DOWN:
-            return _this.debugged.y += 10;
+            _this.debugged.y += 10;
+            break;
           case KEYCODE_LEFT:
-            return _this.debugged.x -= 10;
+            _this.debugged.x -= 10;
+            break;
           case KEYCODE_RIGHT:
-            return _this.debugged.x += 10;
+            _this.debugged.x += 10;
         }
+        return console.log(_this.debugged.x, _this.debugged.y);
       });
       this.debugged.addEventListener('mousedown', function(e) {
         var offset, posX, posY;
