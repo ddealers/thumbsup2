@@ -72,7 +72,6 @@ class U6A1 extends Oda
 		super
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', ['Drag the puzzle pieces, read and click on the correct answers.'], 80, 200
-
 		
 		@p1 = new createjs.Container()
 		@p1.name = 'p1'
@@ -174,13 +173,19 @@ class U6A1 extends Oda
 				@answers = 8
 				@setPuzzle 2
 
-		TweenLite.from @library.btntrue, 1, {alpha:0, y:@library.btntrue.y - 40}
-		TweenLite.from @library.btnfalse, 1, {alpha:0, y:@library.btnfalse.y - 40, delay: 0.2}
+		TweenLite.from @library['behind'], 1, {alpha:0, y:@library['behind'].y - 40}
+		TweenLite.from @library['in'], 1, {alpha:0, y:@library['in'].y - 40, delay: 0.2}
+		TweenLite.from @library['under'], 1, {alpha:0, y:@library['under'].y - 40, delay: 0.4}
+		TweenLite.from @library['next'], 1, {alpha:0, y:@library['next'].y - 40}
+		TweenLite.from @library['on'], 1, {alpha:0, y:@library['on'].y - 40, delay: 0.2}
+		TweenLite.from @library['above'], 1, {alpha:0, y:@library['above'].y - 40, delay: 0.4}
 	setPuzzle: (num) ->
 		@num = num
 		puzzle = new createjs.Container()
-		puzzle.x = 150
-		puzzle.y = 290
+		puzzle.x = switch num
+			when 1 then 150
+			when 2 then 150
+		puzzle.y = 300
 		puzzle.name = 'puzzle'
 
 		m = @createBitmap "m#{num}", "m#{num}", 290, 150
@@ -210,7 +215,7 @@ class U6A1 extends Oda
 
 		dragpieces = new createjs.Container()
 		dragpieces.x = stageSize.w / 2
-		dragpieces.y = 270
+		dragpieces.y = 380
 		dragpieces.name = 'dragpieces'
 		index = 0
 		
@@ -218,8 +223,9 @@ class U6A1 extends Oda
 		@drops = []
 		for i in [1..12] by 1
 			predpp = @preload.getResult("p#{num}p#{i}")
-			dpp = new Draggable "dp#{num}p#{i}", @preload.getResult("p#{num}p#{i}"), "p#{num}p#{i}", index * 176, 0 
-			
+			dpp = new Draggable "dp#{num}p#{i}", @preload.getResult("p#{num}p#{i}"), "p#{num}p#{i}", index * 170, 0 
+			dpp.y = dpp.y - predpp.height / 2
+			dpp.pos.y = dpp.y
 			dpp.addEventListener 'drop', @evaluateAnswer
 			@observer.subscribe 'init_drag', dpp.onInitEvaluation
 			@observer.subscribe 'stop_drag', dpp.onStopEvaluation
@@ -231,17 +237,15 @@ class U6A1 extends Oda
 				index++
 				dragpieces.addChild dpp
 				
-		dragpieces.width = index * 176
+		dragpieces.width = index * 170
 		@setReg(dragpieces, dragpieces.width / 2, 0)
-		
-		console.log @drops
 		@addToMain puzzle
 		@addToMain dragpieces
-		puzzle.cache 0,0,puzzle.getBounds().width+300,puzzle.getBounds().height+200
-		dragpieces.cache 0,-100,dragpieces.getBounds().width,dragpieces.getBounds().height+100
+		puzzle.cache 0,0,puzzle.getBounds().width,puzzle.getBounds().height
+		dragpieces.cache 0,-100,dragpieces.getBounds().width,dragpieces.getBounds().height
 		TweenLite.from puzzle, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6}
-		TweenLite.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6, onComplete: @initDrag}
-	initDrag: =>
+		TweenLite.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6, onComplete: @initDrag, onCompleteParams:[puzzle,dragpieces]}
+	initDrag:(puzzle,dragpieces) =>
 		if puzzle then puzzle.uncache()
 		if dragpieces then dragpieces.uncache()
 		@observer.notify 'init_drag'
