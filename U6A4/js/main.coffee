@@ -28,13 +28,13 @@ class U6A4 extends Oda
 		]
 		@game =
 			steps : [
-				{txt:'They are waiting at the bus stop.', img:'waitingbus'}
-				{txt:'They are watching a movie at the movie theater.', img:'watchingmovie'}
-				{txt:'She is shopping at the grocery store.', img:'shoppinggrocery'}
-				{txt:'They are reading a book at the park.', img:'park'}
-				{txt:'She is checking out books at the library.', img:'library'}
-				{txt:'They are asking for help at the police station.', img:'policestation'}
-				{txt:'He is eating dinner at a restaurant.', img:'restaurant'}
+				{txt:'They are waiting at the bus stop', img:'waitingbus'}
+				{txt:'They are watching a movie at the movie theater', img:'watchingmovie'}
+				{txt:'She is shopping at the grocery store', img:'shoppinggrocery'}
+				{txt:'They are reading a book at the park', img:'park'}
+				{txt:'She is checking out books at the library', img:'library'}
+				{txt:'They are asking for help at the police station', img:'policestation'}
+				{txt:'He is eating dinner at a restaurant', img:'restaurant'}
 			]
 		super null, manifest, sounds
 	setStage: ->
@@ -96,6 +96,10 @@ class U6A4 extends Oda
 							cwc.hitter.returnToPlace()
 				@addToLibrary wc
 				frase.addChild wc
+		punto = new createjs.Text '.', '40px Quicksand'
+		punto.x = (i+1)*180
+		punto.y = 0
+		frase.addChild punto
 		frase.name = 'frase'
 		frase.y = 840
 		frase.x = stageSize.w / 2 - @scrambled.length * 200 / 2 - 100
