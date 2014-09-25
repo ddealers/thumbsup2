@@ -22,5 +22,7 @@
 }
 @font-face {
 	font-family: 'Francois One', sans-serif;
+	font-style: normal;
+	font-weight: bold;
 	src: url('../fonts/Francois_One_regular.ttf');
 }
