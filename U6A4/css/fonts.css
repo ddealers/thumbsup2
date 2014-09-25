@@ -21,8 +21,7 @@
 	src: url('../fonts/Roboto_500italic.ttf'),url('../fonts/roboto_500italic-webfont.woff')
 }
 @font-face {
-	font-family: 'Francois One', sans-serif;
+	font-family: 'Francois One';
 	font-style: normal;
-	font-weight: bold;
-	src: url('../fonts/Francois_One.ttf');
+	src: url('../fonts/FrancoisOne.ttf');
 }
