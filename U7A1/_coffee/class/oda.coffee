@@ -184,10 +184,10 @@ class Oda
 
 		for frase in text
 			if frase is '#ital'
-				label = new createjs.Text ital[it], 'italic 32px Roboto', '#000'
+				label = new createjs.Text ital[it], 'italic 32px Francois One', '#000'
 				it++
 			else 
-				label = new createjs.Text frase, '32px Roboto', '#000'
+				label = new createjs.Text frase, '32px Francois One', '#000'
 			label.x = npos
 			inst.addChild label
 			console.log label
