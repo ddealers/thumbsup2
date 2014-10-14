@@ -47,24 +47,26 @@ class DroppableText
 		Array.isArray value || (value) ->
 			{}.toString.call( value ) is '[object Array]'
 	initDragListener: =>
-		@addEventListener 'mousedown', @handleMouseDown
+		@on 'mousedown', @handleMouseDown
 	endDragListener: =>
-		@removeEventListener 'mousedown', @handleMouseDown
+		@off 'mousedown', @handleMouseDown
 	onInitEvaluation: =>
-		@addEventListener 'mousedown', @handleMouseDown
+		@on 'mousedown', @handleMouseDown
 	handleMouseDown: (e) =>
 		posX = e.stageX / stageSize.r
 		posY = e.stageY / stageSize.r
 		offset = x: posX - @x, y: posY - @y
 		@x = posX - offset.x
 		@y = posY - offset.y
-		@addEventListener 'mousemove', (ev)=>
+		@on 'pressmove', (ev)=>
 			posX = ev.stageX / stageSize.r
 			posY = ev.stageY / stageSize.r
 			@x = posX - offset.x
 			@y = posY - offset.y
 			false
-		@addEventListener 'mouseup', (ev)=>
+		@on 'pressup', (ev)=>
+			@removeAllEventListeners 'pressmove'
+			@removeAllEventListeners 'pressup'
 			if @drops.length > 0
 				@evaluateDrop e
 			else

@@ -108,6 +108,10 @@ class Oda
 			shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
 			oda.setReg @start, bmp.width / 2, bmp.height / 2
 			@start.addChild bmp, shape
+			###
+			@start = oda.createBitmap 'start', 'sg', stageSize.w / 2, stageSize.h / 2
+			oda.setReg @start, @start.width / 2, @start.height / 2
+			###
 			oda.addToMain @start
 			oda.library['start'].addEventListener 'click', oda.initMobileInstructions
 			TweenLite.from oda.library['start'], 0.3, { alpha: 0, y: oda.library['start'].y + 20 }
@@ -177,7 +181,7 @@ class Oda
 		triangle.graphics.beginFill('#bcd748').moveTo(0,0).lineTo(16,10).lineTo(0,20)
 		triangle.y = 10
 
-		#console.log text
+		console.log text
 
 		it = 0			
 		npos = 24
@@ -190,7 +194,7 @@ class Oda
 				label = new createjs.Text frase, 'bold 42px Browallia New', '#000'
 			label.x = npos
 			inst.addChild label
-			#console.log label
+			console.log label
 			npos = npos + label.getMeasuredWidth() + 5
 
 		inst.addChild triangle
@@ -331,7 +335,7 @@ class Oda
 				when KEYCODE_DOWN then @debugged.y += 10
 				when KEYCODE_LEFT then @debugged.x -= 10
 				when KEYCODE_RIGHT then @debugged.x += 10
-			#console.log @debugged.x, @debugged.y
+			console.log @debugged.x, @debugged.y
 		@debugged.addEventListener 'mousedown', (e) =>
 			posX = e.stageX / stageSize.r
 			posY = e.stageY / stageSize.r

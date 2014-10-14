@@ -23,5 +23,6 @@
 @font-face {
 	font-family: 'Browallia New';
 	font-style: bold;
-	src: url('../fonts/Browallia_New.ttf');
+	font-weight: 700;
+	src: url('../fonts/Browallia_New.ttf')
 }

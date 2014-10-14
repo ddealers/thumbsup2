@@ -63,7 +63,7 @@ class U8A6 extends Oda
 		@intento = 0
 		@preguntas = @shuffleNoRepeat @game.preguntas, 10
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Take the review quiz! Look and click on the correct option.', 80, 200
+		@insertInstructions 'instructions', ['Take the review quiz! Look and click on the correct option.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 10, 0
 		@setQuestion(0).introEvaluation()
 	setQuestion: (i) ->

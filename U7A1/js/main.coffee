@@ -68,7 +68,7 @@ class U7A1 extends Oda
 		super
 		@intento = 0
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Read, look and drag the words to complete the sentences.', 80, 200
+		@insertInstructions 'instructions', ['Read, look and drag the words to complete the sentences.'], 80, 200
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 16, 0
 		@setEscena(1).setNube().introEvaluation()
 	setEscena: (scene) ->

@@ -105,9 +105,13 @@ class Oda
 			bmp = oda.createBitmap 'start', 'sg', 0, 0
 			bmp.mouseEnabled = false
 			shape = new createjs.Shape()
-			shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
-			@setReg @start, bmp.width / 2, bmp.height / 2
+			shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
+			oda.setReg @start, bmp.width / 2, bmp.height / 2
 			@start.addChild bmp, shape
+			###
+			@start = oda.createBitmap 'start', 'sg', stageSize.w / 2, stageSize.h / 2
+			oda.setReg @start, @start.width / 2, @start.height / 2
+			###
 			oda.addToMain @start
 			oda.library['start'].addEventListener 'click', oda.initMobileInstructions
 			TweenLite.from oda.library['start'], 0.3, { alpha: 0, y: oda.library['start'].y + 20 }
@@ -130,7 +134,7 @@ class Oda
 		bmp = @createBitmap 'play_again', 'pa', 0, 0
 		bmp.mouseEnabled = false
 		shape = new createjs.Shape()
-		shape.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
+		shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
 		@setReg @play_again, bmp.width / 2, bmp.height / 2
 		@play_again.addChild bmp, shape
 		@addToMain @play_again

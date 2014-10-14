@@ -106,8 +106,12 @@ class Oda
 			bmp.mouseEnabled = false
 			shape = new createjs.Shape()
 			shape.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, bmp.getBounds().width, bmp.getBounds().height)
-			@setReg @start, bmp.width / 2, bmp.height / 2
+			oda.setReg @start, bmp.width / 2, bmp.height / 2
 			@start.addChild bmp, shape
+			###
+			@start = oda.createBitmap 'start', 'sg', stageSize.w / 2, stageSize.h / 2
+			oda.setReg @start, @start.width / 2, @start.height / 2
+			###
 			oda.addToMain @start
 			oda.library['start'].addEventListener 'click', oda.initMobileInstructions
 			TweenLite.from oda.library['start'], 0.3, { alpha: 0, y: oda.library['start'].y + 20 }
@@ -180,7 +184,7 @@ class Oda
 		console.log text
 
 		it = 0			
-		npos = 14
+		npos = 24
 
 		for frase in text
 			if frase is '#ital'

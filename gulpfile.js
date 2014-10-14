@@ -6,13 +6,23 @@ var coffee = require('gulp-coffee');
 
 var activity = args.activity;
 
+function app(activity){
+	gulp.src([activity+'/js/scripts/app.js'])
+	.pipe(uglify('app.min.js'))
+	.pipe(gulp.dest(activity+'/js/scripts/min/'));
+}
 function clas(activity){
 	gulp.src([activity+'/_coffee/class/*.coffee',])
 	.pipe(coffee({bare: true}))
 	.pipe(uglify('classes.min.js'))
 	.pipe(gulp.dest(activity+'/js/scripts/min/'));
 }
-
+function deal(activity){
+	gulp.src([activity+'/_coffee/dealersjs.coffee'])
+	.pipe(coffee({bare: true}))
+	.pipe(uglify('dealersjs.min.js'))
+	.pipe(gulp.dest(activity+'/js/lib/'))
+}
 function main(activity){
 	gulp.src([activity+'/js/main.coffee',])
 	.pipe(coffee({bare: true}))
@@ -20,17 +30,17 @@ function main(activity){
 	.pipe(gulp.dest(activity+'/js/'));
 }
 
-function deal(activity){
-	gulp.src([activity+'/_coffee/dealersjs.coffee'])
-	.pipe(coffee({bare: true}))
-	.pipe(uglify('dealersjs.min.js'))
-	.pipe(gulp.dest(activity+'/js/lib/'))
-}
-
-gulp.task('production', function(){
+gulp.task('dev', function(){
+	app(activity);
 	clas(activity);
-	main(activity);
 	deal(activity);
+	main(activity);
+});
+gulp.task('production', function(){
+	app(activity);
+	clas(activity);
+	deal(activity);
+	main(activity);
 	gulp.src([
 		activity+'/css/**/*.*',
 		activity+'/sounds/**/*.*',

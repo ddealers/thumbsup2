@@ -34,13 +34,13 @@ class Droppable
 		Array.isArray value || (value) ->
 			{}.toString.call( value ) is '[object Array]'
 	onInitEvaluation: =>
-		@addEventListener 'mousedown', @handleMouseDown
+		@on 'mousedown', @handleMouseDown
 	onStopEvaluation: =>
-		@removeEventListener 'mousedown', @handleMouseDown
+		@off 'mousedown', @handleMouseDown
 	initDragListener: =>
-		@addEventListener 'mousedown', @handleMouseDown
+		@on 'mousedown', @handleMouseDown
 	endDragListener: =>
-		@removeEventListener 'mousedown', @handleMouseDown
+		@off 'mousedown', @handleMouseDown
 	handleMouseDown: (e) =>
 		TweenMax.killTweensOf @
 		TweenLite.killTweensOf @
@@ -50,13 +50,15 @@ class Droppable
 		offset = x: posX - @x, y: posY - @y
 		@x = posX - offset.x
 		@y = posY - offset.y
-		@addEventListener 'mousemove', (ev)=>
+		@on 'pressmove', (ev)=>
 			posX = ev.stageX / stageSize.r
 			posY = ev.stageY / stageSize.r
 			@x = posX - offset.x
 			@y = posY - offset.y
 			false
-		@addEventListener 'mouseup', (ev)=>
+		@on 'pressup', (ev)=>
+			@removeAllEventListeners 'pressmove'
+			@removeAllEventListeners 'pressup'
 			if @drops.length > 0
 				@evaluateDrop e
 			else

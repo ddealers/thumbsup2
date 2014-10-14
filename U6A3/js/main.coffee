@@ -78,7 +78,7 @@ class U6A3 extends Oda
 		@intento = 0
 		stepsimg = (step.img for step in @steps)
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
-		@insertInstructions 'instructions', 'Read and drag the words to make questions.', 80, 200
+		@insertInstructions 'instructions', ['Read and drag the words to make questions.'], 80, 200
 		imgs = @createSprite 'images', stepsimg, null, stageSize.w / 2, 470, 'mc'
 		imgs.scaleX = imgs.scaleY = 0.7
 		@addToMain imgs

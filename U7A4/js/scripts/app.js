@@ -9,7 +9,7 @@ $(document).ready(function(){
 			if( oda.init ) oda.init();
 		},
 		custom: {
-			families: ['Quicksand','Dosis','Roboto'],
+			families: ['Quicksand','Browallia New'],
 			urls: '/css/fonts.css'
 		}
 	}
