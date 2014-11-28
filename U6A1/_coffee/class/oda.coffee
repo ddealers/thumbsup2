@@ -201,23 +201,32 @@ class Oda
 		@addToMain inst
 	createBitmap: (name, id, x, y, position = 'tl') ->
 		img = @preload.getResult(id)
+		cont = new createjs.Container()
 		bmp = new createjs.Bitmap img
-		bmp.x = x
-		bmp.y = y
-		bmp.width = img.width
-		bmp.height = img.height
-		bmp.name = name
+		bmp.mouseEnabled = false
+		hit = new createjs.Shape()
+		#hit.graphics.beginFill('rgba(0,0,0,0.2)').drawRect(0, 0, img.width, img.height)
+		hit.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, img.width, img.height)
+		hit.name = "h#{name}"
+		cont.x = x
+		cont.y = y
+		cont.width = img.width
+		cont.height = img.height
+		cont.name = name
+		cont.addChild bmp, hit
+		#cont.mouseChildren = false
+		cont
 		switch position
-			when 'tc' then @setReg bmp, img.width / 2, 0
-			when 'tr' then @setReg bmp, img.width, 0
-			when 'ml' then @setReg bmp, 0, img.height / 2
-			when 'mc' then @setReg bmp, img.width / 2, img.height / 2
-			when 'mr' then @setReg bmp, img.width, img.height / 2
-			when 'bl' then @setReg bmp, 0, img.height
-			when 'bc' then @setReg bmp, img.width / 2, img.height
-			when 'br' then @setReg bmp, img.width, img.height
-			else @setReg bmp, 0, 0
-		bmp
+			when 'tc' then @setReg cont, img.width / 2, 0
+			when 'tr' then @setReg cont, img.width, 0
+			when 'ml' then @setReg cont, 0, img.height / 2
+			when 'mc' then @setReg cont, img.width / 2, img.height / 2
+			when 'mr' then @setReg cont, img.width, img.height / 2
+			when 'bl' then @setReg cont, 0, img.height
+			when 'bc' then @setReg cont, img.width / 2, img.height
+			when 'br' then @setReg cont, img.width, img.height
+			else @setReg cont, 0, 0
+		cont
 	insertBitmap: (name, id, x, y, position = 'tl') ->
 		bmp = @createBitmap name, id, x, y, position
 		@addToMain bmp

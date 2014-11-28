@@ -246,12 +246,13 @@ class U2A3 extends Oda
 		@setReg(dragpieces, dragpieces.width / 2, 0)
 		@addToMain puzzle
 		@addToMain dragpieces
-		puzzle.cache 0,0,puzzle.getBounds().width,puzzle.getBounds().height
-		dragpieces.cache 0,-100,dragpieces.getBounds().width,dragpieces.getBounds().height
-		TweenLite.from puzzle, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6}
-		TweenLite.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6, onComplete: @initDrag, onCompleteParams:[puzzle,dragpieces]}
+		puzzle.cache 0,0,puzzle.getBounds().width*2,puzzle.getBounds().height*2
+		dragpieces.cache 0,-100,dragpieces.getBounds().width*2,dragpieces.getBounds().height*2
+		tl = new TimelineLite()
+		tl.from puzzle, 1, {alpha:0, y:puzzle.y - 40}
+		.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, onComplete: @initDrag, onCompleteParams:[puzzle,dragpieces]}
 	initDrag:(puzzle,dragpieces) =>
-		if puzzle then puzzle.uncache()
+		#if puzzle then puzzle.uncache()
 		if dragpieces then dragpieces.uncache()
 		@observer.notify 'init_drag'
 	initListeners: ->

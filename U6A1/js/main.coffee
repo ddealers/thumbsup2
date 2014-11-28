@@ -73,74 +73,39 @@ class U6A1 extends Oda
 		@insertBitmap 'header', 'head', stageSize.w / 2, 0, 'tc'
 		@insertInstructions 'instructions', ['Drag the puzzle pieces, read and click on the correct answers.'], 80, 200
 		
-		@p1 = new createjs.Container()
-		@p1.name = 'p1'
-		@p1.x = 1462
-		@p1.y = 966
-		@b1 = @createBitmap 'b1', 'b1', 0, 0
-		@b1.mouseEnabled = false
-		@shape1 = new createjs.Shape()
-		@shape1.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @b1.getBounds().width, @b1.getBounds().height)
-		@p1.addChild @b1, @shape1
-
-		@p2 = new createjs.Container()
-		@p2.name = 'p2'
-		@p2.x = 1462
-		@p2.y = 1060
-		@b2 = @createBitmap 'b2', 'b2', 0, 0
-		@b2.mouseEnabled = false
-		@shape2 = new createjs.Shape()
-		@shape2.graphics.beginFill('rgba(255,255,255,0.1)').drawRect(0, 0, @b2.getBounds().width, @b2.getBounds().height)
-		@p2.addChild @b2, @shape2
+		b1 = @createBitmap 'b1', 'b1', 1462, 966
+		b2 = @createBitmap 'b2', 'b2', 1462, 1060
 		
-		@addToMain @p1, @p2
-		@addToLibrary @p1, @p2
+		@addToMain b1, b2
+		@addToLibrary b1, b2
 
 		@addToMain new Score 'score', (@preload.getResult 'c1'), (@preload.getResult 'c2'), 40, 1000, 8, 0
 		@introEvaluation()
 	introEvaluation: ->
 		super
-		TweenLite.from @library['header'], 1, {y:-@library['header'].height}
-		TweenLite.from @library['instructions'], 1, {alpha :0, x: 0, delay: 1, onComplete: @playInstructions, onCompleteParams: [@]}
-		TweenMax.from [@library['p1'], @library['p2']], 1, {alpha:0, y:stageSize.h, delay:2}
+		tl = new TimelineLite()
+		tl.from @library['header'], 1, {y:-@library['header'].height}
+		.from @library['instructions'], 1, {alpha :0, x: 0, onComplete: @playInstructions, onCompleteParams: [@]}
+		.from [@library['b1'], @library['b2']], 1, {alpha:0, y:stageSize.h}
 	initEvaluation: (e) =>
 		super
 		for i in [1..2] by 1
-			@blink @library['p'+i]
-			@library['p'+i].addEventListener 'click', @selectPuzzle
+			@blink @library["b#{i}"]
+			@library["b#{i}"].on 'click', @selectPuzzle
 	selectPuzzle: (e) =>
 		for i in [1..2] by 1
-			@blink @library["p#{i}"], off
-			@library['p'+i].removeEventListener 'click', @selectPuzzle
+			@blink @library["b#{i}"], off
+			@library["b#{i}"].off 'click', @selectPuzzle
 
 
-		@trueb = new createjs.Container()
-		@trueb.x = 600
-		@trueb.y = 1080
-		@trueb.name = 'btntrue'
-		@true = @createBitmap 'btrue', 'btntrue', 0, 0
-		@true.mouseEnabled = false
-		@shapetrue = new createjs.Shape()
-		@shapetrue.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, @true.getBounds().width, @true.getBounds().height)
-		@trueb.addChild @true, @shapetrue
-
-		@falseb = new createjs.Container()
-		@falseb.x = 840
-		@falseb.y = 1080
-		@falseb.name = 'btnfalse'
-
-		@false = @createBitmap 'bfalse', 'btnfalse', 0, 0
-		@false.mouseEnabled = false
-		@shapefalse = new createjs.Shape()
-		@shapefalse.graphics.beginFill('rgba(255,255,255,0.01)').drawRect(0, 0, @false.getBounds().width, @false.getBounds().height)
-		@falseb.addChild @false, @shapefalse
+		btnTrue = @createBitmap 'btntrue', 'btntrue', 600, 1080
+		btnFalse = @createBitmap 'btnfalse', 'btnfalse', 840, 1080
 		
-		@addToMain @trueb, @falseb
-		@addToLibrary @trueb, @falseb
+		@addToMain btnTrue, btnFalse
+		@addToLibrary btnTrue, btnFalse
  
-		console.log e.target
 		switch e.target.parent.name
-			when 'p1'
+			when 'b1'
 				@pieces =
 					p1p1:  {x: 304, y: 162,  text:'A firefighter puts out fires.', label:'true', back: on}
 					p1p2:  {x: 493, y: 162} 
@@ -156,7 +121,7 @@ class U6A1 extends Oda
 					p1p12: {x: 815, y: 516, text:'A chef serves food.', label:'false', back: on}
 				@answers = 8
 				@setPuzzle 1
-			when 'p2'
+			when 'b2'
 				@pieces =
 					p2p1:  {x: 308, y: 166,  text:'A doctor works at a bank.', label:'false', back: on}
 					p2p2:  {x: 497, y: 166} 
@@ -232,14 +197,18 @@ class U6A1 extends Oda
 				
 		dragpieces.width = index * 170
 		@setReg(dragpieces, dragpieces.width / 2, 0)
-		@addToMain puzzle
-		@addToMain dragpieces
-		puzzle.cache 0,0,puzzle.getBounds().width,puzzle.getBounds().height
-		dragpieces.cache 0,-100,dragpieces.getBounds().width,dragpieces.getBounds().height
-		TweenLite.from puzzle, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6}
-		TweenLite.from dragpieces, 1, {alpha:0, y:puzzle.y - 40, delay: 0.6, onComplete: @initDrag, onCompleteParams:[puzzle,dragpieces]}
+		
+		@addToMain puzzle, dragpieces
+		#@addToMain dragpieces
+
+		puzzle.cache 0,0,puzzle.getBounds().width * 2, puzzle.getBounds().height * 2
+		dragpieces.cache 0, -dragpieces.getBounds().height, dragpieces.getBounds().width * 2, dragpieces.getBounds().height * 2
+		
+		tl = new TimelineLite()
+		tl.from puzzle, 0.5, {alpha:0, y:puzzle.y - 40, force3D:true}
+		.from dragpieces, 0.5, {alpha:0, y:puzzle.y - 40, force3D:true, onComplete: @initDrag, onCompleteParams:[puzzle,dragpieces]}
 	initDrag:(puzzle,dragpieces) =>
-		if puzzle then puzzle.uncache()
+		#if puzzle then puzzle.uncache()
 		if dragpieces then dragpieces.uncache()
 		@observer.notify 'init_drag'
 	initListeners: ->
@@ -255,12 +224,9 @@ class U6A1 extends Oda
 		pt = hit.globalToLocal @stage.mouseX, @stage.mouseY
 		
 		if hit.hitTest pt.x, pt.y
-			console.log 'array drops ', @drops
 			currentdrop = @drops.indexOf(@library[@answer.name])
-			console.log 'indexof', currentdrop
 			@drops.splice currentdrop, 1 
-			console.log 'array nuevo ', @drops
-
+			
 			hpt = hit.parent.localToGlobal hit.x, hit.y
 			htt = @answer.parent.globalToLocal hpt.x, hpt.y
 			@insertText 'dropper', @pieces[@answer.index].text,'48px Quicksand','#333', stageSize.w / 2, 1020, 'center'
@@ -268,7 +234,6 @@ class U6A1 extends Oda
 
 			@answer.complete = true
 
-			
 			@answer.putInPlace( htt )
 			for i in [1..12] by 1
 				ficha = @library["dp#{@num}p#{i}"]
@@ -278,7 +243,6 @@ class U6A1 extends Oda
 			@answer.returnToPlace @answer.alpha, @answer.scaleX, @answer.scaleY
 	evaluateLocation: (e) =>
 		name = e.target.parent.name
-		console.log name, "btn#{@pieces}", "btn#{@pieces[@answer.index].label}"
 		if name is "btn#{@pieces[@answer.index].label}"
 			createjs.Sound.play 'good'
 			@library['score'].plusOne()
